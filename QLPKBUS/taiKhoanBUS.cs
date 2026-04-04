@@ -18,8 +18,14 @@ namespace QLPKBUS
         }
         public bool them(taiKhoanDTO tk)
         {
-            bool re = tkDAL.them(tk);
-            return re;
+
+            if (!tkDAL.KiemTraTonTai(tk))
+            {
+                bool re = tkDAL.them(tk);
+                return re;
+            }
+            else return false;
+          
         }
         public bool sua(taiKhoanDTO tk, string maTaiKhoanold)
         {

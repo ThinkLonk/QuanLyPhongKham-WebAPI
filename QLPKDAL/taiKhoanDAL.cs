@@ -19,6 +19,35 @@ namespace QLPKDAL
             connectionString = ConfigurationManager.AppSettings["ConnectionString"];
         }
         public string ConnectionString { get => connectionString; set => connectionString = value;}
+
+        public bool KiemTraTonTai(taiKhoanDTO tk)
+        {
+            using (SqlConnection con = new SqlConnection(ConnectionString))
+            {
+                string query = "SELECT COUNT(*) FROM [TaiKhoan] WHERE Username = @TenDN";
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@TenDN", tk.Username);
+                    try
+                    {
+                        con.Open();
+                        // Dùng ExecuteScalar để lấy con số COUNT(*)
+                        int count = (int)cmd.ExecuteScalar();
+                        con.Close();
+
+                        return count > 0; // Nếu lớn hơn 0 nghĩa là đã tồn tại
+                    }
+                    catch (Exception ex)
+                    {
+                        con.Close();
+                        return false;
+                    }
+                }
+            }
+        }
+
+
         public bool them(taiKhoanDTO tk)
         {
             string query = string.Empty;
