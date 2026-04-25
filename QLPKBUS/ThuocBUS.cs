@@ -42,7 +42,7 @@ namespace QLPKBUS
         {
             return thDAL.selectbypkb(mapkb);
         }
-        public int autogenerate_mathuoc()
+        public  string autogenerate_mathuoc()
         {
             return thDAL.autogenerate_mathuoc();
         }
@@ -56,7 +56,7 @@ namespace QLPKBUS
         }
         public bool truSoLuong(string maThuoc, int soLuong)
         {
-            return thDAL.TruSoLuongThuoc(maThuoc, soLuong);
+            return thDAL.truSoLuong(maThuoc, soLuong);
         }
     }
 }

@@ -47,7 +47,7 @@ namespace QLPKDAL
                             {
                                 cachdungDTO cd = new cachdungDTO(); 
                                 cd.TenCachDung = reader["tenCachDung"].ToString(); 
-                                cd.MaCachDung = int.Parse(reader["maCachDung"].ToString()); 
+                                cd.MaCachDung = (reader["maCachDung"].ToString()); 
                                 lscd.Add(cd); // Thêm vào danh sách
                             }
                         }

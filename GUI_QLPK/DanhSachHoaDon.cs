@@ -42,20 +42,25 @@ namespace GUI_QLPK
             List<chandoanDTO> listcd = cdBus.select();
             List<hoadonDTO> listhd = hdBus.select();
             List<taiKhoanDTO> listTK = tkBus.select();
-            this.loadData_Vao_GridView(listBenhNhan, listBenh, listpkb, listcd, listhd, listTK);
+            this.loadData_Vao_GridView(listBenhNhan, listpkb, listhd, listTK);
         }
-        private void loadData_Vao_GridView(List<BenhNhanDTO> listBenhNhan, List<benhDTO> listBenh, List<phieukhambenhDTO> listpkb, List<chandoanDTO> listcd, List<hoadonDTO> listhd, List<taiKhoanDTO> listTK)
+        private void loadData_Vao_GridView(
+              List<BenhNhanDTO> listBenhNhan,
+              List<phieukhambenhDTO> listpkb,
+              List<hoadonDTO> listhd,
+              List<taiKhoanDTO> listTK)
         {
-
-            if (listBenhNhan == null || listpkb == null || listBenh == null || listcd == null)
+            if (listBenhNhan == null || listpkb == null || listhd == null || listTK == null)
             {
-                System.Windows.Forms.MessageBox.Show("Có lỗi khi lấy thông tin từ DB", "Result", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+                MessageBox.Show("Có lỗi khi lấy dữ liệu từ DB",
+                                "Result",
+                                MessageBoxButtons.OKCancel,
+                                MessageBoxIcon.Error);
                 return;
-
             }
-            // Sắp xếp mã phiếu khám tăng dần
-            listpkb.Sort((x, y) => int.Parse(x.MaPKB).CompareTo(int.Parse(y.MaPKB))); //so sánh pkb x voi y dung bieu thuc landa
+
             DataTable table = new DataTable();
+
             table.Columns.Add("Số thứ tự", typeof(int));
             table.Columns.Add("Tên bệnh nhân", typeof(string));
             table.Columns.Add("Ngày khám", typeof(string));
@@ -65,57 +70,51 @@ namespace GUI_QLPK
             table.Columns.Add("Tổng tiền", typeof(string));
             table.Columns.Add("Ngày lập", typeof(string));
             table.Columns.Add("Nhân viên thu ngân", typeof(string));
+
+            var result = (
+                from pkb in listpkb
+                join bn in listBenhNhan
+                    on pkb.MaBenhNhan equals bn.MaBN
+                join hd in listhd
+                    on pkb.MaPKB equals hd.MaPKB
+                join tk in listTK
+                    on hd.MaNVTN equals tk.MaTK
+                orderby pkb.MaPKB
+                select new
+                {
+                    TenBenhNhan = bn.TenBN,
+                    NgayKham = pkb.NgayKham,
+                    NgayTaiKham = pkb.NgayTaiKham,
+                    TienKham = hd.TienKham,
+                    TienThuoc = hd.TienThuoc,
+                    TongTien = hd.TongTien,
+                    NgayLap = hd.NgayLapHoaDon,
+                    ThuNgan = tk.Name
+                }
+            ).ToList();
+
             int stt = 1;
 
-            foreach (phieukhambenhDTO pkb in listpkb)
+            foreach (var item in result)
             {
-                foreach (BenhNhanDTO bn in listBenhNhan)
-                {
-                    if (bn.MaBN == pkb.MaBenhNhan)
-                    {
-                        foreach (chandoanDTO cd in listcd)
-                        {
-                            if (cd.MaPkb == pkb.MaPKB)
-                            {
-                                foreach (hoadonDTO hd in listhd)
-                                {
-                                    if (hd.MaPKB == pkb.MaPKB)
-                                    {
-                                        DataRow row = table.NewRow();
-                                        row["Số thứ tự"] = stt;
-                                        row["Tên bệnh nhân"] = bn.TenBN;
-                                        row["Ngày khám"] = pkb.NgayKham.ToString("dd/MM/yyyy");
+                DataRow row = table.NewRow();
 
-                                        if (pkb.NgayTaiKham != null)
-                                        {
-                                            row["Ngày tái khám"] = pkb.NgayTaiKham.ToString("dd/MM/yyyy");
-                                        }
-                                        else
-                                        {
-                                            row["Ngày tái khám"] = "Chưa có";
-                                        }
+                row["Số thứ tự"] = stt++;
+                row["Tên bệnh nhân"] = item.TenBenhNhan;
+                row["Ngày khám"] = item.NgayKham.ToString("dd/MM/yyyy");
 
-                                        row["Tiền khám"] = hd.TienKham.ToString("N0", culture);
-                                        row["Tiền thuốc"] = hd.TienThuoc.ToString("N0", culture);
-                                        row["Tổng tiền"] = hd.TongTien.ToString("N0", culture);
-                                        row["Ngày lập"] = hd.NgayLapHoaDon.ToString("dd/MM/yyyy");
+                if (item.NgayTaiKham != null)
+                    row["Ngày tái khám"] = Convert.ToDateTime(item.NgayTaiKham).ToString("dd/MM/yyyy");
+                else
+                    row["Ngày tái khám"] = "Chưa có";
 
-                                        foreach (taiKhoanDTO tk in listTK)
-                                        {
-                                            if (tk.MaTK == hd.MaNVTN)
-                                            {
-                                                row["Nhân viên thu ngân"] = tk.Name;
-                                            }
-                                        }
+                row["Tiền khám"] = item.TienKham.ToString("N0", culture);
+                row["Tiền thuốc"] = item.TienThuoc.ToString("N0", culture);
+                row["Tổng tiền"] = item.TongTien.ToString("N0", culture);
+                row["Ngày lập"] = item.NgayLap.ToString("dd/MM/yyyy");
+                row["Nhân viên thu ngân"] = item.ThuNgan;
 
-                                        table.Rows.Add(row);
-                                        stt += 1;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                table.Rows.Add(row);
             }
 
             gird.DataSource = table.DefaultView;

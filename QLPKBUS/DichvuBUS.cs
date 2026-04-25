@@ -20,7 +20,7 @@ namespace QLPKBUS
             bool re = dvDAL.them(qd);
             return re;
         }
-        public bool sua(dichvuDTO dv, int maDichVuOld)
+        public bool sua(dichvuDTO dv, string maDichVuOld)
         {
             bool re = dvDAL.sua(dv, maDichVuOld);
             return re;
@@ -38,7 +38,7 @@ namespace QLPKBUS
         {
             return dvDAL.selectByKeyWord(sKeyword);
         }
-        public int autogenerate_madv()
+        public string autogenerate_madv()
         {
             return dvDAL.autogenerate_madv();
         }

@@ -50,7 +50,7 @@ namespace QLPKDAL
             }
             return true;
         }
-        public bool sua(dichvuDTO dv, int maDichVuOld)
+        public bool sua(dichvuDTO dv, string maDichVuOld)
         {
             string query = string.Empty;
             query += "update [DichVu]";
@@ -143,7 +143,7 @@ namespace QLPKDAL
                             while (reader.Read())
                             {
                                 dichvuDTO dv = new dichvuDTO();
-                                dv.MaDichVu = int.Parse(reader["maDichVu"].ToString());
+                                dv.MaDichVu = (reader["maDichVu"].ToString());
                                 dv.TenDichVu = reader["tenDichVu"].ToString();
                                 dv.TienDichVu = float.Parse(reader["tienDichVu"].ToString());
 
@@ -193,7 +193,7 @@ namespace QLPKDAL
                             while (reader.Read())
                             {
                                 dichvuDTO dv = new dichvuDTO();
-                                dv.MaDichVu = int.Parse(reader["maDichVu"].ToString());
+                                dv.MaDichVu = (reader["maDichVu"].ToString());
                                 dv.TenDichVu = reader["tenDichVu"].ToString();
                                 dv.TienDichVu = float.Parse(reader["tienDichVu"].ToString());
 
@@ -215,7 +215,7 @@ namespace QLPKDAL
             return lsDichVu;
         }
 
-        public int autogenerate_madv()
+        public string autogenerate_madv()
         {
             int mathuoc = 1;
             string query = string.Empty;
@@ -239,7 +239,7 @@ namespace QLPKDAL
                         {
                             while (reader.Read())
                             {
-                                mathuoc = int.Parse(reader["MM"].ToString()) + 1;
+                                mathuoc =int.Parse(reader["MM"].ToString()) + 1;
                             }
                         }
 
@@ -252,7 +252,7 @@ namespace QLPKDAL
                     }
                 }
             }
-            return mathuoc;
+            return mathuoc.ToString();
 
         }
     }

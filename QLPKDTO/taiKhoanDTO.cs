@@ -11,14 +11,14 @@ namespace QLPKDTO
         private string name;
         private string username;
         private string password;
-        private int maLoai;
-        private int maTK;
+        private string maLoai;
+        private string maTK;
 
         public string Name { get => name; set => name = value; }
         public string Password { get => password; set => password = value; }
         public string Username { get => username; set => username = value; }
-        public int MaLoai { get => maLoai; set => maLoai = value; }
-        public int MaTK { get => maTK; set => maTK = value; }
+        public string MaLoai { get => maLoai; set => maLoai = value; }
+        public string MaTK { get => maTK; set => maTK = value; }
 
     }
 }

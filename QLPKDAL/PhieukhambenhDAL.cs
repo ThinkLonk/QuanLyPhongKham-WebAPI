@@ -36,11 +36,11 @@ namespace QLPKDAL
                         while (reader.Read())
                         {
                             phieukhambenhDTO pkb = new phieukhambenhDTO();
-                            pkb.MaPKB = reader["maPKB"].ToString();
+                            pkb.MaPKB = (reader["maPKB"].ToString());
                             pkb.TrieuChung = reader["TrieuChung"].ToString();
                             pkb.NgayKham = Convert.ToDateTime(reader["NgayKham"]);
                             pkb.MaBenhNhan = reader["maBenhNhan"].ToString();
-                            pkb.MBS = int.Parse(reader["maTaiKhoan"].ToString());
+                            pkb.MBS = (reader["maTaiKhoan"].ToString());
                             pkb.NgayTaiKham = Convert.ToDateTime(reader["NgayTaiKham"]);
                             pkb.DaGuiMail = Convert.ToBoolean(reader["DaGuiMail"]);
                             lspkb.Add(pkb);
@@ -74,7 +74,7 @@ namespace QLPKDAL
                         while (reader.Read())
                         {
                             phieukhambenhDTO pkb = new phieukhambenhDTO();
-                            pkb.MaPKB = reader["maPKB"].ToString();
+                            pkb.MaPKB = (reader["maPKB"].ToString());
                             pkb.TrieuChung = reader["TrieuChung"].ToString();
                             pkb.NgayKham = Convert.ToDateTime(reader["NgayKham"]);
                             pkb.MaBenhNhan = reader["maBenhNhan"].ToString();
@@ -91,10 +91,10 @@ namespace QLPKDAL
             return lspkb;
         }
         // hàm này dùng để tự động sinh mã phiếu khám bệnh mới
-        public int AutoGenerateMaPKB()
+        public string AutoGenerateMaPKB()
         {
             int maPKB = 1;
-            string query = "SELECT MAX(maPKB) AS MaxMaPKB FROM [PhieuKhamBenh]"; //lấy mã max hiện tại trả về max
+            string query = "SELECT MAX(CAST(maPKB AS INT)) AS MaxMaPKB FROM [PhieuKhamBenh]"; //lấy mã max hiện tại trả về max
 
             using (SqlConnection con = new SqlConnection(ConnectionString))
             {
@@ -116,7 +116,7 @@ namespace QLPKDAL
                     }
                 }
             }
-            return maPKB;
+            return maPKB.ToString();
         }
         public bool them(phieukhambenhDTO pkb)
         {
@@ -187,11 +187,11 @@ namespace QLPKDAL
                 while (reader.Read())
                 {
                     phieukhambenhDTO pkb = new phieukhambenhDTO();
-                    pkb.MaPKB = reader["maPKB"].ToString();
+                    pkb.MaPKB = (reader["maPKB"].ToString());
                     pkb.TrieuChung = reader["TrieuChung"].ToString();
                     pkb.NgayKham = Convert.ToDateTime(reader["NgayKham"]);
                     pkb.MaBenhNhan = reader["maBenhNhan"].ToString();
-                    pkb.MBS = int.Parse(reader["maTaiKhoan"].ToString());
+                    pkb.MBS = (reader["maTaiKhoan"].ToString());
                     pkb.NgayTaiKham = Convert.ToDateTime(reader["NgayTaiKham"]);
                     pkb.DaGuiMail = Convert.ToBoolean(reader["DaGuiMail"]);
                     ds.Add(pkb);

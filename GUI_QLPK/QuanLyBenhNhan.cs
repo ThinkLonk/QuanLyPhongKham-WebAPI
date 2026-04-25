@@ -19,8 +19,8 @@ namespace GUI_QLPK
         BenhNhanDTO bn = new BenhNhanDTO();
         PhieukhambenhBUS pkbBUS = new PhieukhambenhBUS();
         private string temp_ma; //lưu mabn
-        private int maloai;
-        public QuanLyBenhNhan( int maloaiTk)
+        private string maloai;
+        public QuanLyBenhNhan( string maloaiTk)
         {
             InitializeComponent();
             maloai = maloaiTk;
@@ -30,7 +30,7 @@ namespace GUI_QLPK
         }
         private void kiemtraquyen()
         {
-            if (maloai == 3) 
+            if (maloai == "3") // Nếu là nhân viên lễ tân   
             {
                 xoa.Enabled = false;               
             }
@@ -53,6 +53,7 @@ namespace GUI_QLPK
         }
         private void loadData_Vao_GridView(List<BenhNhanDTO> listBenhNhan)
         {
+            BindingSource bs = new BindingSource();
 
             if (listBenhNhan == null)
             {
@@ -76,7 +77,7 @@ namespace GUI_QLPK
                 DataRow row = table.NewRow();
                 row["Mã bệnh nhân"] = int.Parse(bn.MaBN.ToString());
                 row["Tên bệnh nhân"] = bn.TenBN;
-                row["Ngày sinh"] = DateTime.Parse(bn.NgsinhBN.ToString()).ToString("dd/MM/yyyy");
+                row["Ngày sinh"] = DateTime.Parse(bn.NgsinhBN.ToString()).ToString("yyyy-MM-dd");
                 row["Địa chỉ"] = bn.DiachiBN;
                 row["Giới tính"] = bn.GtBN;
                 row["CCCD"] = bn.CanCuocCongDan;
@@ -85,6 +86,7 @@ namespace GUI_QLPK
                 table.Rows.Add(row);
             }
             gird.DataSource = table.DefaultView;
+            bs.ResetBindings(false);
         }
 
         private void TimKiem_Click(object sender, EventArgs e)
@@ -108,13 +110,21 @@ namespace GUI_QLPK
             if (e.RowIndex >= 0 && e.RowIndex < gird.Rows.Count)
             {
                 DataGridViewRow row = gird.Rows[e.RowIndex];
-                hoten.Text = row.Cells[1].Value.ToString();
-                ngaysinh.Text = row.Cells[2].Value.ToString();
-                diachi.Text = row.Cells[3].Value.ToString();
-                gioitinh.Text = row.Cells[4].Value.ToString();
-                macccd.Text = row.Cells[5].Value.ToString();
-                email.Text = row.Cells[6].Value.ToString();
-                temp_ma = row.Cells[0].Value.ToString();
+
+                hoten.Text = row.Cells[1].Value?.ToString();
+
+                // Xử lý riêng cho ngày sinh
+                if (row.Cells[2].Value != null && row.Cells[2].Value != DBNull.Value)
+                {
+                    DateTime dt = Convert.ToDateTime(row.Cells[2].Value);
+                    ngaysinh.Text = dt.ToString("yyyy-MM-dd"); // Định dạng ngày/tháng/năm
+                }
+
+                diachi.Text = row.Cells[3].Value?.ToString();
+                gioitinh.Text = row.Cells[4].Value?.ToString();
+                macccd.Text = row.Cells[5].Value?.ToString();
+                email.Text = row.Cells[6].Value?.ToString();
+                temp_ma = row.Cells[0].Value?.ToString();
             }
         }
 
@@ -165,7 +175,10 @@ namespace GUI_QLPK
         private void Them_Click(object sender, EventArgs e)
         {
             ThemBenhNhanMoi tbnm = new ThemBenhNhanMoi();
-            tbnm.Show();
+            if (tbnm.ShowDialog() == DialogResult.OK)
+            {
+                load_data(); // chỉ reload sau khi thêm thành công
+            }
         }
 
         private void HoanTac_Click(object sender, EventArgs e)

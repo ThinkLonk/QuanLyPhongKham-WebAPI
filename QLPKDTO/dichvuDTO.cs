@@ -8,11 +8,11 @@ namespace QLPKDTO
 {
     public class dichvuDTO
     {
-        private int maDichVu;
+        private string maDichVu;
         private string tenDichVu;
         private float tienDichVu;
 
-        public int MaDichVu { get => maDichVu; set => maDichVu = value; }
+        public string MaDichVu { get => maDichVu; set => maDichVu = value; }
         public string TenDichVu { get => tenDichVu; set => tenDichVu = value; }
         public float TienDichVu { get => tienDichVu; set => tienDichVu = value; }
     }

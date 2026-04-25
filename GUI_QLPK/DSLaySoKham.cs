@@ -26,7 +26,7 @@ namespace GUI_QLPK
         public DSLaySoKham()
         {
             InitializeComponent();
-            nhapngay.Text = DateTime.Now.ToString("dd/MM/yyyy");
+            nhapngay.Text = DateTime.Now.ToString("yyyy-MM-dd");
             load_data();    
             gird.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
@@ -39,9 +39,9 @@ namespace GUI_QLPK
             List<lichHenDTO> listlh = lhBus.select();
             List<taiKhoanDTO> listTK = tkBus.select();
             List<loaiTaiKhoanDTO> listLoaiTk = loaitkBUS.select();
-            this.loadData_Vao_GridView(listBenhNhan, listlh, listTK, listLoaiTk);
+            loadData_Vao_GridView(listBenhNhan, listlh, listTK, listLoaiTk);
         }
-        private void loadData_Vao_GridView(List<BenhNhanDTO> listBenhNhan, List<lichHenDTO> listlh, List<taiKhoanDTO> listTK, List<loaiTaiKhoanDTO> listLoaiTk)
+        public void loadData_Vao_GridView(List<BenhNhanDTO> listBenhNhan, List<lichHenDTO> listlh, List<taiKhoanDTO> listTK, List<loaiTaiKhoanDTO> listLoaiTk)
         {
             if (listBenhNhan == null || listlh == null)
             {
@@ -59,38 +59,31 @@ namespace GUI_QLPK
             table.Columns.Add("Trạng thái", typeof(string));
             table.Columns.Add("Nhân viên đăng ký", typeof(string));
 
-            if (listBenhNhan != null && listlh != null && listTK != null && listLoaiTk != null)
+            if (listBenhNhan != null && listlh != null && listTK != null)
             {
-                foreach (BenhNhanDTO bn in listBenhNhan)
+                
+                var query = from lh in listlh
+                            join bn in listBenhNhan on lh.MaBenhNhan equals bn.MaBN
+                            select new { lh, bn };
+
+                foreach (var item in query)
                 {
-                    foreach (lichHenDTO lh in listlh)
-                    {
-                        if (bn.MaBN == lh.MaBenhNhan)
-                        {
-                            string bacsi = ""; //biến để lưu tên bác sĩ
-                            string trangthai = "";
-                            DataRow row =  table.NewRow();
-                            row["Số thứ tự"] = stt++;
-                            row["Mã bệnh nhân"] = bn.MaBN;
-                            row["Tên bệnh nhân"] = bn.TenBN;
-                            row["Trạng thái"] = lh.TrangThai;
-                            row["Ngày khám"] = lh.NgayHen.ToString("dd/MM/yyyy");
-                            row["Giờ khám"] = lh.NgayHen.ToString("HH:mm");
-                            foreach (taiKhoanDTO tk in listTK)
-                            {
-                                if (tk.MaTK.ToString() == lh.MaTaiKhoan)
-                                {
-                                    row["Bác sĩ khám"] = tk.Name;
- 
-                                }
-                                if (tk.MaTK == lh.MaDieuDuong)
-                                {
-                                    row["Nhân viên đăng ký"] = tk.Name;
-                                }
-                            }
-                            table.Rows.Add(row);
-                        }
-                    }
+                    DataRow row = table.NewRow();
+                    row["Số thứ tự"] = stt++;
+                    row["Mã bệnh nhân"] = item.bn.MaBN;
+                    row["Tên bệnh nhân"] = item.bn.TenBN;
+                    row["Trạng thái"] = item.lh.TrangThai;
+                    row["Ngày khám"] = item.lh.NgayHen.ToString("yyyy-MM-dd");
+                    row["Giờ khám"] = item.lh.NgayHen.ToString("HH:mm");
+
+                    // Tìm bác sĩ và điều dưỡng trong listTK (Dùng FirstOrDefault để tránh lặp)
+                    var bacSi = listTK.FirstOrDefault(t => t.MaTK.ToString() == item.lh.MaTaiKhoan);
+                    var dieuDuong = listTK.FirstOrDefault(t => t.MaTK == item.lh.MaDieuDuong);
+
+                    row["Bác sĩ khám"] = bacSi?.Name ?? "Chưa có";
+                    row["Nhân viên đăng ký"] = dieuDuong?.Name ?? "Chưa có";
+
+                    table.Rows.Add(row);
                 }
             }
             gird.DataSource = table.DefaultView;

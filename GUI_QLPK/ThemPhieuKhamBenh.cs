@@ -1,4 +1,5 @@
-﻿using QLPKDTO;
+﻿
+using QLPKDTO;
 using QLPKBUS;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace GUI_QLPK
 {
     public partial class ThemPhieuKhamBenh : Form
     {
-        public int maBS;
+        public string   maBS;
         BenhNhanBUS bnBUS = new BenhNhanBUS();
         BenhBUS beBus = new BenhBUS();
         ChandoanBUS cdBUS = new ChandoanBUS();
@@ -25,7 +26,7 @@ namespace GUI_QLPK
 
         private int stt;
 
-        public ThemPhieuKhamBenh(int mabs)
+        public ThemPhieuKhamBenh(string mabs)
         {
             maBS = mabs;
             InitializeComponent();
@@ -42,8 +43,19 @@ namespace GUI_QLPK
             mabenhnhan.Text = "";
             hoten.Text = "";
             trieuchung.Text = "";
-            benh.Text = "";
-            ngaytaikham.Text = DateTime.Now.AddDays(7).ToString("dd/MM/yyyy"); // mặc định ngày tái khám là 7 ngày sau
+            ngaytaikham.Value = DateTime.Now.AddDays(7);
+
+        }
+        private void load_combobox_benh()
+        {
+            checkedListBoxBenh.Items.Clear();
+
+            List<benhDTO> listBenh = beBus.select();
+
+            foreach (benhDTO be in listBenh)
+            {
+                checkedListBoxBenh.Items.Add(be.TenBenh);
+            }
         }
         // load tên bệnh nhân theo mã bệnh nhân
         private void load_ten(List<BenhNhanDTO> listBenhNhan, string mabn)
@@ -62,15 +74,8 @@ namespace GUI_QLPK
                 }
             }
         }
-        // load dữ liệu bệnh vào combobox
-        public void load_combobox_benh()
-        {
-            beBus = new BenhBUS();
-            List<benhDTO> listBenh = beBus.select();
-            this.loadData_Vao_comboboxbe(listBenh);
 
-        }
-        // load dữ liệu bệnh vào combobox
+
         private void loadData_Vao_comboboxbe(List<benhDTO> listBenh)
         {
 
@@ -82,7 +87,14 @@ namespace GUI_QLPK
             }
             foreach (benhDTO be in listBenh)
             {
-                benh.Items.Add(be.TenBenh.ToString());
+                checkedListBoxBenh.Items.Clear();
+
+
+
+                foreach (benhDTO benh in listBenh)
+                {
+                    checkedListBoxBenh.Items.Add(benh.TenBenh);
+                }
             }
         }
         private void btnLapphieu_Click(object sender, EventArgs e)
@@ -92,42 +104,67 @@ namespace GUI_QLPK
                 System.Windows.Forms.MessageBox.Show("Vui lòng nhập đầy đủ thông tin phiếu khám bệnh");
             }
             //kiểm tra ràng buộc
-            DateTime ngay = ngaytaikham.Value.Date;
-            DateTime ngayKham = DateTime.Parse(ngaykham.Text);
-            if (ngay < DateTime.Now && ngay < ngayKham)
+
+            DateTime ngayTaiKham = ngaytaikham.Value.Date;
+
+            if (ngayTaiKham < DateTime.Today)
             {
-                MessageBox.Show("Bạn đã chọn ngày trong quá khứ. Vui lòng chọn lại!",
-                                "Ngày hẹn không hợp lệ",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Warning);
+                MessageBox.Show("Ngày tái khám không hợp lệ");
                 return;
             }
             phieukhambenhDTO pkb = new phieukhambenhDTO();
             chandoanDTO cd = new chandoanDTO();
 
             List<benhDTO> listBenh = beBus.select();
-            cd.MaPkb = maPKB.Text;
-            foreach (benhDTO be in listBenh)
-            {
-                if (benh.Text == be.TenBenh)
-                {
-                    cd.MaBenh = be.MaBenh;
-                }
-            }
-            pkb.MaPKB = maPKB.Text;
+            pkb.MaPKB = (maPKB.Text);
             pkb.NgayKham = DateTime.UtcNow.Date;
             pkb.TrieuChung = trieuchung.Text;
             pkb.MaBenhNhan = mabenhnhan.Text;
             pkb.NgayTaiKham = ngaytaikham.Value.Date;
             pkb.MBS = maBS;
-            bool kq2 = pkbBUS.them(pkb); //lưu phiếu
-            bool kq1 = cdBUS.them(cd); //lưu chuẩn đoán
-            if (kq2 == true && kq1 == true)
+            bool ADDPKB = pkbBUS.them(pkb); //lưu phiếu
+    
+           
+            bool loiChanDoan = false;
+            bool coBenhDuocChon = false;
+            foreach (var item in checkedListBoxBenh.CheckedItems)
+            {
+                string tenBenh = item.ToString();
+
+                var benhTimDuoc = listBenh
+                    .FirstOrDefault(x => x.TenBenh == tenBenh);
+
+                if (benhTimDuoc != null)
+                {
+                    coBenhDuocChon = true;
+
+
+                    cd.MaPkb = (maPKB.Text);
+                    cd.MaBenh = benhTimDuoc.MaBenh;
+                    cd.TenChuanDoan = benhTimDuoc.TenBenh;
+                    cd.TrieuChung = trieuchung.Text.Trim();
+
+                    bool kqCD = cdBUS.them(cd);
+
+                    if (!kqCD)
+                    {
+                        loiChanDoan = true;
+                        break;
+                    }
+                }
+            }
+
+            
+
+
+            if (!loiChanDoan == true && ADDPKB == true)
             {
                 // Cập nhật trạng thái lịch hẹn thành 'Đã khám'
-                string maBN = mabenhnhan.Text;  
-                DateTime ngayHen = DateTime.ParseExact(ngaykham.Text, "dd/MM/yyyy HH:mm", null);
-                lhBUS.CapNhatTrangThai(maBN, ngayHen, "Đã khám");
+                string maBN = (mabenhnhan.Text);
+
+
+                lhBUS.CapNhatTrangThai(maBN, "Đã khám");
+
 
                 System.Windows.Forms.MessageBox.Show("Lập phiếu thành công", "Result");
                 load_data();
@@ -138,7 +175,7 @@ namespace GUI_QLPK
         public void Load_Gird()
         {
             int stt = 1;
-           
+
             List<BenhNhanDTO> listBenhNhan = bnBUS.select(); //lấy ds bệnh nhân
             List<lichHenDTO> listLichHen = lhBUS.select(); //lấy ds lịch hẹn
             string mabs = maBS.ToString(); //mabn hiện tại
@@ -147,7 +184,7 @@ namespace GUI_QLPK
             foreach (lichHenDTO lh in listLichHen)
             {
                 //hiện trong ngày của bác sĩ 
-                if(lh.MaTaiKhoan == mabs && lh.NgayHen.Date >= DateTime.Today && lh.TrangThai != "Đã khám")
+                if (lh.MaTaiKhoan == mabs && lh.NgayHen.Date >= DateTime.Today && lh.TrangThai != "Đã khám")
                 {
                     lhbacsi.Add(lh);
                 }
@@ -168,9 +205,9 @@ namespace GUI_QLPK
 
             foreach (BenhNhanDTO bn in listBenhNhan)
             {
-                foreach(lichHenDTO lh in lhbacsi)
+                foreach (lichHenDTO lh in lhbacsi)
                 {
-                    if(bn.MaBN.ToString() == lh.MaBenhNhan)
+                    if (bn.MaBN.ToString() == lh.MaBenhNhan)
                     {
                         DataRow row = table.NewRow();
                         row["Số thứ tự"] = stt;
@@ -198,7 +235,7 @@ namespace GUI_QLPK
         private void gird_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             //Kiểm tra dòng hợp lệ
-            if(e.RowIndex >= 0 && e.RowIndex < gird.Rows.Count)
+            if (e.RowIndex >= 0 && e.RowIndex < gird.Rows.Count)
             {
                 //lấy dòng đang click
                 DataGridViewRow row = gird.Rows[e.RowIndex];
@@ -206,7 +243,7 @@ namespace GUI_QLPK
                 mabenhnhan.Text = row.Cells[1].Value.ToString();
                 string ngay = row.Cells[5].Value.ToString();    // "dd/MM/yyyy"
                 string gio = row.Cells[6].Value.ToString();     // "HH:mm"
-                ngaykham.Text = ngay+" " + gio;
+                ngaykham.Text = ngay + " " + gio;
             }
         }
 

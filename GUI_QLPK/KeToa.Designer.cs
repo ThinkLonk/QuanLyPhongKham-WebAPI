@@ -45,10 +45,9 @@
             this.mapkb = new Guna.UI2.WinForms.Guna2ComboBox();
             this.soLuong = new Guna.UI2.WinForms.Guna2TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.AddThuoc_SoLuong = new Guna.UI2.WinForms.Guna2Button();
-            this.XoaThuoc = new Guna.UI2.WinForms.Guna2Button();
             this.gird = new Guna.UI2.WinForms.Guna2DataGridView();
             this.KeThuoc = new Guna.UI2.WinForms.Guna2Button();
+            this.guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
             this.Panel_Top.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gird)).BeginInit();
             this.SuspendLayout();
@@ -73,7 +72,7 @@
             this.txt_ketoa.Font = new System.Drawing.Font("Times New Roman", 10.86792F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txt_ketoa.Location = new System.Drawing.Point(3, 9);
             this.txt_ketoa.Name = "txt_ketoa";
-            this.txt_ketoa.Size = new System.Drawing.Size(103, 19);
+            this.txt_ketoa.Size = new System.Drawing.Size(101, 17);
             this.txt_ketoa.TabIndex = 4;
             this.txt_ketoa.Text = "Kê Toa Thuốc";
             // 
@@ -83,7 +82,7 @@
             this.label_Val.Font = new System.Drawing.Font("Times New Roman", 12.22642F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_Val.Location = new System.Drawing.Point(36, 12);
             this.label_Val.Name = "label_Val";
-            this.label_Val.Size = new System.Drawing.Size(0, 22);
+            this.label_Val.Size = new System.Drawing.Size(0, 19);
             this.label_Val.TabIndex = 3;
             // 
             // guna2ControlBox3
@@ -123,6 +122,7 @@
             this.maToa.Location = new System.Drawing.Point(105, 46);
             this.maToa.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.maToa.Name = "maToa";
+            this.maToa.PasswordChar = '\0';
             this.maToa.PlaceholderText = "";
             this.maToa.SelectedText = "";
             this.maToa.Size = new System.Drawing.Size(175, 40);
@@ -135,7 +135,7 @@
             this.label2.Font = new System.Drawing.Font("Times New Roman", 12.22642F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(32, 99);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(63, 21);
+            this.label2.Size = new System.Drawing.Size(56, 19);
             this.label2.TabIndex = 15;
             this.label2.Text = "Thuốc:";
             // 
@@ -145,7 +145,7 @@
             this.label1.Font = new System.Drawing.Font("Times New Roman", 12.22642F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(32, 55);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(66, 21);
+            this.label1.Size = new System.Drawing.Size(61, 19);
             this.label1.TabIndex = 14;
             this.label1.Text = "Mã toa:";
             // 
@@ -170,7 +170,7 @@
             this.label3.Font = new System.Drawing.Font("Times New Roman", 12.22642F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(341, 51);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(165, 21);
+            this.label3.Size = new System.Drawing.Size(148, 19);
             this.label3.TabIndex = 18;
             this.label3.Text = "Mã phiếu khám bệnh";
             // 
@@ -201,9 +201,10 @@
             this.soLuong.Font = new System.Drawing.Font("Times New Roman", 12.22642F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.soLuong.ForeColor = System.Drawing.Color.Black;
             this.soLuong.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.soLuong.Location = new System.Drawing.Point(456, 89);
+            this.soLuong.Location = new System.Drawing.Point(512, 93);
             this.soLuong.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.soLuong.Name = "soLuong";
+            this.soLuong.PasswordChar = '\0';
             this.soLuong.PlaceholderText = "";
             this.soLuong.SelectedText = "";
             this.soLuong.Size = new System.Drawing.Size(98, 40);
@@ -215,51 +216,9 @@
             this.label4.Font = new System.Drawing.Font("Times New Roman", 12.22642F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(342, 99);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(82, 21);
+            this.label4.Size = new System.Drawing.Size(75, 19);
             this.label4.TabIndex = 19;
             this.label4.Text = "Số lượng:";
-            // 
-            // AddThuoc_SoLuong
-            // 
-            this.AddThuoc_SoLuong.BackColor = System.Drawing.Color.White;
-            this.AddThuoc_SoLuong.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(83)))), ((int)(((byte)(251)))));
-            this.AddThuoc_SoLuong.BorderThickness = 1;
-            this.AddThuoc_SoLuong.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.AddThuoc_SoLuong.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.AddThuoc_SoLuong.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.AddThuoc_SoLuong.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.AddThuoc_SoLuong.FillColor = System.Drawing.Color.Transparent;
-            this.AddThuoc_SoLuong.Font = new System.Drawing.Font("Times New Roman", 14.26415F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddThuoc_SoLuong.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(83)))), ((int)(((byte)(251)))));
-            this.AddThuoc_SoLuong.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(83)))), ((int)(((byte)(251)))));
-            this.AddThuoc_SoLuong.HoverState.ForeColor = System.Drawing.Color.White;
-            this.AddThuoc_SoLuong.Location = new System.Drawing.Point(587, 89);
-            this.AddThuoc_SoLuong.Name = "AddThuoc_SoLuong";
-            this.AddThuoc_SoLuong.Size = new System.Drawing.Size(38, 36);
-            this.AddThuoc_SoLuong.TabIndex = 21;
-            this.AddThuoc_SoLuong.Text = "+";
-            this.AddThuoc_SoLuong.Click += new System.EventHandler(this.AddThuoc_SoLuong_Click);
-            // 
-            // XoaThuoc
-            // 
-            this.XoaThuoc.BackColor = System.Drawing.Color.White;
-            this.XoaThuoc.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(83)))), ((int)(((byte)(251)))));
-            this.XoaThuoc.BorderThickness = 1;
-            this.XoaThuoc.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.XoaThuoc.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.XoaThuoc.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.XoaThuoc.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.XoaThuoc.FillColor = System.Drawing.Color.Transparent;
-            this.XoaThuoc.Font = new System.Drawing.Font("Times New Roman", 14.26415F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.XoaThuoc.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(83)))), ((int)(((byte)(251)))));
-            this.XoaThuoc.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(83)))), ((int)(((byte)(251)))));
-            this.XoaThuoc.HoverState.ForeColor = System.Drawing.Color.White;
-            this.XoaThuoc.Location = new System.Drawing.Point(649, 89);
-            this.XoaThuoc.Name = "XoaThuoc";
-            this.XoaThuoc.Size = new System.Drawing.Size(38, 36);
-            this.XoaThuoc.TabIndex = 22;
-            this.XoaThuoc.Text = "-";
-            this.XoaThuoc.Click += new System.EventHandler(this.XoaThuoc_Click);
             // 
             // gird
             // 
@@ -314,7 +273,6 @@
             this.gird.ThemeStyle.RowsStyle.Height = 28;
             this.gird.ThemeStyle.RowsStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
             this.gird.ThemeStyle.RowsStyle.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            this.gird.SelectionChanged += new System.EventHandler(this.gird_SelectionChanged);
             // 
             // KeThuoc
             // 
@@ -330,12 +288,33 @@
             this.KeThuoc.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(83)))), ((int)(((byte)(251)))));
             this.KeThuoc.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(83)))), ((int)(((byte)(251)))));
             this.KeThuoc.HoverState.ForeColor = System.Drawing.Color.White;
-            this.KeThuoc.Location = new System.Drawing.Point(301, 149);
+            this.KeThuoc.Location = new System.Drawing.Point(414, 157);
             this.KeThuoc.Name = "KeThuoc";
             this.KeThuoc.Size = new System.Drawing.Size(123, 36);
             this.KeThuoc.TabIndex = 24;
-            this.KeThuoc.Text = "Kê thuốc";
+            this.KeThuoc.Text = "Kê toa";
             this.KeThuoc.Click += new System.EventHandler(this.KeThuoc_Click);
+            // 
+            // guna2Button1
+            // 
+            this.guna2Button1.BackColor = System.Drawing.Color.White;
+            this.guna2Button1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(83)))), ((int)(((byte)(251)))));
+            this.guna2Button1.BorderThickness = 1;
+            this.guna2Button1.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.guna2Button1.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.guna2Button1.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.guna2Button1.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.guna2Button1.FillColor = System.Drawing.Color.Transparent;
+            this.guna2Button1.Font = new System.Drawing.Font("Times New Roman", 12.22642F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.guna2Button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(83)))), ((int)(((byte)(251)))));
+            this.guna2Button1.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(83)))), ((int)(((byte)(251)))));
+            this.guna2Button1.HoverState.ForeColor = System.Drawing.Color.White;
+            this.guna2Button1.Location = new System.Drawing.Point(157, 157);
+            this.guna2Button1.Name = "guna2Button1";
+            this.guna2Button1.Size = new System.Drawing.Size(123, 36);
+            this.guna2Button1.TabIndex = 25;
+            this.guna2Button1.Text = "Them Thuoc";
+            this.guna2Button1.Click += new System.EventHandler(this.guna2Button1_Click);
             // 
             // KeToa
             // 
@@ -343,10 +322,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightBlue;
             this.ClientSize = new System.Drawing.Size(722, 435);
+            this.Controls.Add(this.guna2Button1);
             this.Controls.Add(this.KeThuoc);
             this.Controls.Add(this.gird);
-            this.Controls.Add(this.XoaThuoc);
-            this.Controls.Add(this.AddThuoc_SoLuong);
             this.Controls.Add(this.soLuong);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -383,10 +361,9 @@
         private Guna.UI2.WinForms.Guna2ComboBox mapkb;
         private Guna.UI2.WinForms.Guna2TextBox soLuong;
         private System.Windows.Forms.Label label4;
-        private Guna.UI2.WinForms.Guna2Button AddThuoc_SoLuong;
-        private Guna.UI2.WinForms.Guna2Button XoaThuoc;
         private Guna.UI2.WinForms.Guna2DataGridView gird;
         private Guna.UI2.WinForms.Guna2Button KeThuoc;
         private System.Windows.Forms.Label txt_ketoa;
+        private Guna.UI2.WinForms.Guna2Button guna2Button1;
     }
 }

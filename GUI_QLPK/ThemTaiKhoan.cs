@@ -39,11 +39,11 @@ namespace GUI_QLPM
             else
             {
                 taiKhoanDTO tk = new taiKhoanDTO();
-                tk.MaTK = int.Parse(maTaiKhoan.Text);
+                tk.MaTK = (maTaiKhoan.Text);
                 tk.Username = username.Text;
                 tk.Password = password.Text;
                 tk.Name = hoTen.Text;
-                tk.MaLoai = comboBoxRole.SelectedIndex + 1;
+                tk.MaLoai = (comboBoxRole.SelectedIndex + 1).ToString();
 
                 tkBus = new taiKhoanBUS();
                 bool kq = tkBus.them(tk);

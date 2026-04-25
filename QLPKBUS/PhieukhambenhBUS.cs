@@ -23,7 +23,7 @@ namespace QLPKBUS
         {
             return pkbDAL.selectByKeyWord(sKeyword);
         }
-        public int autogenerate_mapkb()
+        public string autogenerate_mapkb()
         {
             return pkbDAL.AutoGenerateMaPKB();
         }

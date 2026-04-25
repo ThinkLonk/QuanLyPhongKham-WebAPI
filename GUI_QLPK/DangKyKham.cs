@@ -17,12 +17,13 @@ namespace GUI_QLPK
     {
         lichHenBUS lhBus = new lichHenBUS();
         BenhNhanBUS bnBus = new BenhNhanBUS();
-        private int madd;
+
+        private string madd;
         private int stt;
         taiKhoanBUS tkBus = new taiKhoanBUS();
         loaiTaiKhoanBUS ltkBus = new loaiTaiKhoanBUS();
         lichHenDTO lh = new lichHenDTO();
-        public DangKyKham(int mataikhoan)
+        public DangKyKham(string mataikhoan)
         {
             madd = mataikhoan;
             InitializeComponent();
@@ -195,55 +196,51 @@ namespace GUI_QLPK
                 System.Windows.Forms.MessageBox.Show("Đăng ký lịch hẹn thất bại", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+       
+    
         private void load_Gird()
         {
-            int stt = 1;
-            List<BenhNhanDTO> listBenhNhan = bnBus.select();
             List<lichHenDTO> listLichHen = lhBus.select();
             List<taiKhoanDTO> listTaiKhoan = tkBus.select();
+            int stt = 1;
             DataTable table = new DataTable();
             table.Columns.Add("Số thứ tự", typeof(int));
-            table.Columns.Add("Mã khám bệnh", typeof(string));
+            table.Columns.Add("Mã lịch hẹn", typeof(string));
             table.Columns.Add("Mã bệnh nhân", typeof(string));
-            table.Columns.Add("Tên bệnh nhân", typeof(string));
             table.Columns.Add("Tên bác sĩ", typeof(string));
+            table.Columns.Add("Tên điều dưỡng đăng kí", typeof(string));
             table.Columns.Add("Ngày hẹn", typeof(string));
-            table.Columns.Add("Giờ hẹn", typeof(string));
             table.Columns.Add("Trạng thái", typeof(string));
+
+
 
             foreach (lichHenDTO lh in listLichHen)
             {
+
+                var taiKhoan = listTaiKhoan
+           .FirstOrDefault(x => x.MaTK.ToString() == lh.MaTaiKhoan);
+
+                // tìm tên điều dưỡng
+                var dieuDuong = listTaiKhoan
+                    .FirstOrDefault(x => x.MaTK.ToString() == lh.MaDieuDuong.ToString());
                 DataRow row = table.NewRow();
+
                 row["Số thứ tự"] = stt;
-                row["Mã khám bệnh"] = lh.MaLichHen;
-                foreach (BenhNhanDTO bn in listBenhNhan)
-                {
-                    if (bn.MaBN == lh.MaBenhNhan.ToString())
-                    {
-                        row["Mã bệnh nhân"] = bn.MaBN;
-                        row["Tên bệnh nhân"] = bn.TenBN;
-                        break;
-                    }
-                }
-                foreach (taiKhoanDTO tk in listTaiKhoan)
-                {
-                    if (tk.MaTK.ToString() == lh.MaTaiKhoan)
-                    {
-                        row["Tên bác sĩ"] = tk.Name;
-                        break;
-                    }
-                }
-                row["Ngày hẹn"] = lh.NgayHen.ToString("dd/MM/yyyy");
-                row["Giờ hẹn"] = lh.NgayHen.ToString("HH:mm");
+                row["Mã lịch hẹn"] = lh.MaLichHen;
+                row["Mã bệnh nhân"] = lh.MaBenhNhan;
+                row["Tên bác sĩ"] = taiKhoan != null ? taiKhoan.Name : "";
+                row["Tên điều dưỡng đăng kí"] = dieuDuong != null ? dieuDuong.Name : "";
+                row["Ngày hẹn"] = lh.NgayHen.ToString("yyyy-MM-dd");
                 row["Trạng thái"] = lh.TrangThai;
+
                 table.Rows.Add(row);
-                stt += 1;
+                stt++;
             }
-            gird.DataSource = table.DefaultView;
-            if (gird.Columns["Mã bệnh nhân"] != null)
-                gird.Columns["Mã bệnh nhân"].Visible = false; // Ẩn cột Mã bệnh nhân
+
+            gird.DataSource =  table.DefaultView;
+            gird.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
-        //click vao ô trong DataGirdView
         private void gird_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && e.RowIndex < gird.Rows.Count)
@@ -255,7 +252,7 @@ namespace GUI_QLPK
                 bacsi.Text = row.Cells[4].Value.ToString();
                 string ngay = row.Cells[5].Value.ToString();    // "dd/MM/yyyy"
                 string gio = row.Cells[6].Value.ToString();     // "HH:mm"
-                if (DateTime.TryParseExact(ngay, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime dt))
+                if (DateTime.TryParseExact(ngay, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime dt))
                 {
                     ngaykham.Value = dt;
                 }

@@ -79,8 +79,8 @@ namespace QLPKDAL
                                 {
                                     ChiTietToaThuocDTO kt = new ChiTietToaThuocDTO();
                                     kt.SoLuong = int.Parse(reader["soLuong"].ToString());
-                                    kt.MaToa = reader["maToaThuoc"].ToString();
-                                    kt.MaThuoc = reader["maThuoc"].ToString();
+                                    kt.MaToa = (reader["maToaThuoc"].ToString());
+                                    kt.MaThuoc = (reader["maThuoc"].ToString());
                                     lskethuoc.Add(kt);
                                 }
                             }
@@ -127,7 +127,7 @@ namespace QLPKDAL
                             {
                                 ChiTietToaThuocDTO kt = new ChiTietToaThuocDTO();
                                 kt.SoLuong = int.Parse(reader["soLuong"].ToString());
-                                kt.MaThuoc = reader["maThuoc"].ToString();
+                                kt.MaThuoc = (reader["maThuoc"].ToString());
                                 lskethuoc.Add(kt);
 
                             }
@@ -212,8 +212,8 @@ namespace QLPKDAL
                 {
                     ChiTietToaThuocDTO kt = new ChiTietToaThuocDTO();
                     kt.SoLuong = int.Parse(reader["soLuong"].ToString());
-                    kt.MaToa = reader["maToaThuoc"].ToString();
-                    kt.MaThuoc = reader["maThuoc"].ToString();
+                    kt.MaToa = (reader["maToaThuoc"].ToString());
+                    kt.MaThuoc = (reader["maThuoc"].ToString());
 
                     list.Add(kt);
                 }

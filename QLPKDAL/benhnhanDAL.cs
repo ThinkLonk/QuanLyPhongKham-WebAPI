@@ -246,7 +246,7 @@ namespace QLPKDAL
 
 
         // Phương thức tự động tạo mã bệnh nhân
-        public int AutoGenerateMaBN()
+        public string AutoGenerateMaBN()
         {
             int maBN = 1; // Biến để chứa mã bệnh nhân mới, bắt đầu từ 1
             // Chuỗi truy vấn SQL để lấy mã bệnh nhân lớn nhất
@@ -282,7 +282,7 @@ namespace QLPKDAL
                     }
                 }
             }
-            return maBN;
+            return maBN.ToString();
         }
  
     }

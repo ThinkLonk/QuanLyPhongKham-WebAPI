@@ -49,7 +49,7 @@ namespace QLPKDAL
                             {
                                 loaiTaiKhoanDTO loaitk = new loaiTaiKhoanDTO();
                                 loaitk.TenLoaiTaiKhoan = reader["tenRole"].ToString();
-                                loaitk.MaRole = int.Parse(reader["maRole"].ToString());
+                                loaitk.MaRole =(reader["maRole"].ToString());
 
                                 lsloaitk.Add(loaitk);
                             }

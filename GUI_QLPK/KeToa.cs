@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Data;
+using System.Linq;
+using System.Windows.Forms;
 using QLPKBUS;
 using QLPKDTO;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using QLPKDAL;
 
 namespace GUI_QLPK
@@ -22,289 +18,291 @@ namespace GUI_QLPK
         ThuocBUS thBus = new ThuocBUS();
         cachDungBUS cdBus = new cachDungBUS();
         donviBUS donVivBus = new donviBUS();
+
         List<cachdungDTO> listcd;
         List<donViDTO> listdv;
         string id;
+
         public KeToa()
         {
             InitializeComponent();
-            load_data();
+
             gird.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
             listcd = cdBus.select();
             listdv = donVivBus.select();
+
+            load_data();
         }
+
         public void load_data()
         {
-            db1.Clear();
+            db1.Rows.Clear();
+            db1.Columns.Clear();
+
             db1.Columns.Add("Mã thuốc", typeof(string));
             db1.Columns.Add("Tên thuốc", typeof(string));
             db1.Columns.Add("Đơn vị", typeof(string));
             db1.Columns.Add("Đơn giá", typeof(string));
             db1.Columns.Add("Cách dùng", typeof(string));
-            db1.Columns.Add("Số lượng", typeof(System.Int32));
+            db1.Columns.Add("Số lượng", typeof(int));
 
-            ThuocBUS thBus = new ThuocBUS();
             List<thuocDTO> listThuoc = thBus.select();
-            this.loadData_Vao_Combobox(listThuoc);
-            ttBus = new ToathuocBUS();
-
             List<phieukhambenhDTO> listPKB = pkbBUS.select();
-            List<toathuocDTO> listToaThuoc = ttBus.select();
-            this.loadData_Vao_Combobox(listThuoc, listPKB, listToaThuoc);
+
+            // load combobox thuốc
+            loadData_Vao_Combobox(listThuoc);
+
+            // load mã phiếu khám
+            mapkb.Items.Clear();
+            foreach (phieukhambenhDTO pkb in listPKB)
+            {
+                mapkb.Items.Add(pkb.MaPKB);
+            }
+            mapkb.SelectedIndex = -1;
+
+            // tự sinh mã toa
             maToa.Text = ttBus.autogenerate_matoa().ToString();
 
+            gird.DataSource = db1.DefaultView;
         }
+
         public void reset()
         {
-            db1.Clear();
+            db1.Rows.Clear();
+
             mapkb.Text = "";
             soLuong.Text = "";
             TenThuoc.Text = "";
+
             maToa.Text = ttBus.autogenerate_matoa().ToString();
+
+            gird.DataSource = db1.DefaultView;
         }
+
         private void loadData_Vao_Combobox(List<thuocDTO> listThuoc)
         {
-            if (listThuoc == null)
+            if (listThuoc == null || listThuoc.Count == 0)
             {
-                System.Windows.Forms.MessageBox.Show("Có lỗi khi lấy thông tin từ DB", "Result", System.Windows.Forms.MessageBoxButtons.OKCancel, System.Windows.Forms.MessageBoxIcon.Error);
+                MessageBox.Show("Không có dữ liệu thuốc",
+                                "Thông báo",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
                 return;
             }
 
             DataTable table = new DataTable();
-
+            table.Columns.Add("Mã thuốc", typeof(string));
             table.Columns.Add("Tên thuốc", typeof(string));
+
             foreach (thuocDTO th in listThuoc)
             {
                 DataRow row = table.NewRow();
+                row["Mã thuốc"] = th.MaThuoc;
                 row["Tên thuốc"] = th.TenThuoc;
                 table.Rows.Add(row);
             }
-            TenThuoc.DataSource = table.DefaultView;
+
+            TenThuoc.DataSource = table;
             TenThuoc.DisplayMember = "Tên thuốc";
+            TenThuoc.ValueMember = "Mã thuốc";
             TenThuoc.SelectedIndex = -1;
         }
-        private void loadData_Vao_GridView(List<thuocDTO> listThuoc, string soluong)
-        {
 
-            if (listThuoc == null)
-            {
-                System.Windows.Forms.MessageBox.Show("Có lỗi khi lấy thông tin từ DB", "Result", System.Windows.Forms.MessageBoxButtons.OKCancel, System.Windows.Forms.MessageBoxIcon.Error);
-                return;
-            }
-            foreach (thuocDTO th in listThuoc)
-            {
-                if (th.TenThuoc == TenThuoc.Text)
-                {
-                    DataRow row = db1.NewRow();
-                    row["Mã thuốc"] = th.MaThuoc;
-                    row["Tên thuốc"] = th.TenThuoc;
-                    foreach (donViDTO donvi in listdv)
-                    {
-                        if (donvi.MaDonVi == th.MaDonVi)
-                        {
-                            row["Đơn vị"] = donvi.TenDonVi;
-                        }
 
-                    }
-                    row["Đơn giá"] = th.DonGia;
-                    foreach (cachdungDTO cd in listcd)
-                    {
-                        if (cd.MaCachDung == th.MaCachDung)
-                        {
-                            row["Cách dùng"] = cd.TenCachDung;
-                        }
 
-                    }
-                    row["Số lượng"] = soluong;
-                    db1.Rows.Add(row);
-                }
-            }
-        }
-        private void loadData_Vao_Combobox(List<thuocDTO> listThuoc, List<phieukhambenhDTO> listPKB, List<toathuocDTO> listToaThuoc)
-        {
 
-            if (listThuoc == null)
-            {
-                System.Windows.Forms.MessageBox.Show("Có lỗi khi lấy thông tin từ DB", "Result", System.Windows.Forms.MessageBoxButtons.OKCancel, System.Windows.Forms.MessageBoxIcon.Error);
-                return;
-            }
-
-            if (listPKB == null)
-            {
-                System.Windows.Forms.MessageBox.Show("Không có phiếu khám bệnh nào cần kê thuốc !!!", "Result", System.Windows.Forms.MessageBoxButtons.OKCancel, System.Windows.Forms.MessageBoxIcon.Error);
-                return;
-            }
-            DataTable table = new DataTable();
-
-            table.Columns.Add("Tên thuốc", typeof(string));
-            foreach (thuocDTO th in listThuoc)
-            {
-                DataRow row = table.NewRow();
-                row["Tên thuốc"] = th.TenThuoc;
-                table.Rows.Add(row);
-            }
-            TenThuoc.DataSource = table.DefaultView;
-            TenThuoc.DisplayMember = "Tên thuốc";
-            TenThuoc.SelectedIndex = -1;
-
-            HashSet<string> maPKBDaCoTrongToaThuoc = new HashSet<string>();
-
-            foreach (toathuocDTO tt in listToaThuoc)
-            {
-                maPKBDaCoTrongToaThuoc.Add(tt.MaPkb);
-            }
-
-            foreach (phieukhambenhDTO pkb in listPKB)
-            {
-                if (!maPKBDaCoTrongToaThuoc.Contains(pkb.MaPKB))
-                {
-                    mapkb.Items.Add(pkb.MaPKB);
-
-                }
-            }
-        }
-
-        private void AddThuoc_SoLuong_Click(object sender, EventArgs e)
-        {
-            bool kt;
-            try
-            {
-                int.Parse(soLuong.Text);
-                kt = true;
-            }
-            catch (Exception)
-            {
-                System.Windows.Forms.MessageBox.Show("Vui lòng nhập số và không được để trống", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                kt = false;
-
-            }
-            int soLuongNhap;
-            bool laSoNguyen = int.TryParse(soLuong.Text, out soLuongNhap);
-
-            if (!laSoNguyen || soLuongNhap <= 0)
-            {
-                MessageBox.Show("Vui lòng nhập số lượng là số nguyên dương!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                soLuong.Text = "";
-                soLuong.Focus();
-                return;
-            }
-
-            if (kt == false)
-            {
-                soLuong.Text = "";
-                soLuong.Focus();
-            }
-            else
-            {
-                bool notExist = true; //cờ kiểm tra thuốc tồn tại chưa
-                DataRow[] rows = db1.Select();
-                if (rows.Length == 0)
-                {
-                    //thêm thuốc đầu tiên
-                    thBus = new ThuocBUS();
-                    List<thuocDTO> listThuoc = thBus.select();
-                    this.loadData_Vao_GridView(listThuoc, soLuong.Text);
-                    gird.DataSource = db1.DefaultView;
-                }
-                else
-                {
-                    for (int i = 0; i < rows.Length; i++)
-                    {
-                        // tìm thuốc trùng cộng dồn
-                        if (rows[i]["Tên thuốc"].ToString() == TenThuoc.Text.ToString())
-                        {
-                            int sl = 0;
-                            sl = int.Parse(rows[i]["Số lượng"].ToString()); //sl hiện tại
-                            db1.Rows[i][5] = sl + int.Parse(soLuong.Text.ToString());
-                            notExist = false;
-                            break;
-                        }
-                    }
-                    //không có trùng thuốc
-                    if (notExist == true)
-                    {
-                        thBus = new ThuocBUS();
-                        List<thuocDTO> listThuoc = thBus.select();
-                        this.loadData_Vao_GridView(listThuoc, soLuong.Text);
-                        gird.DataSource = db1.DefaultView;
-                    }
-                }
-            }
-        }
-
-        //kê toa và trừ số lượng kho
         private void KeThuoc_Click(object sender, EventArgs e)
         {
-            int row = db1.Rows.Count;
-            toathuocDTO tt = new toathuocDTO();
-            tt.MaToa = maToa.Text.ToString();
-            tt.MaPkb = mapkb.Text.ToString();
-            tt.NgayKetoa = DateTime.UtcNow.Date;
-            ttBus = new ToathuocBUS();
-            bool kq = ttBus.them(tt);
-            ChiTietToaThuocDTO kt = new ChiTietToaThuocDTO();
-            for (int i = 0; i < row; i++)
+            // kiểm tra mã phiếu khám
+            if (string.IsNullOrWhiteSpace(mapkb.Text))
             {
-                kt.MaToa = maToa.Text;
-                kt.MaThuoc = gird.Rows[i].Cells[0].Value.ToString();
-                int val = int.Parse(gird.Rows[i].Cells[5].Value.ToString());
-
-                bool check = int.TryParse(gird.Rows[i].Cells[5].Value.ToString(), out val);
-                if (!check)
-                {
-                    return;
-                }
-                else
-                {
-                    kt.SoLuong = val;
-                }
-                ktBus = new ChiTietToaThuocBUS();
-                bool kq1 = ktBus.kethuoc(kt);
-                //TRỪ SỐ LƯỢNG THUỐC
-                thBus = new ThuocBUS();
-                bool tru = thBus.truSoLuong(kt.MaThuoc, kt.SoLuong); 
-            }
-            if (kq == false)
-            {
-                System.Windows.Forms.MessageBox.Show("Kê toa thất bại", "Result", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-            }
-            else
-            {
-                System.Windows.Forms.MessageBox.Show("Kê toa thành công", "Result");
-                reset();
-            }
-        }
-
-        private void gird_SelectionChanged(object sender, EventArgs e)
-        {
-            DataGridView dataGridView = (DataGridView)sender;
-            DataGridViewRow row_selected = dataGridView.CurrentRow;
-            if (row_selected != null)
-            {
-                id = row_selected.Cells["Mã thuốc"].Value.ToString();
-            }
-        }
-
-        private void XoaThuoc_Click(object sender, EventArgs e)
-        {
-            if (id == null)
-            {
-                MessageBox.Show("Vui lòng chọn thuốc cần xóa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng chọn mã phiếu khám bệnh",
+                                "Thông báo",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
                 return;
             }
 
-            DialogResult result = MessageBox.Show("Bạn có chắc muốn xóa thuốc này khỏi toa?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result == DialogResult.Yes)
+            // kiểm tra đã thêm thuốc chưa
+            if (db1.Rows.Count == 0)
             {
-                DataRow[] rows = db1.Select("[Mã thuốc] = '" + id + "'");
-                foreach (DataRow row in rows)
-                {
-                    row.Delete();
-                }
-                db1.AcceptChanges();// thay đổi trong datatable
-                gird.DataSource = db1.DefaultView;
-                id = null; // reset lại
+                MessageBox.Show("Vui lòng thêm thuốc vào toa",
+                                "Thông báo",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                return;
             }
+
+            
+            List<toathuocDTO> listToa = ttBus.select();
+
+            string maToaDangDung;
+
+            var toaDaCo = listToa
+                .FirstOrDefault(x => x.MaPkb == mapkb.Text);
+            if (toaDaCo != null)
+            {
+                // đã có toa → dùng lại toa cũ
+                maToaDangDung =toaDaCo.MaToa;
+            }
+            else
+            {
+                // chưa có → tạo mới
+                toathuocDTO tt = new toathuocDTO();
+                tt.MaToa =(maToa.Text);
+                tt.MaPkb = (mapkb.Text);
+                tt.NgayKetoa = DateTime.Today;
+
+                bool kqToa = ttBus.them(tt);
+
+                if (!kqToa)
+                {
+                    MessageBox.Show("Lưu toa thuốc thất bại");
+                    return;
+                }
+
+                maToaDangDung = tt.MaToa;
+            }
+
+            bool loi = false;
+
+            // lưu chi tiết toa + trừ kho
+            for (int i = 0; i < db1.Rows.Count; i++)
+            {
+                ChiTietToaThuocDTO ct = new ChiTietToaThuocDTO();
+
+                ct.MaToa = maToaDangDung;
+                ct.MaThuoc = (gird.Rows[i].Cells[0].Value.ToString());
+
+                int soLuongThuoc;
+
+                bool check = int.TryParse(
+                    gird.Rows[i].Cells[5].Value.ToString(),
+                    out soLuongThuoc
+                );
+
+                if (!check || soLuongThuoc <= 0)
+                {
+                    MessageBox.Show("Số lượng thuốc không hợp lệ",
+                                    "Thông báo",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Warning);
+                    loi = true;
+                    break;
+                }
+
+                ct.SoLuong = soLuongThuoc;
+
+                // lưu chi tiết đơn thuốc
+                bool kqChiTiet = ktBus.kethuoc(ct);
+
+                // trừ số lượng thuốc trong kho
+                bool truKho = thBus.truSoLuong(ct.MaThuoc, ct.SoLuong);
+
+                if (!kqChiTiet || !truKho)
+                {
+                    loi = true;
+                    break;
+                }
+            }
+
+            if (loi)
+            {
+                MessageBox.Show("Kê toa thất bại",
+                                "Result",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+            }
+            else
+            {
+                MessageBox.Show("Kê toa thành công",
+                                "Result",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+
+                reset();
+                gird.DataSource = db1.DefaultView;
+            }
+        }
+
+        private void guna2Button1_Click(object sender, EventArgs e)
+        {
+            // kiểm tra chọn thuốc
+            if (TenThuoc.SelectedIndex < 0)
+            {
+                MessageBox.Show("Vui lòng chọn thuốc",
+                                "Thông báo",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                return;
+            }
+
+            // kiểm tra số lượng
+            int soLuongNhap;
+
+            if (!int.TryParse(soLuong.Text, out soLuongNhap) || soLuongNhap <= 0)
+            {
+                MessageBox.Show("Vui lòng nhập số lượng là số nguyên dương",
+                                "Thông báo",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                soLuong.Focus();
+                return;
+            }
+
+            List<thuocDTO> listThuoc = thBus.select();
+
+            bool daTonTai = false;
+
+            // nếu thuốc đã có trong grid → cộng dồn số lượng
+            for (int i = 0; i < db1.Rows.Count; i++)
+            {
+                if (db1.Rows[i]["Tên thuốc"].ToString() == TenThuoc.Text)
+                {
+                    int slCu = Convert.ToInt32(db1.Rows[i]["Số lượng"]);
+                    db1.Rows[i]["Số lượng"] = slCu + soLuongNhap;
+
+                    daTonTai = true;
+                    break;
+                }
+            }
+
+            // nếu chưa có → thêm mới
+            if (!daTonTai)
+            {
+                foreach (thuocDTO th in listThuoc)
+                {
+                    if (th.TenThuoc == (TenThuoc.Text))
+                    {
+                        DataRow row = db1.NewRow();
+
+                        row["Mã thuốc"] = th.MaThuoc;
+                        row["Tên thuốc"] = th.TenThuoc;
+
+                        // đơn vị
+                        var dv = listdv.FirstOrDefault(x => x.MaDonVi == th.MaDonVi);
+                        row["Đơn vị"] = dv != null ? dv.TenDonVi : "";
+
+                        row["Đơn giá"] = th.DonGia;
+
+                        // cách dùng
+                        var cd = listcd.FirstOrDefault(x => x.MaCachDung == th.MaCachDung);
+                        row["Cách dùng"] = cd != null ? cd.TenCachDung : "";
+
+                        row["Số lượng"] = soLuongNhap;
+
+                        db1.Rows.Add(row);
+                        break;
+                    }
+                }
+            }
+
+            gird.DataSource = db1.DefaultView;
+
+            // reset nhập
+            soLuong.Text = "";
+            TenThuoc.SelectedIndex = -1;
         }
     }
 }

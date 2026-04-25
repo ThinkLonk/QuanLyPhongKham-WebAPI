@@ -152,7 +152,7 @@ namespace QLPKDTO
                             while (reader.Read()) // Đọc từng dòng kết quả
                             {
                                 benhDTO be = new benhDTO(); // Tạo đối tượng BenhDTO
-                                be.MaBenh = reader["maBenh"].ToString(); // Gán giá trị cho MaBenh
+                                be.MaBenh = (reader["maBenh"].ToString()); // Gán giá trị cho MaBenh
                                 be.TenBenh = reader["tenBenh"].ToString(); // Gán giá trị cho TenBenh
                                 lsBenh.Add(be); // Thêm vào danh sách
                             }
@@ -201,7 +201,7 @@ namespace QLPKDTO
                             while (reader.Read()) // Đọc từng dòng kết quả
                             {
                                 benhDTO be = new benhDTO(); // Tạo đối tượng BenhDTO
-                                be.MaBenh = reader["maBenh"].ToString(); // Gán giá trị cho MaBenh
+                                be.MaBenh = (reader["maBenh"].ToString()); // Gán giá trị cho MaBenh
                                 be.TenBenh = reader["tenBenh"].ToString(); // Gán giá trị cho TenBenh
                                 lsBenh.Add(be); // Thêm vào danh sách
                             }
@@ -219,7 +219,7 @@ namespace QLPKDTO
             return lsBenh; // Trả về danh sách các bệnh theo từ khóa
         }
         // Phương thức tự động tạo mã bệnh mới
-        public int autogenerate_mabenh()
+        public string autogenerate_mabenh()
         {
             int mabenh = 1; // Biến để chứa mã bệnh mới, bắt đầu từ 1
             // Chuỗi truy vấn SQL để lấy mã bệnh lớn nhất
@@ -254,7 +254,7 @@ namespace QLPKDTO
                     }
                 }
             }
-            return mabenh;
+            return mabenh.ToString();
         }
         public bool kiemTraTrungTen(string tenBenh)
         {

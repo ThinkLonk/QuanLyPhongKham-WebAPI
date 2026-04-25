@@ -47,8 +47,8 @@ namespace QLPKDAL
                             while (reader.Read()) // Đọc từng dòng kết quả
                             {
                                 chandoanDTO cd = new chandoanDTO(); // Tạo đối tượng ChandoanDTO
-                                cd.MaPkb = reader["maPKB"].ToString(); // Gán giá trị cho MaPkb
-                                cd.MaBenh = reader["maBenh"].ToString();
+                                cd.MaPkb = (reader["maPKB"].ToString()); // Gán giá trị cho MaPkb
+                                cd.MaBenh = (reader["maBenh"].ToString());
                                 lscd.Add(cd); // Thêm vào danh sách
                             }
                         }
@@ -70,8 +70,8 @@ namespace QLPKDAL
         {
             // Chuỗi truy vấn SQL để thêm mới chẩn đoán
             string query = string.Empty;
-            query += "INSERT INTO [ChuanDoan] ([maBenh], [maPKB]) ";
-            query += "VALUES (@maBenh,@maPKB)";
+            query += "INSERT INTO [ChuanDoan] ([maBenh], [maPKB],[trieuChung],[tenChuanDoan]) ";
+            query += "VALUES (@maBenh,@maPKB,@trieuchung,@ten)";
 
             using (SqlConnection con = new SqlConnection(ConnectionString))
             {
@@ -82,7 +82,9 @@ namespace QLPKDAL
                     cmd.CommandText = query; // Gán chuỗi truy vấn cho lệnh
                     cmd.Parameters.AddWithValue("@maBenh", cd.MaBenh); // Gán giá trị cho tham số @maBenh
                     cmd.Parameters.AddWithValue("@maPKB", cd.MaPkb); // Gán giá trị cho tham số @maPKB
-
+                    cmd.Parameters.AddWithValue("@trieuchung", cd.TrieuChung);
+                    cmd.Parameters.AddWithValue("@ten", cd.TenChuanDoan);
+                    
                     try
                     {
                         con.Open(); // Mở kết nối
@@ -118,8 +120,8 @@ namespace QLPKDAL
                         while (reader.Read())
                         {
                             chandoanDTO cd = new chandoanDTO();
-                            cd.MaPkb = reader["MaPkb"].ToString();
-                            cd.MaBenh = reader["MaBenh"].ToString();
+                            cd.MaPkb = (reader["MaPkb"].ToString());
+                            cd.MaBenh = (reader["MaBenh"].ToString());
 
                             list.Add(cd);
                         }

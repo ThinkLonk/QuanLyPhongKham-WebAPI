@@ -78,6 +78,7 @@ namespace GUI_QLPK
             if (kq == true)
             {
                 System.Windows.Forms.MessageBox.Show("Thêm Bệnh nhân thành công", "Result");
+                this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             else

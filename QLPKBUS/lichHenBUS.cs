@@ -18,7 +18,7 @@ namespace QLPKBUS
         {
             return lhDAL.select();
         }
-        public int autogenerate_malichhen()
+        public string autogenerate_malichhen()
         {
             return lhDAL.AutoGenerateMaLichHen();
         }
@@ -33,9 +33,9 @@ namespace QLPKBUS
             return re;
         }
 
-        public bool CapNhatTrangThai(string maBenhNhan, DateTime ngayHen, string trangThaiMoi)
+        public bool CapNhatTrangThai(string maBenhNhan, string trangThaiMoi)
         {
-            return lhDAL.CapNhatTrangThai(maBenhNhan, ngayHen, trangThaiMoi);
+            return lhDAL.CapNhatTrangThai(maBenhNhan, trangThaiMoi);
         }
         public List<lichHenDTO> selectByDate(DateTime date)
         {

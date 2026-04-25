@@ -36,7 +36,7 @@ namespace QLPKBUS
         {
             return hdDAL.selectByMonth(month, year);
         }
-        public int autogenerate_mahd()
+        public string autogenerate_mahd()
         {
             return hdDAL.autogenerate_mahd();
         }

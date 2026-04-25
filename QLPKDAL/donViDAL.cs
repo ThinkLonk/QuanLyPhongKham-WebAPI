@@ -45,7 +45,7 @@ namespace QLPKDAL
                             {
                              
                                 donViDTO dv = new donViDTO();
-                                dv.MaDonVi = int.Parse(reader["maDonVi"].ToString()); // Đọc mã đơn vị
+                                dv.MaDonVi =(reader["maDonVi"].ToString()); // Đọc mã đơn vị
                                 dv.TenDonVi = reader["tenDonVi"].ToString(); // Đọc tên đơn vị
                                 lsdv.Add(dv); // Thêm đơn vị vào danh sách
                             }

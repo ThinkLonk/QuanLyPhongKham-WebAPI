@@ -85,13 +85,13 @@ namespace QLPKDAL
                             while (reader.Read())
                             {
                                 hoadonDTO hd = new hoadonDTO();
-                                hd.MaHoaDon = int.Parse(reader["maHoaDon"].ToString());
+                                hd.MaHoaDon = (reader["maHoaDon"].ToString());
                                 hd.NgayLapHoaDon = DateTime.Parse(reader["NgayLapHoaDon"].ToString());
                                 hd.TienThuoc = decimal.Parse(reader["tienThuoc"].ToString());
                                 hd.TongTien = float.Parse(reader["tongTien"].ToString());
                                 hd.TienKham = float.Parse(reader["tienKham"].ToString());
-                                hd.MaPKB = reader["maPKB"].ToString();
-                                hd.MaNVTN = int.Parse(reader["maTaiKhoan"].ToString());
+                                hd.MaPKB = (reader["maPKB"].ToString());
+                                hd.MaNVTN = (reader["maTaiKhoan"].ToString());
                                 hd.NgayTaiKham = DateTime.Parse(reader["NgayTaiKham"].ToString());
 
                                 lsHoaDon.Add(hd);
@@ -239,11 +239,11 @@ namespace QLPKDAL
             }
             return tien;
         }
-        public int autogenerate_mahd()
+        public string autogenerate_mahd()
         {
             int mahd = 1;
             string query = string.Empty;
-            query += "SELECT MAX (KQ.MAHoaDon) AS MM from (SELECT CONVERT(float, HoaDon.maHoaDon) AS MAHoaDon FROM HoaDon) AS KQ";
+            query += "SELECT MAX (CAST(KQ.MAHoaDon AS INT)) AS MM from (SELECT CONVERT(float, HoaDon.maHoaDon) AS MAHoaDon FROM HoaDon) AS KQ";
 
             using (SqlConnection con = new SqlConnection(ConnectionString))
             {
@@ -277,7 +277,7 @@ namespace QLPKDAL
                     }
                 }
             }
-            return mahd;
+            return mahd.ToString();
         }
         public float tienkham()
         {

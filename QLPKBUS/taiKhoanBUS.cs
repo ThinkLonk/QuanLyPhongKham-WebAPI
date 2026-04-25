@@ -41,7 +41,7 @@ namespace QLPKBUS
         {
             return tkDAL.select();
         }
-        public int autogenerate_maTaiKhoan()
+        public string autogenerate_maTaiKhoan()
         {
             return tkDAL.autogenerate_maTaiKhoan();
         }

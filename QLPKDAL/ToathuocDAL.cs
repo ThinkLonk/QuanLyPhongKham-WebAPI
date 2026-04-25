@@ -20,35 +20,34 @@ namespace QLPKDAL
         public string ConnectionString { get => connectionString; set => connectionString = value; }
         public bool them(toathuocDTO tt)
         {
-            string query = string.Empty;
-            query += "INSERT INTO [ToaThuoc] ([maPKB], [ngayKeToa])";
-            query += "VALUES (@maPKB,@ngayKeToa)";
+            string query = @"INSERT INTO ToaThuoc
+                     (ngayKeToa, maPKB)
+                     VALUES
+                     (@ngayKeToa, @maPKB)";
+
             using (SqlConnection con = new SqlConnection(ConnectionString))
             {
-
-                using (SqlCommand cmd = new SqlCommand())
+                using (SqlCommand cmd = new SqlCommand(query, con))
                 {
-                    cmd.Connection = con;
-                    cmd.CommandType = System.Data.CommandType.Text;
-                    cmd.CommandText = query; 
-                    cmd.Parameters.AddWithValue("@maPKB", tt.MaPkb);
                     cmd.Parameters.AddWithValue("@ngayKeToa", tt.NgayKetoa);
+                    cmd.Parameters.AddWithValue("@maPKB", tt.MaPkb);
 
                     try
                     {
                         con.Open();
-                        cmd.ExecuteNonQuery();
-                        con.Close();
-                        con.Dispose();
+
+                        int rows = cmd.ExecuteNonQuery();
+
+                        return rows > 0;
                     }
                     catch (Exception ex)
                     {
-                        con.Close();
+
+                        throw new Exception(ex.Message);
                         return false;
                     }
                 }
             }
-            return true;
         }
         public List<toathuocDTO> select()
         {
@@ -77,9 +76,9 @@ namespace QLPKDAL
                             while (reader.Read())
                             {
                                 toathuocDTO tt = new toathuocDTO();
-                                tt.MaToa = reader["maToaThuoc"].ToString();
+                                tt.MaToa = (reader["maToaThuoc"].ToString());
                                 tt.NgayKetoa = Convert.ToDateTime(reader["ngayKeToa"]);
-                                tt.MaPkb = reader["maPKB"].ToString();
+                                tt.MaPkb =( reader["maPKB"].ToString());
 
                                 lsToaThuoc.Add(tt);
                             }
@@ -98,7 +97,7 @@ namespace QLPKDAL
             return lsToaThuoc;
         }
 
-        public int autogenerate_matoa()
+        public string autogenerate_matoa()
         {
             int matoa = 1;
             string query = string.Empty;
@@ -135,7 +134,7 @@ namespace QLPKDAL
                     }
                 }
             }
-            return matoa;
+            return matoa.ToString();
         }
     }
 }

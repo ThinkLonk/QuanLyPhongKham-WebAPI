@@ -40,7 +40,7 @@ namespace QLPKDAL
                             lh.MaLichHen = reader["maLichHen"].ToString();
                             lh.MaBenhNhan = reader["maBenhNhan"].ToString();
                             lh.MaTaiKhoan = reader["maTaiKhoan"].ToString();
-                            lh.MaDieuDuong = int.Parse(reader["maDieuDuong"].ToString());
+                            lh.MaDieuDuong = (reader["maDieuDuong"].ToString());
                             lh.NgayHen = DateTime.Parse(reader["ngayHen"].ToString());
                             lh.TrangThai = reader["trangThai"].ToString();
                             lslichHen.Add(lh);
@@ -84,11 +84,11 @@ namespace QLPKDAL
             return true;
         }
         //tự động tạo mã lịch hẹn
-        public int AutoGenerateMaLichHen()
+        public string AutoGenerateMaLichHen()
         {
             int maLichHen = 1;
             string query = "";
-            query += "SELECT MAX(maLichHen) AS MaxMaLH FROM[LichHen]";
+            query += "SELECT  MAX(CAST(maLichHen AS INT)) AS MaxMaLH FROM[LichHen]";
 
             using (SqlConnection con = new SqlConnection(ConnectionString))
             {
@@ -109,7 +109,7 @@ namespace QLPKDAL
                     }
                 }
             }
-            return maLichHen;
+            return maLichHen.ToString();
         }
         public bool xoa(lichHenDTO lh)
         {
@@ -144,15 +144,15 @@ namespace QLPKDAL
             }
         }
 
-        public bool CapNhatTrangThai(string maBenhNhan, DateTime ngayHen, string trangThaiMoi)
+        public bool CapNhatTrangThai(string maBenhNhan,string trangThaiMoi)
         {
-            string query = "UPDATE LichHen SET TrangThai = @trangThaiMoi WHERE MaBenhNhan = @maBenhNhan AND CAST(NgayHen AS DATE) = @ngayHen";
+            string query = "UPDATE LichHen SET trangThai = @trangThaiMoi WHERE maBenhNhan = @maBenhNhan";
             using (SqlConnection con = new SqlConnection(connectionString))
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
                 cmd.Parameters.AddWithValue("@trangThaiMoi", trangThaiMoi);
                 cmd.Parameters.AddWithValue("@maBenhNhan", maBenhNhan);
-                cmd.Parameters.AddWithValue("@ngayHen", ngayHen.Date);  // chỉ lấy phần ngày
+             
 
                 try
                 {
@@ -184,7 +184,7 @@ namespace QLPKDAL
                     lh.MaLichHen = reader["maLichHen"].ToString();
                     lh.MaBenhNhan = reader["maBenhNhan"].ToString();
                     lh.MaTaiKhoan = reader["maTaiKhoan"].ToString();
-                    lh.MaDieuDuong = int.Parse(reader["maDieuDuong"].ToString());
+                    lh.MaDieuDuong = (reader["maDieuDuong"].ToString());
                     lh.NgayHen = DateTime.Parse(reader["ngayHen"].ToString());
                     lh.TrangThai = reader["trangThai"].ToString();
                     ds.Add(lh);

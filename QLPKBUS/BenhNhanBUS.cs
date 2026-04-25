@@ -38,7 +38,7 @@ namespace QLPKBUS
         {
             return bnDAL.SelectByKeyWord(sKeyword);
         }
-        public int autogenerate_mabn()
+        public string autogenerate_mabn()
         {
             return bnDAL.AutoGenerateMaBN();
         }

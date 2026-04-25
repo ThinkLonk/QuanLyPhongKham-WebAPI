@@ -18,7 +18,7 @@ namespace GUI_QLPK
         public DataTable db1 = new DataTable("DichVu");
         DichvuBUS dvBus = new DichvuBUS();
         dichvuDTO dv = new dichvuDTO();
-        public int temp_ma;
+        public string temp_ma;
 
         public QuanLyDichVu()
         {
@@ -130,7 +130,7 @@ namespace GUI_QLPK
                 DataGridViewRow row = gird.Rows[e.RowIndex];
                 txtTenDV.Text = row.Cells[1].Value.ToString();
                 txtTienDV.Text = Convert.ToDecimal(row.Cells[2].Value).ToString("N0");
-                temp_ma = int.Parse(row.Cells[0].Value.ToString());
+                temp_ma = (row.Cells[0].Value.ToString());
             }
         }
     }

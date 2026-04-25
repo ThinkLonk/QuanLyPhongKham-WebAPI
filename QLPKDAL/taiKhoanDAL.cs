@@ -184,8 +184,8 @@ namespace QLPKDAL
                                 tk.Name = reader["Name"].ToString();
                                 tk.Username = reader["username"].ToString();
                                 tk.Password = reader["password"].ToString();
-                                tk.MaLoai = int.Parse(reader["maRole"].ToString());
-                                tk.MaTK = int.Parse(reader["maTaiKhoan"].ToString());
+                                tk.MaLoai = (reader["maRole"].ToString());
+                                tk.MaTK = (reader["maTaiKhoan"].ToString());
 
 
                                 lsTK.Add(tk);
@@ -232,11 +232,11 @@ namespace QLPKDAL
                             while (reader.Read())
                             {
                                 taiKhoanDTO tk = new taiKhoanDTO();
-                                tk.MaTK = int.Parse(reader["maTaiKhoan"].ToString());
+                                tk.MaTK = (reader["maTaiKhoan"].ToString());
                                 tk.Username = reader["userName"].ToString();
                                 tk.Password = reader["password"].ToString();
                                 tk.Name = reader["name"].ToString();
-                                tk.MaLoai = int.Parse(reader["maRole"].ToString());
+                                tk.MaLoai = (reader["maRole"].ToString());
 
                                 lsTaiKhoan.Add(tk);
 
@@ -255,11 +255,11 @@ namespace QLPKDAL
             }
             return lsTaiKhoan;
         }
-        public int autogenerate_maTaiKhoan()
+        public string autogenerate_maTaiKhoan()
         {
             int maTK = 1;
             string query = string.Empty;
-            query += "SELECT MAX (KQ.maTaiKhoan) AS MM from (SELECT CONVERT(float, TaiKhoan.maTaiKhoan) AS maTaiKhoan FROM TaiKhoan) AS KQ";
+            query += "SELECT MAX (CAST (KQ.maTaiKhoan AS INT)) AS MM from (SELECT CONVERT(float, TaiKhoan.maTaiKhoan) AS maTaiKhoan FROM TaiKhoan) AS KQ";
 
             using (SqlConnection con = new SqlConnection(ConnectionString))
             {
@@ -293,7 +293,7 @@ namespace QLPKDAL
                     }
                 }
             }
-            return maTK;
+            return maTK.ToString();
         }
 
     }

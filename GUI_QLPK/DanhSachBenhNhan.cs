@@ -54,7 +54,7 @@ namespace GUI_QLPK
 
             }
             // Đảm bảo listpkb đã được sắp theo mã tăng dần
-            listpkb.Sort((x, y) => int.Parse(x.MaPKB).CompareTo(int.Parse(y.MaPKB)));
+            listpkb.Sort((x, y) =>(x.MaPKB).CompareTo(y.MaPKB));
             DataTable table = new DataTable();
             table.Columns.Add("Số thứ tự", typeof(int));
             table.Columns.Add("Mã phiếu khám", typeof(string));
@@ -62,48 +62,38 @@ namespace GUI_QLPK
             table.Columns.Add("CCCD", typeof(string));
             table.Columns.Add("Ngày khám", typeof(string));
             table.Columns.Add("Ngày tái khám", typeof(string));
-            table.Columns.Add("Triệu chứng", typeof(string));
-            table.Columns.Add("Tên bệnh", typeof(string));
+           
             table.Columns.Add("Bác sĩ khám", typeof(string));
             int stt = 1;
 
-            foreach (phieukhambenhDTO pkb in listpkb)
+            var query = from pkb in listpkb
+                        join bn in listBenhNhan on pkb.MaBenhNhan equals bn.MaBN
+                        join cd in listcd on pkb.MaPKB equals cd.MaPkb
+                        join be in listBenh on cd.MaBenh equals be.MaBenh
+                        join tk in listTK on pkb.MBS equals tk.MaTK
+                        select new { pkb, bn, be, tk };
+            HashSet<string> dsMaPKB = new HashSet<string>();
+
+
+            foreach (var item in query)
             {
-                foreach (BenhNhanDTO bn in listBenhNhan)
+                if (!dsMaPKB.Contains(item.pkb.MaPKB.ToString()))
                 {
-                    if (pkb.MaBenhNhan == bn.MaBN)
-                    {
-                        foreach (chandoanDTO cd in listcd)
-                        {
-                            if (cd.MaPkb == pkb.MaPKB)
-                            {
-                                foreach (benhDTO be in listBenh)
-                                {
-                                    if (cd.MaBenh == be.MaBenh)
-                                    {
-                                        foreach (taiKhoanDTO tk in listTK)
-                                        {
-                                            if (tk.MaTK == pkb.MBS)
-                                            {
-                                                DataRow row = table.NewRow();
-                                                row["Số thứ tự"] = stt;
-                                                row["Mã phiếu khám"] = pkb.MaPKB;
-                                                row["Tên bệnh nhân"] = bn.TenBN;
-                                                row["CCCD"] = bn.CanCuocCongDan;
-                                                row["Ngày khám"] = DateTime.Parse(pkb.NgayKham.ToString()).ToString("dd/MM/yyyy");
-                                                row["Ngày tái khám"] = DateTime.Parse(pkb.NgayTaiKham.ToString()).ToString("dd/MM/yyyy");
-                                                row["Triệu chứng"] = pkb.TrieuChung;
-                                                row["Tên bệnh"] = be.TenBenh;
-                                                row["Bác sĩ khám"] = tk.Name;
-                                                table.Rows.Add(row);
-                                                stt += 1;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    DataRow row = table.NewRow();
+                    row["Số thứ tự"] = stt++;
+                    row["Mã phiếu khám"] = item.pkb.MaPKB;
+                    row["Tên bệnh nhân"] = item.bn.TenBN;
+                    row["CCCD"] = item.bn.CanCuocCongDan;
+
+                    // Ép kiểu an toàn (Sử dụng trực tiếp thuộc tính nếu là DateTime)
+                    row["Ngày khám"] = item.pkb.NgayKham.ToString("dd/MM/yyyy");
+                    row["Ngày tái khám"] = item.pkb.NgayTaiKham.ToString("dd/MM/yyyy");
+
+                   
+                    row["Bác sĩ khám"] = item.tk.Name;
+
+                    table.Rows.Add(row);
+                    dsMaPKB.Add(item.pkb.MaPKB.ToString());
                 }
             }
             gird.DataSource = table.DefaultView;

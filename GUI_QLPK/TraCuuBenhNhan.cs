@@ -55,7 +55,7 @@ namespace GUI_QLPK
             }
 
             DataTable table = new DataTable();
-            table.Columns.Add("Mã bệnh nhân", typeof(int));
+            table.Columns.Add("Mã bệnh nhân", typeof(string));
             table.Columns.Add("Tên bệnh nhân", typeof(string));
             table.Columns.Add("Ngày sinh", typeof(string));
             table.Columns.Add("Địa chỉ", typeof(string));
@@ -68,7 +68,7 @@ namespace GUI_QLPK
             foreach (BenhNhanDTO bn in listBenhNhan)
             {
                 DataRow row = table.NewRow();
-                row["Mã bệnh nhân"] = int.Parse(bn.MaBN.ToString());
+                row["Mã bệnh nhân"] = (bn.MaBN.ToString());
                 row["Tên bệnh nhân"] = bn.TenBN;
                 row["Ngày sinh"] = DateTime.Parse(bn.NgsinhBN.ToString()).ToString("dd/MM/yyyy");
                 row["Địa chỉ"] = bn.DiachiBN;

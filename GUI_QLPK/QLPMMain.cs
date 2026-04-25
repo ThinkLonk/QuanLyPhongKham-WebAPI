@@ -16,14 +16,14 @@ namespace GUI_QLPK
 {
     public partial class QLPMMain : Form
     {
-        public int mataikhoan;
-        public int ma;
+        public string mataikhoan;
+        public string ma;
         taiKhoanBUS tkBUS = new taiKhoanBUS();
         public taiKhoanDTO tk = new taiKhoanDTO();
         loaiTaiKhoanBUS loaitkBUS = new loaiTaiKhoanBUS();
         loaiTaiKhoanDTO loaitk = new loaiTaiKhoanDTO();
 
-        public QLPMMain(int mataikhoanLogin)
+        public QLPMMain(string mataikhoanLogin)
         {
             
             mataikhoan = mataikhoanLogin;
@@ -44,7 +44,7 @@ namespace GUI_QLPK
                         }
                     }
                     ma = taiKhoan.MaLoai;
-                    if (taiKhoan.MaLoai == 1)
+                    if (taiKhoan.MaLoai == "1")
                     {
                         btnDanhMuc.Visible = false;
                         btnHoaDon.Visible = false;
@@ -53,7 +53,7 @@ namespace GUI_QLPK
                     }
                     else
                     {
-                        if (taiKhoan.MaLoai == 2)
+                        if (taiKhoan.MaLoai == "2")
                         {
                             phieukham.Visible = false;
                             btnDanhMuc.Visible = false;
@@ -61,7 +61,7 @@ namespace GUI_QLPK
                             lichkham.Visible = false;
                             dsLichkham.Visible = false;
                         }
-                        else if (taiKhoan.MaLoai == 3)
+                        else if (taiKhoan.MaLoai == "3")
                         {
                             phieukham.Visible = false;
                             btnHoaDon.Visible = false;

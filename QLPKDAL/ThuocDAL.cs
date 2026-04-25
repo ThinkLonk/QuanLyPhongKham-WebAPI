@@ -148,10 +148,10 @@ namespace QLPKDAL
                             while (reader.Read())
                             {
                                 thuocDTO th = new thuocDTO();
-                                th.MaThuoc = reader["maThuoc"].ToString();
-                                th.TenThuoc = reader["tenThuoc"].ToString();
-                                th.MaDonVi = int.Parse(reader["maDonVi"].ToString());
-                                th.MaCachDung = int.Parse(reader["maCachDung"].ToString());
+                                th.MaThuoc = (reader["maThuoc"].ToString());
+                                th.TenThuoc = (reader["tenThuoc"].ToString());
+                                th.MaDonVi = (reader["maDonVi"].ToString());
+                                th.MaCachDung = (reader["maCachDung"].ToString());
                                 th.DonGia = float.Parse(reader["donGia"].ToString());
                                 th.SoLuong = int.Parse(reader["soLuong"].ToString());
                                 lsThuoc.Add(th);
@@ -200,10 +200,10 @@ namespace QLPKDAL
                             while (reader.Read())
                             {
                                 thuocDTO th = new thuocDTO();
-                                th.MaThuoc = reader["maThuoc"].ToString();
-                                th.TenThuoc = reader["tenThuoc"].ToString();
-                                th.MaDonVi = int.Parse(reader["maDonVi"].ToString());
-                                th.MaCachDung = int.Parse(reader["maCachDung"].ToString());
+                                th.MaThuoc = (reader["maThuoc"].ToString());
+                                th.TenThuoc = (reader["tenThuoc"].ToString());
+                                th.MaDonVi = (reader["maDonVi"].ToString());
+                                th.MaCachDung = (reader["maCachDung"].ToString());
                                 th.DonGia = float.Parse(reader["donGia"].ToString());
                                 th.SoLuong = int.Parse(reader["soLuong"].ToString());
                                 lsThuoc.Add(th);
@@ -223,11 +223,11 @@ namespace QLPKDAL
             }
             return lsThuoc;
         }
-        public int autogenerate_mathuoc()
+        public string autogenerate_mathuoc()
         {
             int mathuoc = 1;
             string query = string.Empty;
-            query += "SELECT MAX (KQ.MATHUOC) AS MM from (SELECT CONVERT(float, Thuoc.maThuoc) AS MATHUOC FROM Thuoc) AS KQ";
+            query += "SELECT MAX (CAST(KQ.MATHUOC AS INT)) AS MM from (SELECT CONVERT(float, Thuoc.maThuoc) AS MATHUOC FROM Thuoc) AS KQ";
 
             using (SqlConnection con = new SqlConnection(ConnectionString))
             {
@@ -261,7 +261,7 @@ namespace QLPKDAL
                     }
                 }
             }
-            return mathuoc;
+            return mathuoc.ToString();
         }
         //danh sách các thuoc da ke trong pkb
         public List<thuocDTO> selectbypkb(string mapkb)
@@ -293,10 +293,10 @@ namespace QLPKDAL
                                 {
                                     thuocDTO th = new thuocDTO
                                     {
-                                        MaThuoc = reader["maThuoc"].ToString(),
-                                        TenThuoc = reader["tenThuoc"].ToString(),
-                                        MaDonVi = int.Parse(reader["maDonVi"].ToString()),
-                                        MaCachDung = int.Parse(reader["maCachDung"].ToString()),
+                                        MaThuoc = (reader["maThuoc"].ToString()),
+                                        TenThuoc = (reader["tenThuoc"].ToString()),
+                                        MaDonVi = (reader["maDonVi"].ToString()),
+                                        MaCachDung = (reader["maCachDung"].ToString()),
                                         DonGia = float.Parse(reader["donGia"].ToString())
                                     };
 
@@ -346,9 +346,9 @@ namespace QLPKDAL
                             while (reader.Read())
                             {
                                 thuocDTO th = new thuocDTO();
-                                th.MaThuoc = reader["maThuoc"].ToString();
-                                th.TenThuoc = reader["tenThuoc"].ToString();
-                                th.MaDonVi = int.Parse(reader["maDonVi"].ToString());
+                                th.MaThuoc = (reader["maThuoc"].ToString());
+                                th.TenThuoc = (reader["tenThuoc"].ToString());
+                                th.MaDonVi = (reader["maDonVi"].ToString());
                                 lsThuoc.Add(th);
 
                             }
@@ -387,20 +387,23 @@ namespace QLPKDAL
                 }
             }
         }
-        public bool TruSoLuongThuoc(string maThuoc, int soLuongTru)
+        public bool truSoLuong(string maThuoc, int soLuongTru)
         {
-            string query = "UPDATE Thuoc SET soLuong = soLuong - @soLuong WHERE maThuoc = @maThuoc";
-            using (SqlConnection con = new SqlConnection(ConnectionString))
+            string query = @"UPDATE Thuoc
+                     SET soLuong = soLuong - @soLuongTru
+                     WHERE maThuoc = @maThuoc
+                     AND soLuong >= @soLuongTru";
+
+            using (SqlConnection con = new SqlConnection(connectionString))
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
-                cmd.Parameters.AddWithValue("@soLuong", soLuongTru);
                 cmd.Parameters.AddWithValue("@maThuoc", maThuoc);
+                cmd.Parameters.AddWithValue("@soLuongTru", soLuongTru);
+
                 try
                 {
                     con.Open();
-                    cmd.ExecuteNonQuery();
-                    con.Close();
-                    return true;
+                    return cmd.ExecuteNonQuery() > 0;
                 }
                 catch
                 {

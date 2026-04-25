@@ -111,7 +111,7 @@ namespace GUI_QLPK
 
         private void Sua_Click(object sender, EventArgs e)
         {
-            be.MaBenh = maBenh.Text;
+            be.MaBenh = (maBenh.Text);
             be.TenBenh = tenBenh.Text;
 
             bool kq = beBus.sua(be, temp);
@@ -127,7 +127,7 @@ namespace GUI_QLPK
 
         private void Xoa_Click(object sender, EventArgs e)
         {
-            be.MaBenh = temp;
+            be.MaBenh = (temp);
             beBus = new BenhBUS();
             bool kq = beBus.xoa(be);
             if (kq == false)

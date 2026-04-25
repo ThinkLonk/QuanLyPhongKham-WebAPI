@@ -177,8 +177,8 @@ namespace GUI_QLPK
                 return;
             }
             thuocDTO th = new thuocDTO();
-            th.MaThuoc = mathuoc.Text;
-            th.TenThuoc = tenthuoc.Text;
+            th.MaThuoc = (mathuoc.Text);
+            th.TenThuoc = (tenthuoc.Text);
             th.DonGia = (float)gia;// ép decimal sang float
             th.SoLuong = (int)soluong.Value;
             foreach (donViDTO donvi in listdv)
@@ -209,7 +209,7 @@ namespace GUI_QLPK
 
         private void Sua_Click(object sender, EventArgs e)
         {
-            th.TenThuoc = tenthuoc.Text;
+            th.TenThuoc = (tenthuoc.Text);
             foreach (donViDTO donvi in listdv)
             {
                 if (donvi.TenDonVi == donvitinh.Text)
@@ -246,8 +246,8 @@ namespace GUI_QLPK
 
         private void Xoa_Click(object sender, EventArgs e)
         {
-            th.MaThuoc = mathuoc.Text;
-            th.TenThuoc = tenthuoc.Text;
+            th.MaThuoc = (mathuoc.Text);
+            th.TenThuoc = (tenthuoc.Text);
             foreach (donViDTO donvi in listdv)
             {
                 if (donvi.TenDonVi == donvitinh.Text)

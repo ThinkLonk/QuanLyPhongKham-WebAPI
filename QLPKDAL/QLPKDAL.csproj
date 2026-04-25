@@ -9,11 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>QLPKDAL</RootNamespace>
     <AssemblyName>QLPKDAL</AssemblyName>
-<<<<<<< HEAD
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-=======
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
->>>>>>> master
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />

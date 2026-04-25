@@ -141,7 +141,7 @@ namespace GUI_QLPM
             tk.Password = password.Text;
             tk.Name = hoten.Text;
             if (comboBoxRole.SelectedValue != null)
-                tk.MaLoai = Convert.ToInt32(comboBoxRole.SelectedValue);
+                tk.MaLoai = Convert.ToString(comboBoxRole.SelectedValue);
 
             bool kq = tkBus.sua(tk, temp_ma);
             if (!kq)

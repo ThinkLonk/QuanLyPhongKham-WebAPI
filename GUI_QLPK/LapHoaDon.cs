@@ -40,9 +40,9 @@ namespace GUI_QLPK
         System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("en-US");
         public float tt;
         public float tkham;
-        public int maNV;
+        public string maNV;
         public int stt;
-        public LapHoaDon(int mataikhoan)
+        public LapHoaDon(string mataikhoan)
         {
             maNV = mataikhoan; //lưu NV đăng nhập
             InitializeComponent();
@@ -126,7 +126,7 @@ namespace GUI_QLPK
         {
             foreach (phieukhambenhDTO pkb in listpkb)
             {
-                if (pkb.MaPKB == mapkb.Text)
+                if (pkb.MaPKB == (mapkb.Text))
                 {
                     if (listBenhnhan == null)
                     {
@@ -159,7 +159,7 @@ namespace GUI_QLPK
             hoadonDTO hd = new hoadonDTO();
             hd.MaNVTN = maNV;
             hd.TongTien = tt;
-            hd.MaPKB = mapkb.Text;
+            hd.MaPKB =(mapkb.Text);
             hd.NgayLapHoaDon = DateTime.UtcNow.Date;
             hd.TienKham = tkham;
             hd.TienThuoc = hdBus.tienthuoc(hd, mapkb.Text);
@@ -279,7 +279,7 @@ namespace GUI_QLPK
             List<dichvuDTO> listdv = dvBus.select();
             foreach (dichvuDTO d in listdv)
             {
-                if (selectedIndex + 1 == d.MaDichVu) //giả định ID = vị trí+1
+                if (selectedIndex + 1 == int.Parse(d.MaDichVu)) //giả định ID = vị trí+1
                 {
                     tienkham.Text = d.TienDichVu.ToString();
                     tkham = d.TienDichVu;

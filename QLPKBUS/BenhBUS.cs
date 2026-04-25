@@ -39,7 +39,7 @@ namespace QLPKBUS
         {
             return beDAL.selectByKeyWord(sKeyword);
         }
-        public int autogenerate_mabenh()
+        public string autogenerate_mabenh()
         {
             return beDAL.autogenerate_mabenh();
         }
