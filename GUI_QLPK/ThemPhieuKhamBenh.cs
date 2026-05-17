@@ -46,7 +46,12 @@ namespace GUI_QLPK
             hoten.Text = "";
             trieuchung.Text = "";
             ngaytaikham.Checked = false;
+            ngaytaikham.ShowCheckBox = true;
+            ngaytaikham.CustomFormat = "dd/MM/yyyy";
+            ngaytaikham.Format = DateTimePickerFormat.Custom;
             ngaytaikham.Value = DateTime.Now.AddDays(7);
+            nudGio.Value = 8;
+            nudPhut.Value = 0;
         }
 
         private void load_combobox_benh()
@@ -54,63 +59,72 @@ namespace GUI_QLPK
             checkedListBoxBenh.Items.Clear();
             List<benhDTO> listBenh = beBus.select();
             foreach (benhDTO be in listBenh)
-            {
                 checkedListBoxBenh.Items.Add(be.TenBenh);
-            }
         }
 
         private void load_ten(List<BenhNhanDTO> listBenhNhan, int mabn)
         {
             if (listBenhNhan == null)
             {
-                MessageBox.Show("Có lỗi khi lấy thông tin từ hệ thống", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Có lỗi khi lấy thông tin từ hệ thống", "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             var benhNhan = listBenhNhan.FirstOrDefault(bn => bn.MaBN == mabn);
             if (benhNhan != null)
-            {
                 hoten.Text = benhNhan.TenBN;
-            }
         }
 
         private void btnLapphieu_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(trieuchung.Text))
             {
-                MessageBox.Show("Vui lòng nhập triệu chứng", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng nhập triệu chứng", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(mabenhnhan.Text))
             {
-                MessageBox.Show("Vui lòng chọn bệnh nhân", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng chọn bệnh nhân", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
+            if (_maLichHen == -1)
+            {
+                MessageBox.Show("Vui lòng chọn bệnh nhân từ danh sách.", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Kiểm tra ngày tái khám nếu có tick
             DateTime? ngayTaiKhamValue = null;
             if (ngaytaikham.Checked)
             {
                 DateTime ngayTaiKham = ngaytaikham.Value.Date;
+                DateTime ngayGioTaiKham = ngayTaiKham
+                    .AddHours((double)nudGio.Value)
+                    .AddMinutes((double)nudPhut.Value);
                 if (ngayTaiKham <= DateTime.Today)
                 {
-                    MessageBox.Show("Ngày tái khám phải sau ngày hôm nay", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Ngày tái khám phải sau ngày hôm nay", "Thông báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                ngayTaiKhamValue = ngayTaiKham;
+                ngayTaiKhamValue = ngayGioTaiKham;
             }
 
             phieukhambenhDTO pkb = new phieukhambenhDTO();
             List<benhDTO> listBenh = beBus.select();
 
-            pkb.NgayKham = DateTime.Now.Date; // Dùng DateTime.Now thay vì UtcNow để đồng bộ thời gian thực tại VN
+            pkb.NgayKham = DateTime.Now.Date;
             pkb.TrieuChung = trieuchung.Text.Trim();
             pkb.MaBenhNhan = int.Parse(mabenhnhan.Text);
-            pkb.NgayTaiKham = ngayTaiKhamValue ?? DateTime.Today.AddYears(1);
+            pkb.NgayTaiKham = ngayTaiKhamValue;
             pkb.MBS = maBS;
 
-            // Thực hiện thêm phiếu khám
             bool ADDPKB = pkbBUS.them(pkb);
-            // LƯU Ý: Đảm bảo pkbBUS.them(pkb) nạp lại ID tự tăng vào pkb.MaPKB sau khi insert thành công.
 
             bool loiChanDoan = false;
             bool coBenhDuocChon = false;
@@ -153,14 +167,37 @@ namespace GUI_QLPK
 
                 if (!coBenhDuocChon || laBenhKhongBenh)
                 {
-                    // Không bệnh → Đã khám, ẩn nút kê toa
+                    // Không bệnh → Đã khám
                     lhBUS.CapNhatTrangThai(_maLichHen, "Đã khám");
+
+                    // Nếu có tick tái khám → tạo lịch hẹn mới ngay
+                    if (ngayTaiKhamValue.HasValue)
+                    {
+                        List<lichHenDTO> listLH = lhBUS.select();
+                        var lhHienTai = listLH.FirstOrDefault(x => x.MaLichHen == _maLichHen);
+
+                        if (lhHienTai != null)
+                        {
+                            bool kqTaoLich = lhBUS.ThemLichHenTaiKham(
+                                pkb.MaBenhNhan,
+                                lhHienTai.MaTaiKhoan,
+                                lhHienTai.MaDieuDuong,
+                                ngayTaiKhamValue.Value
+                         
+                            );
+
+                            if (!kqTaoLich)
+                                MessageBox.Show("Tạo lịch tái khám thất bại.", "Cảnh báo",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                    }
+
                     btnKeToa.Visible = false;
                     btnKeToa.Enabled = false;
                 }
                 else
                 {
-                    // Có bệnh → Chờ kê thuốc, hiện nút kê toa
+                    // Có bệnh → Chờ kê thuốc
                     lhBUS.CapNhatTrangThai(_maLichHen, "Chờ kê thuốc");
                     btnKeToa.Visible = true;
                     btnKeToa.Enabled = true;
@@ -168,12 +205,14 @@ namespace GUI_QLPK
                     btnLapphieu.Enabled = false;
                 }
 
-                MessageBox.Show("Lập phiếu thành công", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Lập phiếu thành công", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Load_Gird();
             }
             else
             {
-                MessageBox.Show("Lập phiếu thất bại", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Lập phiếu thất bại", "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -182,7 +221,9 @@ namespace GUI_QLPK
             int stt = 1;
             List<BenhNhanDTO> listBenhNhan = bnBUS.select();
             List<lichHenDTO> listLichHen = lhBUS.select();
-            List<lichHenDTO> lhbacsi = listLichHen.Where(lh => lh.MaTaiKhoan == maBS && lh.NgayHen.Date >= DateTime.Today).ToList();
+            List<lichHenDTO> lhbacsi = listLichHen
+                .Where(lh => lh.MaTaiKhoan == maBS && lh.NgayHen.Date >= DateTime.Today)
+                .ToList();
 
             DataTable table = new DataTable();
             table.Columns.Add("Số thứ tự", typeof(int));
@@ -224,7 +265,6 @@ namespace GUI_QLPK
             }
 
             gird.DataSource = table.DefaultView;
-
             gird.RowPrePaint -= gird_RowPrePaint;
             gird.RowPrePaint += gird_RowPrePaint;
 
@@ -263,28 +303,17 @@ namespace GUI_QLPK
             if (e.RowIndex < 0 || e.RowIndex >= gird.Rows.Count) return;
 
             DataGridViewRow row = gird.Rows[e.RowIndex];
+
             if (row.Cells["Mã lịch hẹn"].Value != DBNull.Value)
-            {
                 _maLichHen = Convert.ToInt32(row.Cells["Mã lịch hẹn"].Value);
-            }
+
             string trangThai = row.Cells["Trạng thái"].Value?.ToString();
 
-            // Đổ thông tin cơ bản lên các control trước
             hoten.Text = row.Cells["Tên bệnh nhân"].Value?.ToString();
             mabenhnhan.Text = row.Cells["Mã bệnh nhân"].Value?.ToString();
             string ngay = row.Cells["Ngày hẹn"].Value?.ToString();
             string gio = row.Cells["Giờ hẹn"].Value?.ToString();
             ngaykham.Text = ngay + " " + gio;
-
-            if (trangThai == "Đã khám")
-            {
-                MessageBox.Show("Bệnh nhân này đã khám xong.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                btnKeToa.Visible = false;
-                btnKeToa.Enabled = false;
-                btnLapphieu.Visible = false;
-                btnLapphieu.Enabled = false;
-                return;
-            }
 
             if (trangThai == "Chờ khám")
             {
@@ -292,7 +321,6 @@ namespace GUI_QLPK
                 btnLapphieu.Enabled = true;
                 btnKeToa.Visible = false;
                 btnKeToa.Enabled = false;
-
                 _maPKBVuaLap = -1;
                 _maBNVuaLap = -1;
             }
@@ -301,10 +329,9 @@ namespace GUI_QLPK
                 btnLapphieu.Visible = false;
                 btnLapphieu.Enabled = false;
 
-                // SỬA LỖI TẠI ĐÂY: Thay vì row.Cells[1].Value, ta gọi đích danh tên cột "Mã bệnh nhân"
                 _maBNVuaLap = Convert.ToInt32(row.Cells["Mã bệnh nhân"].Value);
 
-                // Tìm maPKB mới nhất của bệnh nhân này để tiến hành kê toa
+                // Tìm PKB mới nhất của BN này
                 List<phieukhambenhDTO> listPKB = pkbBUS.select();
                 var pkbCuaBN = listPKB
                     .Where(x => x.MaBenhNhan == _maBNVuaLap)
@@ -312,9 +339,7 @@ namespace GUI_QLPK
                     .FirstOrDefault();
 
                 if (pkbCuaBN != null)
-                {
                     _maPKBVuaLap = pkbCuaBN.MaPKB;
-                }
 
                 btnKeToa.Visible = true;
                 btnKeToa.Enabled = true;
@@ -325,19 +350,29 @@ namespace GUI_QLPK
         {
             if (_maPKBVuaLap == -1 || _maBNVuaLap == -1)
             {
-                MessageBox.Show("Không tìm thấy thông tin phiếu khám hợp lệ cho bệnh nhân này.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Không tìm thấy thông tin phiếu khám hợp lệ.", "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            KeToa toa = new KeToa(_maPKBVuaLap, _maBNVuaLap);
+            // Lấy ngày tái khám nếu có tick
+            DateTime? ngayTaiKham = ngaytaikham.Checked ? ngaytaikham.Value.Date : (DateTime?)null;
+
+            // Lấy thông tin lịch hẹn hiện tại để copy maTaiKhoan, maDieuDuong
+            List<lichHenDTO> listLH = lhBUS.select();
+            var lhHienTai = listLH.FirstOrDefault(x => x.MaLichHen == _maLichHen);
+
+            KeToa toa = new KeToa(_maPKBVuaLap, _maBNVuaLap, _maLichHen, ngayTaiKham, lhHienTai);
             toa.ShowDialog();
 
-            // Làm sạch dữ liệu sau khi hoàn tất kê toa
             Load_Gird();
             btnKeToa.Visible = false;
             btnKeToa.Enabled = false;
+            btnLapphieu.Visible = true;
+            btnLapphieu.Enabled = true;
             _maPKBVuaLap = -1;
             _maBNVuaLap = -1;
+            _maLichHen = -1;
         }
 
         private void mabenhnhan_SelectedIndexChanged(object sender, EventArgs e)
@@ -346,6 +381,21 @@ namespace GUI_QLPK
             int selectedMaBN = int.Parse(mabenhnhan.SelectedItem.ToString());
             List<BenhNhanDTO> listBenhNhan = bnBUS.select();
             load_ten(listBenhNhan, selectedMaBN);
+        }
+
+        private void maPKB_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void guna2CheckBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

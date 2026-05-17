@@ -42,10 +42,7 @@ namespace QLPKDAL
                                 pkb.NgayKham = Convert.ToDateTime(reader["ngayKham"]);
                                 pkb.MaBenhNhan = int.Parse(reader["maBenhNhan"].ToString());
                                 pkb.MBS = int.Parse(reader["maTaiKhoan"].ToString());
-                                pkb.NgayTaiKham = Convert.ToDateTime(reader["ngayTaiKham"]);
-                                // Lưu ý: View v_ChiTietPhieuKham cần trả về DaGuiMail nếu DTO cần.
-                                // Nếu View không trả về, gán mặc định hoặc bổ sung vào View.
-                                // Giả sử View đã được cập nhật hoặc dùng giá trị mặc định.
+                                pkb.NgayTaiKham = reader["ngayTaiKham"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ngayTaiKham"]);
                                 pkb.DaGuiMail = false; 
                                 lspkb.Add(pkb);
                             }
@@ -110,7 +107,7 @@ namespace QLPKDAL
                     cmd.Parameters.AddWithValue("@trieuChung", pkb.TrieuChung);
                     cmd.Parameters.AddWithValue("@maBenhNhan", pkb.MaBenhNhan);
                     cmd.Parameters.AddWithValue("@maTaiKhoan", pkb.MBS);
-                    cmd.Parameters.AddWithValue("@ngayTaiKham", pkb.NgayTaiKham);
+                    cmd.Parameters.AddWithValue( "@ngayTaiKham",   pkb.NgayTaiKham ?? (object)DBNull.Value);
 
                     try
                     {

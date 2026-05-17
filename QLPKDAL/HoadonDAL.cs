@@ -63,12 +63,32 @@ namespace QLPKDAL
                             while (reader.Read())
                             {
                                 hoadonDTO hd = new hoadonDTO();
-                                hd.MaHoaDon = int.Parse(reader["maHoaDon"].ToString());
-                                hd.NgayLapHoaDon = DateTime.Parse(reader["ngayLapHoaDon"].ToString());
-                                hd.TienThuoc = decimal.Parse(reader["tienThuoc"].ToString());
-                                hd.TongTien = float.Parse(reader["tongTien"].ToString());
-                                hd.TienKham = float.Parse(reader["tienKham"].ToString());
-                               
+
+                                hd.MaHoaDon =
+                                    int.Parse(reader["maHoaDon"].ToString());
+
+                                hd.MaPKB =
+                                    int.Parse(reader["maPKB"].ToString());
+
+                                hd.MaNVTN =
+                                    int.Parse(reader["maTaiKhoan"].ToString());
+
+                                hd.NgayLapHoaDon =
+                                    DateTime.Parse(
+                                        reader["ngayLapHoaDon"].ToString());
+
+                                hd.TienThuoc =
+                                    decimal.Parse(
+                                        reader["tienThuoc"].ToString());
+
+                                hd.TienKham =
+                                    float.Parse(
+                                        reader["tienKham"].ToString());
+
+                                hd.TongTien =
+                                    float.Parse(
+                                        reader["tongTien"].ToString());
+
                                 lsHoaDon.Add(hd);
                             }
                         }

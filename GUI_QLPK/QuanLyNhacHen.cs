@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Configuration;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Mail;
@@ -22,7 +23,7 @@ namespace GUI_QLPK
         BenhNhanBUS bnBus = new BenhNhanBUS();
         PhieukhambenhBUS pkbBus = new PhieukhambenhBUS();
         private int stt;
-
+       
         public QuanLyNhacHen()
         {
             InitializeComponent();
@@ -75,17 +76,30 @@ namespace GUI_QLPK
                 {
                     if (bn.MaBN == pkb.MaBenhNhan)
                     {
+                        // Không có ngày tái khám thì bỏ qua
+                        if (!pkb.NgayTaiKham.HasValue)
+                        {
+                            continue;
+                        }
+
                         DataRow row = table.NewRow();
+
                         row["Số thứ tự"] = stt;
-                       // row["Mã bệnh nhân"] = pkb.MaPKB;
+
                         row["Tên bệnh nhân"] = bn.TenBN;
-                        row["Ngày tái khám"] = pkb.NgayTaiKham.ToString("dd/MM/yyyy");
+
+                        row["Ngày tái khám"] =
+                            pkb.NgayTaiKham.Value
+                            .ToString("dd/MM/yyyy");
+
                         row["Email"] = bn.Email;
+
                         row["Đã gửi mail"] = pkb.DaGuiMail;
+
                         table.Rows.Add(row);
+
                         stt += 1;
                     }
-                    
                 }
             }
 
@@ -157,46 +171,67 @@ namespace GUI_QLPK
             List<BenhNhanDTO> tatCaBN = bnBus.select();
 
             foreach (phieukhambenhDTO pkb in lishPKB)
+{
+    // Không có ngày tái khám thì bỏ qua
+    if (!pkb.NgayTaiKham.HasValue)
+    {
+        continue;
+    }
+
+    // kiểm tra xem ngày hẹn đúng 2 ngày sau
+    if (pkb.NgayTaiKham.Value.Date == ngayCanNhac)
+    {
+        // xử lý chưa gửi
+        if (!pkb.DaGuiMail)
+        {
+            // tìm thông tin bệnh nhân
+            BenhNhanDTO bn = null;
+
+            foreach (BenhNhanDTO item in tatCaBN)
             {
-                //kiểm tra xem ngày hẹn đúng 2 ngày sau
-                if (pkb.NgayTaiKham.Date == ngayCanNhac)
+                if (item.MaBN == pkb.MaBenhNhan)
                 {
-                    //xử lý chưa gửi
-                    if (!pkb.DaGuiMail)
-                    {
-                        // tìm thông tin bệnh nhân
-                        BenhNhanDTO bn = null;
-                        foreach (BenhNhanDTO item in tatCaBN)
-                        {
-                            if (item.MaBN == pkb.MaBenhNhan)
-                            {
-                                bn = item;
-                                break;
-                            }
-                        }
-                        if (bn != null && !String.IsNullOrEmpty(bn.Email))
-                        {
-                            bool guiThanhCong = GuiMailReminder(bn.Email, bn.TenBN, pkb.NgayTaiKham);
-                            if (guiThanhCong)
-                            {
-                                // cập nhật DB
-                                pkbBus.CapNhatDaGuiMail(pkb.MaPKB, true);
-                                // đánh dấu luôn trong object để hiển thị
-                                pkb.DaGuiMail = true;
-                            }
-                        }
-                    }
+                    bn = item;
+                    break;
+                }
+            }
+
+            if (bn != null &&
+                !String.IsNullOrEmpty(bn.Email))
+            {
+                bool guiThanhCong =
+                    GuiMailReminder(
+                        bn.Email,
+                        bn.TenBN,
+                        pkb.NgayTaiKham.Value
+                    );
+
+                if (guiThanhCong)
+                {
+                    // cập nhật DB
+                    pkbBus.CapNhatDaGuiMail(
+                        pkb.MaPKB,
+                        true
+                    );
+
+                    // đánh dấu luôn trong object
+                    pkb.DaGuiMail = true;
                 }
             }
         }
+    }
+}
+        }
         private bool GuiMailReminder(string toEmail, string tenBN, DateTime ngayHen)
         {
+            string email = ConfigurationManager.AppSettings["ReminderMailFrom"];
+            string password = ConfigurationManager.AppSettings["ReminderMailPassword"];
             try
             {
                 //tạo đối tượng
                 MailMessage msg = new MailMessage();
                 //Người gửi
-                msg.From = new MailAddress("ngocson877469@gmail.com", "Phòng khám tư nhân");
+                msg.From = new MailAddress(email, "Phòng khám tư nhân");
                 //Người nhận
                 msg.To.Add(new MailAddress(toEmail));
                 //tiêu đề
@@ -213,8 +248,8 @@ namespace GUI_QLPK
                 smtp.EnableSsl = true; //Bật TLS cho kết nối.
                 smtp.DeliveryMethod = SmtpDeliveryMethod.Network; 
                 smtp.Credentials = new NetworkCredential(// thông tin đăng nhập
-                    "ngocson877469@gmail.com",
-                    "dvxj elft zouj fcpd"
+                    email,
+                    password
                 );
                 smtp.Send(msg);
                 MessageBox.Show("Gửi mail thành công", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);

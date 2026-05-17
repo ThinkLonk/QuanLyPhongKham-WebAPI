@@ -15,7 +15,7 @@ namespace QLPKDTO
         private float tongTien;
         private int maPKB;
         private int maNVTN; // Mã nhân viên thu ngân
-        private DateTime ngayTaiKham;
+        private DateTime? ngayTaiKham;
         public int MaPKB { get => maPKB; set => maPKB = value; }
         public int MaHoaDon { get => maHoaDon; set => maHoaDon = value; }
         public DateTime NgayLapHoaDon { get => ngayLapHoaDon; set => ngayLapHoaDon = value; }
@@ -23,6 +23,6 @@ namespace QLPKDTO
         public float TienKham { get => tienKham; set => tienKham = value; }
         public float TongTien { get => tongTien; set => tongTien = value; }
         public int MaNVTN { get => maNVTN; set => maNVTN = value; }
-        public DateTime NgayTaiKham { get => ngayTaiKham; set => ngayTaiKham = value; }
+        public DateTime? NgayTaiKham { get => ngayTaiKham; set => ngayTaiKham = value; }
     }
 }

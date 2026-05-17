@@ -28,10 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
+            this.checkedListBoxBenh = new System.Windows.Forms.CheckedListBox();
             this.ngaykham = new Guna.UI2.WinForms.Guna2TextBox();
             this.btnKeToa = new Guna.UI2.WinForms.Guna2Button();
             this.btnLapphieu = new Guna.UI2.WinForms.Guna2Button();
@@ -48,14 +49,20 @@
             this.label1 = new System.Windows.Forms.Label();
             this.mabenhnhan = new Guna.UI2.WinForms.Guna2ComboBox();
             this.gird = new Guna.UI2.WinForms.Guna2DataGridView();
-            this.checkedListBoxBenh = new System.Windows.Forms.CheckedListBox();
+            this.checkedListBoxBenh1 = new System.Windows.Forms.CheckedListBox();
+            this.nudGio = new Guna.UI2.WinForms.Guna2NumericUpDown();
+            this.nudPhut = new Guna.UI2.WinForms.Guna2NumericUpDown();
             this.guna2Panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gird)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudGio)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudPhut)).BeginInit();
             this.SuspendLayout();
             // 
             // guna2Panel1
             // 
             this.guna2Panel1.BackColor = System.Drawing.Color.LightCyan;
+            this.guna2Panel1.Controls.Add(this.nudPhut);
+            this.guna2Panel1.Controls.Add(this.nudGio);
             this.guna2Panel1.Controls.Add(this.checkedListBoxBenh);
             this.guna2Panel1.Controls.Add(this.ngaykham);
             this.guna2Panel1.Controls.Add(this.btnKeToa);
@@ -77,6 +84,14 @@
             this.guna2Panel1.Name = "guna2Panel1";
             this.guna2Panel1.Size = new System.Drawing.Size(1092, 342);
             this.guna2Panel1.TabIndex = 0;
+            // 
+            // checkedListBoxBenh
+            // 
+            this.checkedListBoxBenh.FormattingEnabled = true;
+            this.checkedListBoxBenh.Location = new System.Drawing.Point(668, 96);
+            this.checkedListBoxBenh.Name = "checkedListBoxBenh";
+            this.checkedListBoxBenh.Size = new System.Drawing.Size(247, 139);
+            this.checkedListBoxBenh.TabIndex = 21;
             // 
             // ngaykham
             // 
@@ -148,10 +163,11 @@
             this.ngaytaikham.BorderColor = System.Drawing.Color.Transparent;
             this.ngaytaikham.BorderThickness = 1;
             this.ngaytaikham.Checked = true;
+            this.ngaytaikham.CustomFormat = "dd/MM/yyyy";
             this.ngaytaikham.FillColor = System.Drawing.Color.White;
             this.ngaytaikham.Font = new System.Drawing.Font("Times New Roman", 12.22642F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ngaytaikham.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.ngaytaikham.Location = new System.Drawing.Point(668, 78);
+            this.ngaytaikham.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.ngaytaikham.Location = new System.Drawing.Point(668, 27);
             this.ngaytaikham.MaxDate = new System.DateTime(9998, 12, 31, 0, 0, 0, 0);
             this.ngaytaikham.MinDate = new System.DateTime(1753, 1, 1, 0, 0, 0, 0);
             this.ngaytaikham.Name = "ngaytaikham";
@@ -182,6 +198,8 @@
             this.maPKB.Size = new System.Drawing.Size(247, 40);
             this.maPKB.TabIndex = 13;
             this.maPKB.TabStop = false;
+            this.maPKB.Visible = false;
+            this.maPKB.TextChanged += new System.EventHandler(this.maPKB_TextChanged);
             // 
             // hoten
             // 
@@ -229,7 +247,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Times New Roman", 12.22642F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(545, 88);
+            this.label7.Location = new System.Drawing.Point(528, 27);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(110, 19);
             this.label7.TabIndex = 8;
@@ -239,7 +257,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Times New Roman", 12.22642F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(562, 141);
+            this.label6.Location = new System.Drawing.Point(542, 88);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(93, 19);
             this.label6.TabIndex = 7;
@@ -249,7 +267,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Times New Roman", 12.22642F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(565, 22);
+            this.label5.Location = new System.Drawing.Point(562, 27);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(73, 19);
             this.label5.TabIndex = 6;
@@ -313,28 +331,28 @@
             // 
             // gird
             // 
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            this.gird.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
+            this.gird.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             this.gird.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.gird.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.DodgerBlue;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Times New Roman", 10.86792F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.DodgerBlue;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.gird.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.DodgerBlue;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Times New Roman", 10.86792F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.DodgerBlue;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.gird.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.gird.ColumnHeadersHeight = 30;
             this.gird.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Times New Roman", 10.86792F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.LightGray;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.gird.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Times New Roman", 10.86792F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.LightGray;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.gird.DefaultCellStyle = dataGridViewCellStyle6;
             this.gird.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gird.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
             this.gird.Location = new System.Drawing.Point(0, 342);
@@ -367,13 +385,48 @@
             this.gird.ThemeStyle.RowsStyle.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
             this.gird.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gird_CellClick);
             // 
-            // checkedListBoxBenh
+            // checkedListBoxBenh1
             // 
-            this.checkedListBoxBenh.FormattingEnabled = true;
-            this.checkedListBoxBenh.Location = new System.Drawing.Point(668, 139);
-            this.checkedListBoxBenh.Name = "checkedListBoxBenh";
-            this.checkedListBoxBenh.Size = new System.Drawing.Size(247, 94);
-            this.checkedListBoxBenh.TabIndex = 21;
+            this.checkedListBoxBenh1.FormattingEnabled = true;
+            this.checkedListBoxBenh1.Location = new System.Drawing.Point(668, 96);
+            this.checkedListBoxBenh1.Name = "checkedListBoxBenh1";
+            this.checkedListBoxBenh1.Size = new System.Drawing.Size(247, 139);
+            this.checkedListBoxBenh1.TabIndex = 21;
+            // 
+            // nudGio
+            // 
+            this.nudGio.BackColor = System.Drawing.Color.Transparent;
+            this.nudGio.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.nudGio.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.nudGio.Location = new System.Drawing.Point(922, 31);
+            this.nudGio.Maximum = new decimal(new int[] {
+            23,
+            0,
+            0,
+            0});
+            this.nudGio.Name = "nudGio";
+            this.nudGio.Size = new System.Drawing.Size(52, 36);
+            this.nudGio.TabIndex = 22;
+            this.nudGio.Value = new decimal(new int[] {
+            8,
+            0,
+            0,
+            0});
+            // 
+            // nudPhut
+            // 
+            this.nudPhut.BackColor = System.Drawing.Color.Transparent;
+            this.nudPhut.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.nudPhut.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.nudPhut.Location = new System.Drawing.Point(980, 31);
+            this.nudPhut.Maximum = new decimal(new int[] {
+            59,
+            0,
+            0,
+            0});
+            this.nudPhut.Name = "nudPhut";
+            this.nudPhut.Size = new System.Drawing.Size(45, 36);
+            this.nudPhut.TabIndex = 23;
             // 
             // ThemPhieuKhamBenh
             // 
@@ -388,6 +441,8 @@
             this.guna2Panel1.ResumeLayout(false);
             this.guna2Panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gird)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudGio)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudPhut)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -411,6 +466,9 @@
         private Guna.UI2.WinForms.Guna2TextBox hoten;
         private Guna.UI2.WinForms.Guna2TextBox ngaykham;
         private Guna.UI2.WinForms.Guna2DataGridView gird;
+        private System.Windows.Forms.CheckedListBox checkedListBoxBenh1;
         private System.Windows.Forms.CheckedListBox checkedListBoxBenh;
+        private Guna.UI2.WinForms.Guna2NumericUpDown nudPhut;
+        private Guna.UI2.WinForms.Guna2NumericUpDown nudGio;
     }
 }

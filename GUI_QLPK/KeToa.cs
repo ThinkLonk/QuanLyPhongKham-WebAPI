@@ -22,20 +22,25 @@ namespace GUI_QLPK
 
         List<cachdungDTO> listcd;
         List<donViDTO> listdv;
+
         private int _maPKB;
         private int _maBN;
+        private int _maLichHen;
+        private DateTime? _ngayTaiKham;
+        private lichHenDTO _lhHienTai;
 
-        public KeToa(int maPKB, int maBN)
+        public KeToa(int maPKB, int maBN, int maLichHen, DateTime? ngayTaiKham, lichHenDTO lhHienTai)
         {
             InitializeComponent();
             _maPKB = maPKB;
             _maBN = maBN;
+            _maLichHen = maLichHen;
+            _ngayTaiKham = ngayTaiKham;
+            _lhHienTai = lhHienTai;
 
             gird.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
             listcd = cdBus.select();
             listdv = donVivBus.select();
-
             load_data();
         }
 
@@ -54,25 +59,19 @@ namespace GUI_QLPK
             List<thuocDTO> listThuoc = thBus.select();
             List<phieukhambenhDTO> listPKB = pkbBUS.select();
 
-            // Load combobox thuốc
             loadData_Vao_Combobox(listThuoc);
 
-            // Load mã phiếu khám
             mapkb.Items.Clear();
             foreach (phieukhambenhDTO pkb in listPKB)
-            {
                 mapkb.Items.Add(pkb.MaPKB);
-            }
 
-            // Tự động chọn mã PKB vừa lập — đặt SAU khi Items đã load xong
+            // Tự động chọn mã PKB — đặt SAU khi Items load xong
             if (mapkb.Items.Contains(_maPKB))
                 mapkb.SelectedItem = _maPKB;
             else
                 mapkb.SelectedIndex = -1;
 
-            // Khoá combobox, không cho đổi PKB
-            mapkb.Enabled = false;
-
+            mapkb.Enabled = false; // Khoá, không cho đổi
             maToa.Text = "Tự động";
             gird.DataSource = db1.DefaultView;
         }
@@ -115,7 +114,6 @@ namespace GUI_QLPK
 
         private void KeThuoc_Click(object sender, EventArgs e)
         {
-            // Kiểm tra mã phiếu khám
             if (mapkb.SelectedItem == null)
             {
                 MessageBox.Show("Vui lòng chọn mã phiếu khám bệnh", "Thông báo",
@@ -123,7 +121,6 @@ namespace GUI_QLPK
                 return;
             }
 
-            // Kiểm tra đã thêm thuốc chưa
             if (db1.Rows.Count == 0)
             {
                 MessageBox.Show("Vui lòng thêm thuốc vào toa", "Thông báo",
@@ -192,11 +189,32 @@ namespace GUI_QLPK
             }
             else
             {
-                // Kê toa xong → cập nhật trạng thái "Đã khám"
-                lhBUS.CapNhatTrangThai(_maBN, "Đã khám");
+                // ✅ Dùng _maLichHen thay vì _maBN
+                lhBUS.CapNhatTrangThai(_maLichHen, "Đã khám");
 
-                MessageBox.Show("Kê toa thành công", "Result",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // ✅ Tạo lịch hẹn tái khám nếu bác sĩ có chọn ngày tái khám
+                if (_ngayTaiKham.HasValue && _lhHienTai != null)
+                {
+                    bool kqTaoLich = lhBUS.ThemLichHenTaiKham(
+                        _maBN,
+                        _lhHienTai.MaTaiKhoan,
+                        _lhHienTai.MaDieuDuong,
+                        _ngayTaiKham.Value
+                    );
+
+                    if (kqTaoLich)
+                        MessageBox.Show("Kê toa thành công!\nĐã tạo lịch hẹn tái khám vào " +
+                            _ngayTaiKham.Value.ToString("dd/MM/yyyy"),
+                            "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    else
+                        MessageBox.Show("Kê toa thành công nhưng tạo lịch tái khám thất bại.",
+                            "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    MessageBox.Show("Kê toa thành công", "Thông báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
 
                 reset();
                 this.Close();
@@ -205,7 +223,6 @@ namespace GUI_QLPK
 
         private void guna2Button1_Click(object sender, EventArgs e)
         {
-            // Kiểm tra chọn thuốc
             if (TenThuoc.SelectedIndex < 0)
             {
                 MessageBox.Show("Vui lòng chọn thuốc", "Thông báo",
@@ -213,7 +230,6 @@ namespace GUI_QLPK
                 return;
             }
 
-            // Kiểm tra số lượng
             int soLuongNhap;
             if (!int.TryParse(soLuong.Text, out soLuongNhap) || soLuongNhap <= 0)
             {
@@ -226,7 +242,6 @@ namespace GUI_QLPK
             List<thuocDTO> listThuoc = thBus.select();
             bool daTonTai = false;
 
-            // Nếu thuốc đã có trong grid → cộng dồn số lượng
             for (int i = 0; i < db1.Rows.Count; i++)
             {
                 if (db1.Rows[i]["Tên thuốc"].ToString() == TenThuoc.Text)
@@ -238,7 +253,6 @@ namespace GUI_QLPK
                 }
             }
 
-            // Nếu chưa có → thêm mới
             if (!daTonTai)
             {
                 foreach (thuocDTO th in listThuoc)

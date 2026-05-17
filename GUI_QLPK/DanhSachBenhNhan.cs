@@ -87,9 +87,12 @@ namespace GUI_QLPK
 
                     // Ép kiểu an toàn (Sử dụng trực tiếp thuộc tính nếu là DateTime)
                     row["Ngày khám"] = item.pkb.NgayKham.ToString("dd/MM/yyyy");
-                    row["Ngày tái khám"] = item.pkb.NgayTaiKham.ToString("dd/MM/yyyy");
+                    row["Ngày tái khám"] =
+    item.pkb.NgayTaiKham.HasValue
+    ? item.pkb.NgayTaiKham.Value.ToString("dd/MM/yyyy")
+    : "Chưa có";
 
-                   
+
                     row["Bác sĩ khám"] = item.tk.Name;
 
                     table.Rows.Add(row);

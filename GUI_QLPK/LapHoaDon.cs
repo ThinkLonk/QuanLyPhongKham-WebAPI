@@ -16,7 +16,6 @@ using iText.Layout.Element;
 using iText.Layout.Properties;
 using iText.Kernel.Font;
 using iText.IO.Font.Constants;
-using System.Runtime.Remoting.Messaging;
 using iText.Kernel.Colors;
 using iText.IO.Font;
 using static iText.Kernel.Font.PdfFontFactory;
@@ -35,143 +34,201 @@ namespace GUI_QLPK
         donviBUS donviBus = new donviBUS();
         List<cachdungDTO> listcd;
         List<donViDTO> listdv;
-
+        BenhNhanBUS bnBus = new BenhNhanBUS();
         PhieukhambenhBUS pkbBus = new PhieukhambenhBUS();
-        System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("en-US");
+        CultureInfo culture = new CultureInfo("en-US");
+     
         public float tt;
         public float tkham;
         public int maNV;
         public int stt;
+
         public LapHoaDon(int mataikhoan)
         {
-            maNV = mataikhoan; //lưu NV đăng nhập
+            maNV = mataikhoan;
             InitializeComponent();
             listcd = cdBus.select();
             listdv = donviBus.select();
-            
             load();
-            //tự động điều chỉnh độ rộng
             gird.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
+
+        // Hàm helper lấy maPKB an toàn, trả -1 nếu không hợp lệ
+        private int GetMaPKB()
+        {
+            if (mapkb.SelectedValue == null)
+                return -1;
+
+            return Convert.ToInt32(
+                mapkb.SelectedValue
+            );
+        }
+
         public void load()
         {
-            PhieukhambenhBUS pkb = new PhieukhambenhBUS();
             hdBus = new HoadonBUS();
-            ngaylap. Text = DateTime.UtcNow.Date.ToString("dd/MM/yyyy");
+            stt = 1; // ← reset stt mỗi lần load
+            ngaylap.Text = DateTime.Now.Date.ToString("dd/MM/yyyy"); // ← dùng Now thay UtcNow
             mahd.Text = "Tự động";
             load_combobox();
             load_TenBN();
             loadtiendichvu();
-            load_data(int.Parse(mapkb.Text));
+
+            int maPKB = GetMaPKB();
+            if (maPKB != -1)
+                load_data(maPKB);
         }
-        //load PKB & dịch vụ
+
         public void load_combobox()
         {
-            BenhNhanBUS bnBus = new BenhNhanBUS();
             List<phieukhambenhDTO> listpkb = pkbBus.select();
             List<hoadonDTO> listhd = hdBus.select();
-            List<dichvuDTO> listdv = dvBus.select();
-            this.loadData_Vao_Combobox(listpkb, listhd, listdv);
+            List<dichvuDTO> listDichVu = dvBus.select();
+            List<BenhNhanDTO> listBenhNhan = bnBus.select();
+            loadData_Vao_Combobox(listpkb, listhd, listDichVu, listBenhNhan);
         }
+
         public void load_TenBN()
         {
             BenhNhanBUS bnBus = new BenhNhanBUS();
             List<BenhNhanDTO> listBenhnhan = bnBus.select();
             List<phieukhambenhDTO> listpkb = pkbBus.select();
-            this.loadData_TenBN(listBenhnhan, listpkb);
+            loadData_TenBN(listBenhnhan, listpkb);
         }
-        //nạp mã PKB & dịch vụ
-        private void loadData_Vao_Combobox(List<phieukhambenhDTO> listpkb, List<hoadonDTO> listhd, List<dichvuDTO> listdv)
-        {
-            mapkb.Items.Clear();
 
+        private void loadData_Vao_Combobox(List<phieukhambenhDTO> listpkb, List<hoadonDTO> listhd, List<dichvuDTO> listDichVu, List<BenhNhanDTO> listBenhNhan)
+        {
+            //mapkb.Items.Clear();
             comboDichVu.Items.Clear();
+
             if (listpkb == null)
             {
-                System.Windows.Forms.MessageBox.Show("Có lỗi khi lấy thông tin nạp vào combox pkb từ DB", "Result", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+                MessageBox.Show("Có lỗi khi lấy thông tin PKB từ DB", "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            // Chọn ra các PKB CHƯA có hoá đơn
+
+            List<PKBDisplay> dsPKB =
+     new List<PKBDisplay>();
+
             foreach (phieukhambenhDTO pkb in listpkb)
             {
                 bool exists = false;
+
                 foreach (hoadonDTO hd in listhd)
                 {
                     if (hd.MaPKB == pkb.MaPKB)
                     {
                         exists = true;
-                        break; // Nếu tìm thấy khớp, thoát khỏi vòng lặp
+                        break;
                     }
                 }
 
                 if (!exists)
                 {
-                    mapkb.Items.Add(pkb.MaPKB);
+                    BenhNhanDTO bn =
+                        listBenhNhan.FirstOrDefault(
+                            x => x.MaBN == pkb.MaBenhNhan
+                        );
+
+                    dsPKB.Add(new PKBDisplay
+                    {
+                        MaPKB = pkb.MaPKB,
+
+                        HienThi =
+                            $"PKB {pkb.MaPKB} - {bn?.TenBN}"
+                    });
                 }
-
             }
+            mapkb.DataSource = null;
+
+            mapkb.DisplayMember = "HienThi";
+            mapkb.ValueMember = "MaPKB";
+            mapkb.DataSource = dsPKB;
+
             if (mapkb.Items.Count > 0)
-            { mapkb.SelectedIndex = 0; }
+                mapkb.SelectedIndex = 0;
 
-            //nạp dịch vụ
-            foreach (dichvuDTO dichvu in listdv)
-            {
-
+            // Load dịch vụ
+            foreach (dichvuDTO dichvu in listDichVu)
                 comboDichVu.Items.Add(dichvu.TenDichVu);
+
+            if (comboDichVu.Items.Count > 0)
                 comboDichVu.SelectedIndex = 0;
-            }
         }
-        //Hiển thị tên BN và ngày tái khám theo PKB
+
         private void loadData_TenBN(List<BenhNhanDTO> listBenhnhan, List<phieukhambenhDTO> listpkb)
         {
-            foreach (phieukhambenhDTO pkb in listpkb)
+            int maPKB = GetMaPKB();
+            if (maPKB == -1)
             {
-                if (pkb.MaPKB == int.Parse(mapkb.Text))
-                {
-                    if (listBenhnhan == null)
-                    {
-                        MessageBox.Show("Có lỗi khi lấy thông tin tên bệnh nhân từ DB", "Result", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
-                        return;
-                    }
-
-                    foreach (BenhNhanDTO bn in listBenhnhan)
-                    {
-                        if (bn.MaBN == pkb.MaBenhNhan)
-                        {
-                            tenbn.Text = bn.TenBN;
-
-                        }
-                    }
-                    // Nếu có ngày tái khám, hiển thị nó
-                    if (pkb.NgayTaiKham == null || pkb.NgayTaiKham == DateTime.MinValue)
-                    {
-                        ngayTaiKham.Text = DateTime.UtcNow.Date.ToString();
-                    }
-                    else
-                        ngayTaiKham.Text = pkb.NgayTaiKham.ToString("dd/MM/yyyy");
-                }
+                tenbn.Text = "";
+                ngayTaiKham.Text = "Chưa có";
+                return;
             }
-        }
 
+            var pkb = listpkb.FirstOrDefault(p => p.MaPKB == maPKB);
+            if (pkb == null)
+            {
+                tenbn.Text = "";
+                ngayTaiKham.Text = "Chưa có";
+                return;
+            }
+
+            var bn = listBenhnhan?.FirstOrDefault(b => b.MaBN == pkb.MaBenhNhan);
+            tenbn.Text = bn != null ? bn.TenBN : "";
+
+            // ← xử lý nullable NgayTaiKham
+            ngayTaiKham.Text = pkb.NgayTaiKham.HasValue
+                ? pkb.NgayTaiKham.Value.ToString("dd/MM/yyyy")
+                : "Chưa có";
+        }
 
         private void btnLuu_Click(object sender, EventArgs e)
         {
+            int maPKB = GetMaPKB();
+            if (maPKB == -1)
+            {
+                MessageBox.Show("Vui lòng chọn phiếu khám bệnh", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             hoadonDTO hd = new hoadonDTO();
             hd.MaNVTN = maNV;
             hd.TongTien = tt;
-            hd.MaPKB =int.Parse(mapkb.Text);
-            hd.NgayLapHoaDon = DateTime.UtcNow.Date;
+            hd.MaPKB = maPKB;
+            hd.NgayLapHoaDon = DateTime.Now.Date; // ← dùng Now
             hd.TienKham = tkham;
-            hd.TienThuoc = hdBus.tienthuoc(hd, int.Parse(mapkb.Text));
-            hd.NgayTaiKham = DateTime.ParseExact(ngayTaiKham.Text,"dd/MM/yyyy",System.Globalization.CultureInfo.InvariantCulture).Date; ;
-            hdBus = new HoadonBUS();
-            bool kq = hdBus.them(hd);
-            if (kq == false)
-                System.Windows.Forms.MessageBox.Show("Lưu hóa đơn thất bại. Vui lòng kiểm tra lại dũ liệu", "Result", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+            hd.TienThuoc = hdBus.tienthuoc(hd, maPKB);
+
+            // ← xử lý nullable NgayTaiKham
+            if (ngayTaiKham.Text == "Chưa có" || string.IsNullOrWhiteSpace(ngayTaiKham.Text))
+                hd.NgayTaiKham = null;
             else
             {
-                System.Windows.Forms.MessageBox.Show("Lưu hóa đơn thành công", "Result");
+                DateTime parsedDate;
+                if (DateTime.TryParseExact(ngayTaiKham.Text, "dd/MM/yyyy",
+                    CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate))
+                    hd.NgayTaiKham = parsedDate;
+                else
+                    hd.NgayTaiKham = null;
             }
+
+            hdBus = new HoadonBUS();
+            bool kq = hdBus.them(hd);
+
+            if (!kq)
+            {
+                MessageBox.Show("Lưu hóa đơn thất bại. Vui lòng kiểm tra lại dữ liệu", "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            MessageBox.Show("Lưu hóa đơn thành công", "Thông báo",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            // Xuất PDF
             try
             {
                 DataTable dt = new DataTable();
@@ -190,45 +247,40 @@ namespace GUI_QLPK
                     dr["Thành tiền"] = row.Cells["Thành tiền"].Value;
                     dt.Rows.Add(dr);
                 }
-                //  Đặt đường dẫn lưu file
+
                 string folder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
                 string filename = $"HD_{mahd.Text}_{DateTime.Now:yyyyMMddHHmm}.pdf";
                 string fullPath = System.IO.Path.Combine(folder, filename);
-                string name = tenbn.Text;
-                string service = comboDichVu.Text;
-                DateTime time = DateTime.Parse(ngaylap.Text);
-                // Gọi hàm xuất PDF
-                try
-                {
-                    xuatpdf(fullPath, name, time, dt,service );
-                    MessageBox.Show($"Xuất hóa đơn thành công!\nĐường dẫn: {fullPath}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Lỗi khi xuất hóa đơn: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+
+                xuatpdf(fullPath, tenbn.Text, DateTime.Now, dt, comboDichVu.Text);
+                MessageBox.Show($"Xuất hóa đơn thành công!\nĐường dẫn: {fullPath}", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Xuất hóa đơn thất bại. Vui lòng kiểm tra lại dũ liệu", "Result", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+                MessageBox.Show($"Lỗi khi xuất hóa đơn: {ex.Message}", "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
             load();
         }
 
-        public void load_data(int mapkb)
+        public void load_data(int maPKB)
         {
+            stt = 1; // ← reset stt mỗi lần load_data
             thBus = new ThuocBUS();
             ktBus = new ChiTietToaThuocBUS();
-            List<thuocDTO> listThuoc = thBus.selectbypkb(mapkb);
-            List<ChiTietToaThuocDTO> listkethuoc = ktBus.selectbypkb(mapkb);
-            this.loadData_Vao_GridView(listThuoc, listkethuoc);
+            List<thuocDTO> listThuoc = thBus.selectbypkb(maPKB);
+            List<ChiTietToaThuocDTO> listkethuoc = ktBus.selectbypkb(maPKB);
+            loadData_Vao_GridView(listThuoc, listkethuoc);
         }
+
         private void loadData_Vao_GridView(List<thuocDTO> listThuoc, List<ChiTietToaThuocDTO> listkethuoc)
         {
-
             if (listThuoc == null || listkethuoc == null)
             {
-                System.Windows.Forms.MessageBox.Show("Có lỗi khi lấy thông tin load thông tin thuốc từ DB", "Result", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+                MessageBox.Show("Có lỗi khi tải thông tin thuốc từ DB", "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -239,32 +291,29 @@ namespace GUI_QLPK
             table.Columns.Add("Đơn giá", typeof(string));
             table.Columns.Add("Số lượng", typeof(string));
             table.Columns.Add("Thành tiền", typeof(string));
+
             foreach (thuocDTO th in listThuoc)
             {
                 foreach (ChiTietToaThuocDTO kt in listkethuoc)
                 {
                     if (th.MaThuoc == kt.MaThuoc)
                     {
-
                         DataRow row = table.NewRow();
+                        row["STT"] = stt;
                         row["Tên thuốc"] = th.TenThuoc;
-                        foreach (donViDTO donvi in listdv)
-                        {
-                            if (donvi.MaDonVi == th.MaDonVi)
-                            {
-                                row["Đơn vị tính"] = donvi.TenDonVi;
-                            }
 
-                        }
+                        var donvi = listdv.FirstOrDefault(d => d.MaDonVi == th.MaDonVi);
+                        row["Đơn vị tính"] = donvi != null ? donvi.TenDonVi : "";
+
                         row["Đơn giá"] = th.DonGia;
                         row["Số lượng"] = kt.SoLuong;
                         row["Thành tiền"] = (kt.SoLuong * th.DonGia).ToString();
-                        row["STT"] = stt;
                         table.Rows.Add(row);
-                        stt += 1;
+                        stt++;
                     }
                 }
             }
+
             gird.DataSource = table.DefaultView;
         }
 
@@ -272,84 +321,52 @@ namespace GUI_QLPK
         {
             loadtiendichvu();
         }
-        //tính tiền 
+
         public void loadtiendichvu()
         {
-            int selectedIndex = comboDichVu.SelectedIndex; 
-            List<dichvuDTO> listdv = dvBus.select();
-            foreach (dichvuDTO d in listdv)
-            {
-                if (selectedIndex + 1 == (d.MaDichVu)) //giả định ID = vị trí+1
-                {
-                    tienkham.Text = d.TienDichVu.ToString();
-                    tkham = d.TienDichVu;
-                    //format tiền khám N0
-                    decimal valueTienkham;
-                    if (decimal.TryParse(tienkham.Text, System.Globalization.NumberStyles.AllowThousands, culture, out valueTienkham))
-                    {
-                        tienkham.Text = String.Format(culture, "{0:N0}", valueTienkham);
-                        tienkham.Select(tienkham.Text.Length, 0);
-                    }
-                    hoadonDTO hd = new hoadonDTO();
-                    // Lấy tiền thuốc và chuyển đổi sang kiểu decimal
-                    string tthuoc = hdBus.tienthuoc(hd, int.Parse(mapkb.Text)).ToString();
+            int maPKB = GetMaPKB();
+            if (maPKB == -1) return;
 
-                    // Chuyển đổi tiền thuốc sang kiểu decimal và định dạng lại chuỗi
-                    decimal valueTthuoc;
-                    if (decimal.TryParse(tthuoc, System.Globalization.NumberStyles.AllowThousands, culture, out valueTthuoc))
-                    {
-                        tienthuoc.Text = String.Format(culture, "{0:N0}", valueTthuoc);
-                        tienthuoc.Select(tienthuoc.Text.Length, 0);
-                    }
+            List<dichvuDTO> listDichVu = dvBus.select();
+            string tenDichVuChon = comboDichVu.Text;
 
-                    // Tính tổng tiền và chuyển đổi sang chuỗi
-                    tt = (float)valueTthuoc + (float)valueTienkham;
-                    decimal valueTongtien = (decimal)tt;
+            // ← fix BUG H-03: tìm theo TenDichVu thay vì SelectedIndex + 1
+            var dichVuChon = listDichVu.FirstOrDefault(d => d.TenDichVu == tenDichVuChon);
+            if (dichVuChon == null) return;
 
-                    // Định dạng tổng tiền
-                    tongtien.Text = String.Format(culture, "{0:N0}", valueTongtien);
-                    tongtien.Select(tongtien.Text.Length, 0);
-                }
+            tkham = dichVuChon.TienDichVu;
 
-            }
+            decimal valueTienkham = (decimal)tkham;
+            tienkham.Text = valueTienkham.ToString("N0", culture);
+
+            decimal valueTthuoc = hdBus.tienthuoc(new hoadonDTO(), maPKB);
+            tienthuoc.Text = valueTthuoc.ToString("N0", culture);
+
+            tt = (float)(valueTthuoc + valueTienkham);
+            tongtien.Text = ((decimal)tt).ToString("N0", culture);
         }
-        //khi nguoi dung chon pkb khac tinh toan lai
+
         private void mapkb_SelectedIndexChanged(object sender, EventArgs e)
         {
-            load_data(int.Parse(mapkb.Text));
-            load_TenBN();
+            int maPKB = GetMaPKB();
+            if (maPKB == -1) return;
+
+            stt = 1; // ← reset stt
             tt = 0;
-            stt = 1;
             hdBus = new HoadonBUS();
-            hoadonDTO hd = new hoadonDTO();
+
             load_TenBN();
-            load_data(int.Parse(mapkb.Text));
+            load_data( Convert.ToInt32(mapkb.SelectedValue));
 
-            // Lấy tiền thuốc và chuyển đổi sang kiểu decimal
-            string tthuoc = hdBus.tienthuoc(hd, int.Parse(mapkb.Text)).ToString();
+            decimal valueTthuoc = hdBus.tienthuoc(new hoadonDTO(), maPKB);
+            tienthuoc.Text = valueTthuoc.ToString("N0", culture);
 
-            // Chuyển đổi tiền thuốc sang kiểu decimal và định dạng lại chuỗi
-            decimal valueTthuoc;
-            if (decimal.TryParse(tthuoc, System.Globalization.NumberStyles.AllowThousands, culture, out valueTthuoc))
-            {
-                tienthuoc.Text = String.Format(culture, "{0:N0}", valueTthuoc);
-                tienthuoc.Select(tienthuoc.Text.Length, 0);
-            }
-
-            // Chuyển đổi tiền khám sang kiểu decimal và định dạng lại chuỗi
             decimal valueTienkham;
-            if (decimal.TryParse(tienkham.Text, System.Globalization.NumberStyles.AllowThousands, culture, out valueTienkham))
-            {
-                tienkham.Text = String.Format(culture, "{0:N0}", valueTienkham);
-                tienkham.Select(tienkham.Text.Length, 0);
-            }
-            // Tính tổng tiền và chuyển đổi sang chuỗi
-            tt = (float)valueTthuoc + (float)valueTienkham;
-            decimal valueTongtien = (decimal)tt;
+            if (decimal.TryParse(tienkham.Text, NumberStyles.AllowThousands, culture, out valueTienkham))
+                tienkham.Text = valueTienkham.ToString("N0", culture);
 
-            // Định dạng tổng tiền
-            tongtien.Text = String.Format(culture, "{0:N0}", valueTongtien);
-            tongtien.Select(tongtien.Text.Length, 0);
+            tt = (float)(valueTthuoc + valueTienkham);
+            tongtien.Text = ((decimal)tt).ToString("N0", culture);
         }
 
         private void btnHoanTac_Click(object sender, EventArgs e)
@@ -359,133 +376,347 @@ namespace GUI_QLPK
             tienthuoc.Text = "";
             tienkham.Text = "";
             tenbn.Text = "";
-
-            load_combobox();
-            if (mapkb.Items.Count > 0)
-            {
-                mapkb.SelectedIndex = 0;
-            }
-
-            ngaylap.Text = DateTime.Today.ToString("dd/MM/yyyy");
-            ngayTaiKham.Text = DateTime.Today.ToString("dd/MM/yyyy");
+            ngayTaiKham.Text = "Chưa có"; // ← không set ngày hôm nay
+            ngaylap.Text = DateTime.Now.Date.ToString("dd/MM/yyyy");
 
             gird.DataSource = null;
             gird.Rows.Clear();
             tt = 0;
             tkham = 0;
             stt = 1;
+
+            load_combobox();
+            if (mapkb.Items.Count > 0)
+                mapkb.SelectedIndex = 0;
         }
-        private void xuatpdf(string outPath, string name, DateTime time, DataTable dtThuoc, string serviceName)
+
+        private void xuatpdf(
+     string outPath,
+     string name,
+     DateTime time,
+     DataTable dtThuoc,
+     string serviceName)
         {
             string fontPath = @"C:\Windows\Fonts\arial.ttf";
+
             try
             {
-                //khởi tạo pdf writer và document
+                if (!System.IO.File.Exists(fontPath))
+                {
+                    throw new Exception(
+                        "Không tìm thấy font Arial"
+                    );
+                }
+
                 PdfWriter writer = new PdfWriter(outPath);
-                PdfDocument pdfDoc = new PdfDocument(writer);
-                //tạo document cỡ a4 lề 40
-                Document document = new Document(pdfDoc, iText.Kernel.Geom.PageSize.A4);
+
+                PdfDocument pdfDoc =
+                    new PdfDocument(writer);
+
+                Document document =
+                    new Document(
+                        pdfDoc,
+                        iText.Kernel.Geom.PageSize.A4
+                    );
+
                 document.SetMargins(40, 40, 40, 40);
 
-                //tải font chữ
-                PdfFont vnFont = PdfFontFactory.CreateFont(
-                    fontPath,
-                    PdfEncodings.IDENTITY_H,             
-                    EmbeddingStrategy.PREFER_EMBEDDED     
+                PdfFont vnFont =
+                    PdfFontFactory.CreateFont(
+                        fontPath,
+                        PdfEncodings.IDENTITY_H,
+                        EmbeddingStrategy.PREFER_EMBEDDED
                     );
+
                 document.SetFont(vnFont);
                 document.SetFontSize(12);
-                //tieu đề
-                Paragraph header = new Paragraph("HÓA ĐƠN KHÁM BỆNH")
+
+                // Tiêu đề
+                document.Add(
+                    new Paragraph("HÓA ĐƠN KHÁM BỆNH")
                         .SetFont(vnFont)
                         .SetFontSize(18)
-                        .SetTextAlignment(TextAlignment.CENTER)
-                        .SetMarginBottom(20f);
-                document.Add(header);
+                        .SetTextAlignment(
+                            TextAlignment.CENTER
+                        )
+                        .SetMarginBottom(20f)
+                );
 
+                // Header info
                 float[] infoWidths = { 1, 1 };
-                Table tblInfo = new Table(UnitValue.CreatePercentArray(infoWidths))
+
+                Table tblInfo =
+                    new Table(
+                        UnitValue.CreatePercentArray(
+                            infoWidths
+                        )
+                    )
                     .UseAllAvailableWidth()
                     .SetMarginBottom(0f);
 
-                // cell bên trái: mã phiếu khám
-                tblInfo.AddCell(new Cell()
-                    .Add(new Paragraph($"Mã hóa đơn: {mahd.Text}"))
-                    .SetBorder(Border.NO_BORDER)
-                    .SetFont(vnFont)
-                    .SetFontSize(12));
-                
-                // cell bên phải: mã hóa đơn
-                tblInfo.AddCell(new Cell()
-                    .Add(new Paragraph($"Mã phiếu khám bệnh: {mapkb.Text}"))
-                    .SetBorder(Border.NO_BORDER)
-                    .SetFont(vnFont)
-                    .SetFontSize(12));
+                tblInfo.AddCell(
+                    new Cell()
+                        .Add(
+                            new Paragraph(
+                                $"Mã hóa đơn: {mahd.Text}"
+                            )
+                        )
+                        .SetBorder(Border.NO_BORDER)
+                        .SetFont(vnFont)
+                        .SetFontSize(12)
+                );
+
+                tblInfo.AddCell(
+                    new Cell()
+                        .Add(
+                            new Paragraph(
+                                $"Mã phiếu khám bệnh: " +
+                                $"{Convert.ToInt32(mapkb.SelectedValue)}"
+                            )
+                        )
+                        .SetBorder(Border.NO_BORDER)
+                        .SetFont(vnFont)
+                        .SetFontSize(12)
+                );
+
                 document.Add(tblInfo);
 
-                //thông tin bệnh nhân
-                Paragraph info = new Paragraph($"Tên bệnh nhân: {tenbn.Text}\n" +
-                                                $"Ngày lập hóa đơn: {ngaylap.Text}\n" +
-                                                $"Ngày tái khám: {ngayTaiKham.Text}\n")
-                        .SetFontSize(12)
-                        .SetFont(vnFont)
-                        .SetTextAlignment(TextAlignment.LEFT)
-                        .SetMarginTop(0f)
-                        .SetMarginBottom(20f);
-                document.Add(info);
-                //tạo bảng thuốc
-                float[] colWidths = { 1f, 6f, 2f, 3f, 3f };
-                Table table = new Table(UnitValue.CreatePercentArray(colWidths)).UseAllAvailableWidth();
-                //thêm tiêu đề cột
-                string[] headers = { "STT", "Tên thuốc, dịch vụ", "Số lượng", "Đơn giá","Thành tiền" };
-                for (int i = 0; i < headers.Length; i++)
-                {
-                    Cell cell = new Cell()
-                         .Add(new Paragraph(headers[i]).SetFontSize(12))
-                         .SetFont(vnFont)
-                         .SetBackgroundColor(ColorConstants.LIGHT_GRAY)
-                        .SetTextAlignment(TextAlignment.CENTER);
-                    table.AddHeaderCell(cell);
-                }
-                int stt = 1;
-                decimal serviceFee = decimal.Parse(tienkham.Text, NumberStyles.AllowThousands, culture);
-                decimal serviceTotal = serviceFee * 1;
+                // Thông tin bệnh nhân
+                document.Add(
+                    new Paragraph(
+                        $"Tên bệnh nhân: {tenbn.Text}\n" +
+                        $"Ngày lập hóa đơn: {ngaylap.Text}\n" +
+                        $"Ngày tái khám: {ngayTaiKham.Text}\n"
+                    )
+                    .SetFontSize(12)
+                    .SetFont(vnFont)
+                    .SetTextAlignment(
+                        TextAlignment.LEFT
+                    )
+                    .SetMarginTop(0f)
+                    .SetMarginBottom(20f)
+                );
 
-                table.AddCell(new Cell().Add(new Paragraph(stt.ToString())).SetTextAlignment(TextAlignment.CENTER));
-                table.AddCell(new Cell().Add(new Paragraph(serviceName)).SetTextAlignment(TextAlignment.LEFT));
-                table.AddCell(new Cell().Add(new Paragraph("1")).SetTextAlignment(TextAlignment.CENTER));
-                table.AddCell(new Cell().Add(new Paragraph(serviceFee.ToString("N0"))).SetTextAlignment(TextAlignment.RIGHT));
-                table.AddCell(new Cell().Add(new Paragraph(serviceTotal.ToString("N0"))).SetTextAlignment(TextAlignment.RIGHT));
-                //thêm dữ liệu vào bảng
+                // Bảng
+                float[] colWidths =
+                {
+            1f, 6f, 2f, 3f, 3f
+        };
+
+                Table table =
+                    new Table(
+                        UnitValue.CreatePercentArray(
+                            colWidths
+                        )
+                    )
+                    .UseAllAvailableWidth();
+
+                string[] headers =
+                {
+            "STT",
+            "Tên thuốc, dịch vụ",
+            "Số lượng",
+            "Đơn giá",
+            "Thành tiền"
+        };
+
+                foreach (string h in headers)
+                {
+                    table.AddHeaderCell(
+                        new Cell()
+                            .Add(
+                                new Paragraph(h)
+                                    .SetFontSize(12)
+                            )
+                            .SetFont(vnFont)
+                            .SetBackgroundColor(
+                                ColorConstants.LIGHT_GRAY
+                            )
+                            .SetTextAlignment(
+                                TextAlignment.CENTER
+                            )
+                    );
+                }
+
+                int rowStt = 1;
+
+                decimal serviceFee = (decimal)tkham;
+
+                // Dòng dịch vụ
+                table.AddCell(
+                    new Cell()
+                        .Add(
+                            new Paragraph(
+                                rowStt.ToString()
+                            )
+                        )
+                        .SetTextAlignment(
+                            TextAlignment.CENTER
+                        )
+                );
+
+                table.AddCell(
+                    new Cell()
+                        .Add(
+                            new Paragraph(serviceName)
+                        )
+                );
+
+                table.AddCell(
+                    new Cell()
+                        .Add(new Paragraph("1"))
+                        .SetTextAlignment(
+                            TextAlignment.CENTER
+                        )
+                );
+
+                table.AddCell(
+                    new Cell()
+                        .Add(
+                            new Paragraph(
+                                serviceFee.ToString("N0")
+                            )
+                        )
+                        .SetTextAlignment(
+                            TextAlignment.RIGHT
+                        )
+                );
+
+                table.AddCell(
+                    new Cell()
+                        .Add(
+                            new Paragraph(
+                                serviceFee.ToString("N0")
+                            )
+                        )
+                        .SetTextAlignment(
+                            TextAlignment.RIGHT
+                        )
+                );
+
+                // Thuốc
                 decimal totalThuoc = 0;
+
                 for (int i = 0; i < dtThuoc.Rows.Count; i++)
                 {
                     DataRow row = dtThuoc.Rows[i];
-                    int qty = Convert.ToInt32(row["Số lượng"]);
-                    decimal price = Convert.ToDecimal(row["Đơn giá"]);
-                    decimal thanhTien = price * qty;
+
+                    int qty =
+                        Convert.ToInt32(
+                            row["Số lượng"]
+                        );
+
+                    decimal price =
+                        Convert.ToDecimal(
+                            row["Đơn giá"]
+                        );
+
+                    decimal thanhTien =
+                        price * qty;
+
                     totalThuoc += thanhTien;
-                    stt++;
-                    table.AddCell(new Cell().Add(new Paragraph((stt).ToString())).SetTextAlignment(TextAlignment.CENTER));
-                    table.AddCell(new Cell().Add(new Paragraph(row["Tên thuốc"].ToString())).SetTextAlignment(TextAlignment.LEFT));
-                    table.AddCell(new Cell().Add(new Paragraph(row["Số lượng"].ToString())).SetTextAlignment(TextAlignment.CENTER));
-                    decimal unitPrice = Convert.ToDecimal(row["Đơn giá"]);
-                    table.AddCell(new Cell().Add(new Paragraph(unitPrice.ToString("N0"))).SetTextAlignment(TextAlignment.RIGHT));
-                    decimal thanhtien = Convert.ToDecimal(row["Thành tiền"]);
-                    table.AddCell(new Cell().Add(new Paragraph(thanhtien.ToString("N0"))).SetTextAlignment(TextAlignment.RIGHT));
+
+                    rowStt++;
+
+                    table.AddCell(
+                        new Cell()
+                            .Add(
+                                new Paragraph(
+                                    rowStt.ToString()
+                                )
+                            )
+                            .SetTextAlignment(
+                                TextAlignment.CENTER
+                            )
+                    );
+
+                    table.AddCell(
+                        new Cell()
+                            .Add(
+                                new Paragraph(
+                                    row["Tên thuốc"]
+                                        ?.ToString() ?? ""
+                                )
+                            )
+                    );
+
+                    table.AddCell(
+                        new Cell()
+                            .Add(
+                                new Paragraph(
+                                    qty.ToString()
+                                )
+                            )
+                            .SetTextAlignment(
+                                TextAlignment.CENTER
+                            )
+                    );
+
+                    table.AddCell(
+                        new Cell()
+                            .Add(
+                                new Paragraph(
+                                    price.ToString("N0")
+                                )
+                            )
+                            .SetTextAlignment(
+                                TextAlignment.RIGHT
+                            )
+                    );
+
+                    table.AddCell(
+                        new Cell()
+                            .Add(
+                                new Paragraph(
+                                    thanhTien.ToString("N0")
+                                )
+                            )
+                            .SetTextAlignment(
+                                TextAlignment.RIGHT
+                            )
+                    );
                 }
+
                 document.Add(table);
-                decimal tongCong = serviceTotal + totalThuoc;
-                document.Add(new Paragraph($"Tổng cộng: {tongCong.ToString("N0")} VNĐ")
-                                .SetFont(vnFont).SetFontSize(12)
-                                .SetTextAlignment(TextAlignment.RIGHT)
-                                .SetMarginTop(5f));
-                //đóng document
+
+                // Tổng tiền
+                decimal tongCong =
+                    serviceFee + totalThuoc;
+
+                document.Add(
+                    new Paragraph(
+                        $"Tổng cộng: " +
+                        $"{tongCong.ToString("N0")} VNĐ"
+                    )
+                    .SetFont(vnFont)
+                    .SetFontSize(12)
+                    .SetTextAlignment(
+                        TextAlignment.RIGHT
+                    )
+                    .SetMarginTop(5f)
+                );
+
+                // Footer
+                document.Add(
+                    new Paragraph(
+                        "\nCảm ơn quý khách!"
+                    )
+                    .SetFont(vnFont)
+                    .SetFontSize(11)
+                    .SetTextAlignment(
+                        TextAlignment.CENTER
+                    )
+                );
+
                 document.Close();
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Lỗi khi xuất PDF: " + ex.GetBaseException().Message, ex);
+                throw new ApplicationException(
+                    "Lỗi khi xuất PDF: " +
+                    ex.GetBaseException().Message,
+                    ex
+                );
             }
         }
     }

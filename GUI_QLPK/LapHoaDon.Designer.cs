@@ -33,6 +33,8 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.gird = new Guna.UI2.WinForms.Guna2DataGridView();
             this.guna2GroupBox1 = new Guna.UI2.WinForms.Guna2GroupBox();
+            this.ngayTaiKham = new Guna.UI2.WinForms.Guna2TextBox();
+            this.ngaylap = new Guna.UI2.WinForms.Guna2TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.comboDichVu = new Guna.UI2.WinForms.Guna2ComboBox();
@@ -55,8 +57,6 @@
             this.label9 = new System.Windows.Forms.Label();
             this.btnHoanTac = new Guna.UI2.WinForms.Guna2Button();
             this.btnLuu = new Guna.UI2.WinForms.Guna2Button();
-            this.ngaylap = new Guna.UI2.WinForms.Guna2TextBox();
-            this.ngayTaiKham = new Guna.UI2.WinForms.Guna2TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.gird)).BeginInit();
             this.guna2GroupBox1.SuspendLayout();
             this.guna2GroupBox2.SuspendLayout();
@@ -142,13 +142,57 @@
             this.guna2GroupBox1.TabIndex = 22;
             this.guna2GroupBox1.Text = " Thông tin phiếu";
             // 
+            // ngayTaiKham
+            // 
+            this.ngayTaiKham.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.ngayTaiKham.DefaultText = "";
+            this.ngayTaiKham.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.ngayTaiKham.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.ngayTaiKham.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.ngayTaiKham.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.ngayTaiKham.Enabled = false;
+            this.ngayTaiKham.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.ngayTaiKham.Font = new System.Drawing.Font("Times New Roman", 12.22642F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ngayTaiKham.ForeColor = System.Drawing.Color.Black;
+            this.ngayTaiKham.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.ngayTaiKham.Location = new System.Drawing.Point(166, 221);
+            this.ngayTaiKham.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ngayTaiKham.Name = "ngayTaiKham";
+            this.ngayTaiKham.PasswordChar = '\0';
+            this.ngayTaiKham.PlaceholderText = "";
+            this.ngayTaiKham.SelectedText = "";
+            this.ngayTaiKham.Size = new System.Drawing.Size(247, 40);
+            this.ngayTaiKham.TabIndex = 35;
+            // 
+            // ngaylap
+            // 
+            this.ngaylap.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.ngaylap.DefaultText = "";
+            this.ngaylap.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.ngaylap.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.ngaylap.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.ngaylap.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.ngaylap.Enabled = false;
+            this.ngaylap.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.ngaylap.Font = new System.Drawing.Font("Times New Roman", 12.22642F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ngaylap.ForeColor = System.Drawing.Color.Black;
+            this.ngaylap.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.ngaylap.Location = new System.Drawing.Point(166, 108);
+            this.ngaylap.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ngaylap.Name = "ngaylap";
+            this.ngaylap.PasswordChar = '\0';
+            this.ngaylap.PlaceholderText = "";
+            this.ngaylap.SelectedText = "";
+            this.ngaylap.Size = new System.Drawing.Size(246, 40);
+            this.ngaylap.TabIndex = 34;
+            // 
             // label12
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Times New Roman", 12.22642F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label12.Location = new System.Drawing.Point(18, 227);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(120, 21);
+            this.label12.Size = new System.Drawing.Size(110, 19);
             this.label12.TabIndex = 32;
             this.label12.Text = "Ngày tái khám:";
             // 
@@ -158,9 +202,10 @@
             this.label4.Font = new System.Drawing.Font("Times New Roman", 12.22642F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(378, 58);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(104, 21);
+            this.label4.Size = new System.Drawing.Size(94, 19);
             this.label4.TabIndex = 31;
             this.label4.Text = "Mã hóa đơn:";
+            this.label4.Visible = false;
             // 
             // comboDichVu
             // 
@@ -194,6 +239,7 @@
             this.tenbn.Location = new System.Drawing.Point(165, 163);
             this.tenbn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tenbn.Name = "tenbn";
+            this.tenbn.PasswordChar = '\0';
             this.tenbn.PlaceholderText = "";
             this.tenbn.SelectedText = "";
             this.tenbn.Size = new System.Drawing.Size(247, 40);
@@ -205,7 +251,7 @@
             this.label7.Font = new System.Drawing.Font("Times New Roman", 12.22642F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.Location = new System.Drawing.Point(18, 116);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(80, 21);
+            this.label7.Size = new System.Drawing.Size(73, 19);
             this.label7.TabIndex = 27;
             this.label7.Text = "Ngày lập:";
             // 
@@ -225,10 +271,12 @@
             this.mahd.Location = new System.Drawing.Point(489, 53);
             this.mahd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.mahd.Name = "mahd";
+            this.mahd.PasswordChar = '\0';
             this.mahd.PlaceholderText = "";
             this.mahd.SelectedText = "";
             this.mahd.Size = new System.Drawing.Size(148, 36);
             this.mahd.TabIndex = 25;
+            this.mahd.Visible = false;
             // 
             // label3
             // 
@@ -236,7 +284,7 @@
             this.label3.Font = new System.Drawing.Font("Times New Roman", 12.22642F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(18, 273);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(113, 21);
+            this.label3.Size = new System.Drawing.Size(101, 19);
             this.label3.TabIndex = 22;
             this.label3.Text = "Dịch vụ khám";
             // 
@@ -246,7 +294,7 @@
             this.label2.Font = new System.Drawing.Font("Times New Roman", 12.22642F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(18, 173);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(145, 21);
+            this.label2.Size = new System.Drawing.Size(131, 19);
             this.label2.TabIndex = 21;
             this.label2.Text = "Họ tên bệnh nhân:";
             // 
@@ -256,7 +304,7 @@
             this.label1.Font = new System.Drawing.Font("Times New Roman", 12.22642F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(18, 58);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(128, 21);
+            this.label1.Size = new System.Drawing.Size(117, 19);
             this.label1.TabIndex = 20;
             this.label1.Text = "Mã phiếu khám:";
             // 
@@ -272,7 +320,7 @@
             this.mapkb.ItemHeight = 30;
             this.mapkb.Location = new System.Drawing.Point(165, 53);
             this.mapkb.Name = "mapkb";
-            this.mapkb.Size = new System.Drawing.Size(148, 36);
+            this.mapkb.Size = new System.Drawing.Size(472, 36);
             this.mapkb.TabIndex = 19;
             this.mapkb.SelectedIndexChanged += new System.EventHandler(this.mapkb_SelectedIndexChanged);
             // 
@@ -304,7 +352,7 @@
             this.label11.Font = new System.Drawing.Font("Times New Roman", 12.22642F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label11.Location = new System.Drawing.Point(286, 158);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(50, 21);
+            this.label11.Size = new System.Drawing.Size(44, 19);
             this.label11.TabIndex = 35;
             this.label11.Text = "VNĐ";
             // 
@@ -324,6 +372,7 @@
             this.tongtien.Location = new System.Drawing.Point(134, 149);
             this.tongtien.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tongtien.Name = "tongtien";
+            this.tongtien.PasswordChar = '\0';
             this.tongtien.PlaceholderText = "";
             this.tongtien.SelectedText = "";
             this.tongtien.Size = new System.Drawing.Size(145, 40);
@@ -335,7 +384,7 @@
             this.label10.Font = new System.Drawing.Font("Times New Roman", 12.22642F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label10.Location = new System.Drawing.Point(286, 110);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(50, 21);
+            this.label10.Size = new System.Drawing.Size(44, 19);
             this.label10.TabIndex = 33;
             this.label10.Text = "VNĐ";
             // 
@@ -355,6 +404,7 @@
             this.tienthuoc.Location = new System.Drawing.Point(134, 101);
             this.tienthuoc.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tienthuoc.Name = "tienthuoc";
+            this.tienthuoc.PasswordChar = '\0';
             this.tienthuoc.PlaceholderText = "";
             this.tienthuoc.SelectedText = "";
             this.tienthuoc.Size = new System.Drawing.Size(145, 40);
@@ -366,7 +416,7 @@
             this.label5.Font = new System.Drawing.Font("Times New Roman", 12.22642F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(286, 62);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(50, 21);
+            this.label5.Size = new System.Drawing.Size(44, 19);
             this.label5.TabIndex = 31;
             this.label5.Text = "VNĐ";
             // 
@@ -386,6 +436,7 @@
             this.tienkham.Location = new System.Drawing.Point(134, 53);
             this.tienkham.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tienkham.Name = "tienkham";
+            this.tienkham.PasswordChar = '\0';
             this.tienkham.PlaceholderText = "";
             this.tienkham.SelectedText = "";
             this.tienkham.Size = new System.Drawing.Size(145, 40);
@@ -397,7 +448,7 @@
             this.label6.Font = new System.Drawing.Font("Times New Roman", 12.22642F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.Location = new System.Drawing.Point(40, 62);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(91, 21);
+            this.label6.Size = new System.Drawing.Size(83, 19);
             this.label6.TabIndex = 27;
             this.label6.Text = "Tiền khám:";
             // 
@@ -407,7 +458,7 @@
             this.label8.Font = new System.Drawing.Font("Times New Roman", 12.22642F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.Location = new System.Drawing.Point(40, 161);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(85, 21);
+            this.label8.Size = new System.Drawing.Size(78, 19);
             this.label8.TabIndex = 22;
             this.label8.Text = "Tổng tiền:";
             // 
@@ -417,7 +468,7 @@
             this.label9.Font = new System.Drawing.Font("Times New Roman", 12.22642F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.Location = new System.Drawing.Point(40, 113);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(93, 21);
+            this.label9.Size = new System.Drawing.Size(85, 19);
             this.label9.TabIndex = 21;
             this.label9.Text = "Tiền thuốc:";
             // 
@@ -462,48 +513,6 @@
             this.btnLuu.TabIndex = 34;
             this.btnLuu.Text = "Lưu hóa đơn";
             this.btnLuu.Click += new System.EventHandler(this.btnLuu_Click);
-            // 
-            // ngaylap
-            // 
-            this.ngaylap.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.ngaylap.DefaultText = "";
-            this.ngaylap.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
-            this.ngaylap.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            this.ngaylap.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.ngaylap.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.ngaylap.Enabled = false;
-            this.ngaylap.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.ngaylap.Font = new System.Drawing.Font("Times New Roman", 12.22642F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ngaylap.ForeColor = System.Drawing.Color.Black;
-            this.ngaylap.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.ngaylap.Location = new System.Drawing.Point(166, 108);
-            this.ngaylap.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.ngaylap.Name = "ngaylap";
-            this.ngaylap.PlaceholderText = "";
-            this.ngaylap.SelectedText = "";
-            this.ngaylap.Size = new System.Drawing.Size(246, 40);
-            this.ngaylap.TabIndex = 34;
-            // 
-            // ngayTaiKham
-            // 
-            this.ngayTaiKham.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.ngayTaiKham.DefaultText = "";
-            this.ngayTaiKham.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
-            this.ngayTaiKham.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            this.ngayTaiKham.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.ngayTaiKham.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.ngayTaiKham.Enabled = false;
-            this.ngayTaiKham.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.ngayTaiKham.Font = new System.Drawing.Font("Times New Roman", 12.22642F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ngayTaiKham.ForeColor = System.Drawing.Color.Black;
-            this.ngayTaiKham.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.ngayTaiKham.Location = new System.Drawing.Point(166, 221);
-            this.ngayTaiKham.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.ngayTaiKham.Name = "ngayTaiKham";
-            this.ngayTaiKham.PlaceholderText = "";
-            this.ngayTaiKham.SelectedText = "";
-            this.ngayTaiKham.Size = new System.Drawing.Size(247, 40);
-            this.ngayTaiKham.TabIndex = 35;
             // 
             // LapHoaDon
             // 
