@@ -5,17 +5,13 @@ using QLPKEF.Models;
 
 namespace QLPKEF.Samples;
 
-/// <summary>
-/// Minh hoạ LINQ to XML – Yêu cầu 4.3 của giảng viên.
-/// Đọc / xuất danh mục thuốc dưới dạng file XML để trao đổi dữ liệu
-/// với các phần mềm thứ ba (vd. hệ thống bảo hiểm y tế).
-/// </summary>
+
 public static class LinqToXmlExamples
 {
-    /// <summary>
+   
     /// Xuất danh mục thuốc trong CSDL ra file XML.
-    /// Tận dụng LINQ to Entities (truy vấn) + LINQ to XML (sinh tài liệu XML).
-    /// </summary>
+    /// Tận dụng LINQ to Entities (truy vấn) + LINQ to XML
+  
     public static async Task ExportDanhMucThuocAsync(QLPKDbContext db, string filePath)
     {
         var thuocs = await db.Thuocs
@@ -40,9 +36,9 @@ public static class LinqToXmlExamples
         xdoc.Save(filePath);
     }
 
-    /// <summary>
-    /// Nhập danh mục thuốc từ file XML vào CSDL (LINQ to XML đọc, LINQ to Entities ghi).
-    /// </summary>
+    
+    /// Nhập danh mục thuốc từ file XML vào CSDL
+   
     public static async Task<int> ImportDanhMucThuocAsync(QLPKDbContext db, string filePath)
     {
         var xdoc = XDocument.Load(filePath);
@@ -62,9 +58,9 @@ public static class LinqToXmlExamples
         return await db.SaveChangesAsync();
     }
 
-    /// <summary>
-    /// LINQ to Objects: lọc thuốc tồn kho thấp từ danh sách đã có trong RAM.
-    /// </summary>
+   
+    /// LINQ to Objects: lọc thuốc tồn kho thấp từ danh sách đã có
+    
     public static IEnumerable<Thuoc> LocThuocSapHet(IEnumerable<Thuoc> nguon, int nguong = 10) =>
         nguon.Where(t => (t.SoLuong ?? 0) <= nguong)
              .OrderBy(t => t.SoLuong)

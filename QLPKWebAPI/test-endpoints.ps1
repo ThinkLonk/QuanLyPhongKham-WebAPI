@@ -1,17 +1,9 @@
-# =============================================================================
-#  Script kiểm thử các endpoint của QLPK Web API
-#  Cách chạy:
-#      1. Chạy QLPKWebAPI (F5 trong Visual Studio hoặc dotnet run).
-#      2. Mở PowerShell tại thư mục này, chạy:
-#           .\test-endpoints.ps1
-#      Tham số: -Base 'https://localhost:7000' (mặc định) hoặc URL khác.
-#  Yêu cầu: PowerShell 7+ (Windows PowerShell 5.1 cũng chạy được).
-# =============================================================================
+
 param(
     [string]$Base = 'https://localhost:7000'
 )
 
-# Bỏ qua lỗi SSL self-signed (chỉ cho môi trường dev)
+# Bỏ qua lỗi SSL self-signed 
 if ($PSVersionTable.PSVersion.Major -ge 7) {
     $PSDefaultParameterValues['Invoke-RestMethod:SkipCertificateCheck'] = $true
 } else {

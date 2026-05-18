@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace QLPKEF.Models;
 
-/// <summary>
+
 /// Entity ánh xạ tới bảng dbo.TaiKhoan trên SQL Server.
 /// Sử dụng cho cả mô hình Code First lẫn Database First.
-/// </summary>
+
 [Table("TaiKhoan")]
 public class TaiKhoan
 {

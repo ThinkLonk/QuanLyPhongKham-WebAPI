@@ -14,7 +14,7 @@ public class ThuocController : ControllerBase
     private readonly QLPKDbContext _db;
     public ThuocController(QLPKDbContext db) => _db = db;
 
-    /// <summary>GET /api/thuoc – Danh sách thuốc kèm đơn vị, cách dùng.</summary>
+    ///GET /api/thuoc – Danh sách thuốc 
     [HttpGet]
     public async Task<IActionResult> GetAll() =>
         Ok(await _db.Thuocs
@@ -27,7 +27,7 @@ public class ThuocController : ControllerBase
                 TenCachDung = t.CachDung!.TenCachDung
             }).ToListAsync());
 
-    /// <summary>GET /api/thuoc/saphet?nguong=10 – LINQ to Objects lọc trong RAM.</summary>
+    /// GET /api/thuoc/saphet?nguong=10 
     [HttpGet("saphet")]
     public async Task<IActionResult> SapHet([FromQuery] int nguong = 10)
     {
@@ -37,7 +37,7 @@ public class ThuocController : ControllerBase
         return Ok(data);
     }
 
-    /// <summary>GET /api/thuoc/export-xml – Xuất danh mục thuốc dạng XML (LINQ to XML).</summary>
+    ///GET /api/thuoc/export-xml – Xuất danh mục thuốc dạng XML 
     [HttpGet("export-xml")]
     public async Task<IActionResult> ExportXml()
     {

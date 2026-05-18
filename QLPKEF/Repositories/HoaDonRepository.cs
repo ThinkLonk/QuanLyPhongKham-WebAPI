@@ -4,16 +4,13 @@ using QLPKEF.Models;
 
 namespace QLPKEF.Repositories;
 
-/// <summary>
-/// Sử dụng LINQ to Entities cho các nghiệp vụ hoá đơn / báo cáo doanh thu.
-/// Đồng thời minh hoạ gọi Stored Procedure thông qua EF Core.
-/// </summary>
+
 public class HoaDonRepository
 {
     private readonly QLPKDbContext _db;
     public HoaDonRepository(QLPKDbContext db) => _db = db;
 
-    /// <summary>Danh sách hoá đơn kèm tên bệnh nhân và thu ngân (Join).</summary>
+    ///Danh sách hoá đơn kèm tên bệnh nhân và thu ngân 
     public async Task<List<HoaDonDto>> GetAllAsync()
     {
         return await (from h in _db.HoaDons
@@ -35,7 +32,7 @@ public class HoaDonRepository
                       }).ToListAsync();
     }
 
-    /// <summary>Doanh thu theo tháng (GroupBy LINQ).</summary>
+    /// Doanh thu theo tháng 
     public async Task<List<DoanhThuTheoNgayDto>> DoanhThuTheoThangAsync(int thang, int nam) =>
         await _db.HoaDons
             .Where(h => h.NgayLapHoaDon!.Value.Month == thang
@@ -50,7 +47,7 @@ public class HoaDonRepository
             .OrderBy(x => x.Ngay)
             .ToListAsync();
 
-    /// <summary>Gọi Stored Procedure đã có sẵn trên CSDL qua EF Core.</summary>
+    /// Gọi Stored Procedure đã có sẵn trên CSDL qua EF Core.
     public async Task<int> LapHoaDonAsync(int maPKB, int maTaiKhoan) =>
         await _db.Database.ExecuteSqlInterpolatedAsync(
             $"EXEC sp_LapHoaDonThanhToan @maPKB={maPKB}, @maTaiKhoan={maTaiKhoan}");

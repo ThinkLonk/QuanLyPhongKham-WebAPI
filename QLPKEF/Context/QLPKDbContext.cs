@@ -3,21 +3,7 @@ using QLPKEF.Models;
 
 namespace QLPKEF.Context;
 
-/// <summary>
-/// DbContext của hệ thống Quản lý Phòng khám.
-/// Đáp ứng yêu cầu Entity Framework Code First (DbContext + DbSet) và Database First
-/// (sử dụng kèm dotnet ef dbcontext scaffold).
-///
-/// Code First (tạo CSDL từ entity):
-///     dotnet ef migrations add InitialCreate --project QLPKEF
-///     dotnet ef database update             --project QLPKEF
-///
-/// Database First (sinh entity từ CSDL có sẵn):
-///     dotnet ef dbcontext scaffold \
-///         "Server=localhost;Database=QLPK;Trusted_Connection=True;TrustServerCertificate=True" \
-///         Microsoft.EntityFrameworkCore.SqlServer \
-///         --output-dir Models --context QLPKDbContext --force
-/// </summary>
+
 public class QLPKDbContext : DbContext
 {
     // ============================ DbSet ===========================
@@ -43,7 +29,7 @@ public class QLPKDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        // Fallback connection nếu chưa được cấu hình từ bên ngoài (vd. WebAPI)
+        // Fallback connection nếu chưa được cấu hình từ bên ngoài 
         if (!optionsBuilder.IsConfigured)
         {
             optionsBuilder.UseSqlServer(

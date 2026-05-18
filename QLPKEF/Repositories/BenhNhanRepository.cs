@@ -4,22 +4,22 @@ using QLPKEF.Models;
 
 namespace QLPKEF.Repositories;
 
-/// <summary>
+
 /// Ví dụ Repository sử dụng LINQ to Entities trên DbContext.
-/// </summary>
+
 public class BenhNhanRepository
 {
     private readonly QLPKDbContext _db;
     public BenhNhanRepository(QLPKDbContext db) => _db = db;
 
-    /// <summary>Lấy toàn bộ bệnh nhân chưa bị xoá mềm.</summary>
+    /// Lấy toàn bộ bệnh nhân chưa bị xoá 
     public async Task<List<BenhNhan>> GetAllAsync() =>
         await _db.BenhNhans.AsNoTracking()
                            .Where(b => !b.IsDeleted)
                            .OrderBy(b => b.TenBenhNhan)
                            .ToListAsync();
 
-    /// <summary>Tìm bệnh nhân theo từ khoá (tên / CCCD).</summary>
+    /// Tìm bệnh nhân theo từ khoá (tên / CCCD).
     public async Task<List<BenhNhan>> SearchAsync(string keyword) =>
         await _db.BenhNhans.AsNoTracking()
                            .Where(b => !b.IsDeleted
@@ -27,7 +27,7 @@ public class BenhNhanRepository
                                      || b.CCCD.Contains(keyword)))
                            .ToListAsync();
 
-    /// <summary>Lấy lịch sử khám của một bệnh nhân (LINQ Join nhiều bảng).</summary>
+    /// Lấy lịch sử khám của một bệnh nhân 
     public async Task<List<object>> GetLichSuKhamAsync(int maBenhNhan)
     {
         var query = from pkb in _db.PhieuKhamBenhs
@@ -58,7 +58,7 @@ public class BenhNhanRepository
         return await _db.SaveChangesAsync() > 0;
     }
 
-    /// <summary>Xoá mềm (đặt cờ IsDeleted = true).</summary>
+    /// Xoá mềm (đặt cờ IsDeleted = true).
     public async Task<bool> SoftDeleteAsync(int id)
     {
         var b = await _db.BenhNhans.FindAsync(id);

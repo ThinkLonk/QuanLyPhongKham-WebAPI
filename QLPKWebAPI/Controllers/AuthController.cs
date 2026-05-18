@@ -12,7 +12,7 @@ public class AuthController : ControllerBase
     private readonly QLPKDbContext _db;
     public AuthController(QLPKDbContext db) => _db = db;
 
-    /// <summary>POST /api/auth/login – Kiểm tra đăng nhập (LINQ to Entities).</summary>
+    ///POST /api/auth/login – Kiểm tra đăng nhập (LINQ to Entities).
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest req)
     {

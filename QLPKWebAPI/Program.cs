@@ -2,10 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using QLPKEF.Context;
 using QLPKEF.Repositories;
 
-// =================================================================
-//  ASP.NET Core 6 Web API – QLPK
-//  Đáp ứng yêu cầu 4.4: Web API + RESTful + JSON
-// =================================================================
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,7 +28,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// CORS cho client web bên ngoài (mở rộng tự do trong môi trường demo)
+// CORS cho client web bên ngoài 
 builder.Services.AddCors(o => o.AddPolicy("Open",
     p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 
