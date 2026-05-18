@@ -86,10 +86,6 @@ QuanLyPhongKham/
 │   ├── appsettings.json              # ConnectionStrings:Default
 │   ├── Properties/launchSettings.json
 │   └── Controllers/                  # BenhNhan / HoaDon / Thuoc / LichHen / Auth
-│
-└── BaoCao/                           # Báo cáo LaTeX + PDF
-    ├── BaoCao_QLPK.tex
-    └── BaoCao_QLPK.pdf
 ```
 
 ---
