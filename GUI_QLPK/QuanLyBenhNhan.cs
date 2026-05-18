@@ -30,10 +30,7 @@ namespace GUI_QLPK
         }
         private void kiemtraquyen()
         {
-            if (maloai == 3) // Nếu là nhân viên lễ tân   
-            {
-                xoa.Enabled = false;               
-            }
+            xoa.Enabled = true;
         }
         private void load()
         {
@@ -107,24 +104,40 @@ namespace GUI_QLPK
         //click để load dữ liệu lên giao diện
         private void gird_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0 && e.RowIndex < gird.Rows.Count)
+            BindRowToForm(e.RowIndex);
+        }
+
+        // CellClick bắn ra với MỌI ô (kể cả ô trống) — nhờ vậy nút Xóa luôn có
+        // temp_ma sau khi user click vào bất kỳ vị trí nào trong dòng bệnh nhân.
+        private void gird_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            BindRowToForm(e.RowIndex);
+        }
+
+        private void BindRowToForm(int rowIndex)
+        {
+            if (rowIndex < 0 || rowIndex >= gird.Rows.Count) return;
+            DataGridViewRow row = gird.Rows[rowIndex];
+            if (row.Cells[0].Value == null || row.Cells[0].Value == DBNull.Value) return;
+
+            hoten.Text = row.Cells[1].Value?.ToString();
+
+            // Xử lý riêng cho ngày sinh
+            if (row.Cells[2].Value != null && row.Cells[2].Value != DBNull.Value)
             {
-                DataGridViewRow row = gird.Rows[e.RowIndex];
+                DateTime dt = Convert.ToDateTime(row.Cells[2].Value);
+                ngaysinh.Text = dt.ToString("yyyy-MM-dd"); // Định dạng yyyy-MM-dd
+            }
 
-                hoten.Text = row.Cells[1].Value?.ToString();
+            diachi.Text  = row.Cells[3].Value?.ToString();
+            gioitinh.Text = row.Cells[4].Value?.ToString();
+            macccd.Text  = row.Cells[5].Value?.ToString();
+            email.Text   = row.Cells[6].Value?.ToString();
 
-                // Xử lý riêng cho ngày sinh
-                if (row.Cells[2].Value != null && row.Cells[2].Value != DBNull.Value)
-                {
-                    DateTime dt = Convert.ToDateTime(row.Cells[2].Value);
-                    ngaysinh.Text = dt.ToString("yyyy-MM-dd"); // Định dạng ngày/tháng/năm
-                }
-
-                diachi.Text = row.Cells[3].Value?.ToString();
-                gioitinh.Text = row.Cells[4].Value?.ToString();
-                macccd.Text = row.Cells[5].Value?.ToString();
-                email.Text = row.Cells[6].Value?.ToString();
-                temp_ma = int.Parse(row.Cells[0].Value?.ToString());
+            int parsed;
+            if (int.TryParse(row.Cells[0].Value.ToString(), out parsed))
+            {
+                temp_ma = parsed;
             }
         }
 
