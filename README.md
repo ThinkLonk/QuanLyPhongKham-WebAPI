@@ -243,21 +243,7 @@ dotnet ef dbcontext scaffold \
 
 ---
 
-## 7. Báo cáo
-
-Xem báo cáo chi tiết tại [`BaoCao/BaoCao_QLPK.pdf`](BaoCao/BaoCao_QLPK.pdf). Mã nguồn LaTeX ở `BaoCao/BaoCao_QLPK.tex`.
-
-Biên dịch lại báo cáo:
-
-```bash
-cd BaoCao
-xelatex BaoCao_QLPK.tex
-xelatex BaoCao_QLPK.tex   # chạy 2 lần để cập nhật mục lục
-```
-
----
-
-## 8. Nhóm thực hiện
+## 7. Nhóm thực hiện
 
 > **Giảng viên hướng dẫn:** ThS. Phạm Hoàng An
 > **Trường:** Đại học Mở TP. Hồ Chí Minh – Khoa Công nghệ Thông tin
@@ -283,7 +269,3 @@ xelatex BaoCao_QLPK.tex   # chạy 2 lần để cập nhật mục lục
 - [iText 7 Knowledge Base](https://kb.itextpdf.com/)
 
 ---
-
-## 10. Giấy phép
-
-Đồ án phục vụ mục đích học tập, không có giá trị thương mại.
