@@ -1,12 +1,14 @@
 # Hệ thống Quản lý Phòng khám (QLPK)
 
 > Đồ án môn học **Lập trình cơ sở dữ liệu** – Trường Đại học Mở TP.HCM.
-> Vận dụng kiến thức tổng hợp: **T-SQL**, **ADO.NET**, **LINQ**, **Entity Framework Core**, **ASP.NET Core Web API**.
+> Vận dụng kiến thức tổng hợp: **T-SQL**, **ADO.NET**, **LINQ**, **Entity Framework Core 8**, **ASP.NET Core 8 Web API**.
 
 [![.NET](https://img.shields.io/badge/.NET-8.0-blueviolet)]()
 [![.NET Framework](https://img.shields.io/badge/.NET%20Framework-4.7.2-blue)]()
 [![SQL Server](https://img.shields.io/badge/SQL%20Server-2019%2B-red)]()
 [![License](https://img.shields.io/badge/License-Academic-green)]()
+
+**Repository (Public):** <https://github.com/ThinkLonk/QuanLyPhongKham-WebAPI>
 
 ---
 
@@ -16,8 +18,8 @@ Phần mềm hỗ trợ tin học hoá toàn bộ quy trình của một phòng 
 
 Hệ thống được tổ chức theo **kiến trúc 3 lớp + DTO** và cung cấp song song hai cách truy cập dữ liệu:
 
-1. **WinForms client** (ADO.NET + Stored Procedure / View) – sản phẩm chính.
-2. **Web API** (Entity Framework Core + ASP.NET Core 6) – sẵn sàng cho client web/mobile.
+1. **WinForms client** (ADO.NET + Stored Procedure / View) – sản phẩm chính, có thêm tầng `Services` gọi Web API qua `HttpClient` (fallback BUS/DAL khi API ngoại tuyến).
+2. **Web API** (Entity Framework Core 8 + ASP.NET Core 8) – sẵn sàng cho client web/mobile.
 
 ---
 
@@ -55,7 +57,13 @@ QuanLyPhongKham/
 │   ├── Login.cs, QLPMMain.cs, Home.cs
 │   ├── QuanLyBenhNhan.cs, KeToa.cs, LapHoaDon.cs
 │   ├── BaoCaoDoanhThu.cs, BaoCaoSuDungThuoc.cs
-│   ├── App.config                    # ConnectionString
+│   ├── Services/                     # API client (gọi Web API + fallback BUS/DAL)
+│   │   ├── ApiClient.cs              # HttpClient + Newtonsoft.Json
+│   │   ├── ApiContracts.cs           # DTO trao đổi với Web API
+│   │   ├── AuthService.cs, BenhNhanService.cs
+│   │   ├── HoaDonService.cs, LichHenService.cs
+│   │   └── ThuocService.cs
+│   ├── App.config                    # ConnectionString + ApiBaseUrl + ApiEnabled
 │   └── packages.config               # Phụ thuộc NuGet
 │
 ├── QLPKBUS/                          # [Business Logic Layer]
@@ -119,9 +127,16 @@ WITH MOVE 'QLPK'     TO 'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERV
 4. Build → Run (F5).
 
 ```xml
-<add key="ConnectionString"
-     value="Data Source=localhost;Initial Catalog=QLPK;Integrated Security=True"/>
+<appSettings>
+  <add key="ConnectionString"
+       value="Data Source=localhost;Initial Catalog=QLPK;Integrated Security=True"/>
+  <!-- Tuỳ chọn: bật/tắt việc gọi Web API qua thư mục Services -->
+  <add key="ApiBaseUrl" value="http://localhost:5000/"/>
+  <add key="ApiEnabled" value="true"/>
+</appSettings>
 ```
+
+> WinForms client ưu tiên gọi Web API thông qua `GUI_QLPK/Services/*Service.cs`; nếu Web API tắt hoặc lỗi mạng, các service tự động *fallback* về tầng BUS/DAL truyền thống nên ứng dụng vẫn chạy được mà không cần Web API.
 
 ### 4.3. Chạy Web API
 
@@ -154,11 +169,11 @@ dotnet ef dbcontext scaffold \
 
 | Username | Password | Vai trò |
 |---|---|---|
-| `admin` | `admin` | Quản trị |
-| `bacsi01` | `123456` | Bác sĩ |
-| `letan01` | `123456` | Lễ tân |
-| `thungan01` | `123456` | Thu ngân |
-| `dieuduong01` | `123456` | Điều dưỡng |
+| `admin` | `123` | Quản trị |
+| `bacsi1` | `123` | Bác sĩ |
+| `bacsi2` | `123` | Bác sĩ |
+| `thungan1` | `123` | Thu ngân |
+| `dieuduong1` | `123` | Điều dưỡng |
 
 > Mật khẩu hiện lưu plaintext, **dự kiến cập nhật hash BCrypt** trong giai đoạn 2.
 
@@ -188,6 +203,7 @@ dotnet ef dbcontext scaffold \
 | Business Logic | `QLPKBUS` | Kiểm tra ràng buộc, LINQ to Objects |
 | Data Access | `QLPKDAL` | ADO.NET (SqlConnection / SqlCommand / SqlDataReader / DataSet) |
 | Data Transfer Object | `QLPKDTO` | POCO chia sẻ giữa các lớp |
+| Web API Client | `GUI_QLPK/Services` | `HttpClient` gọi `QLPKWebAPI` với fallback xuống BUS/DAL |
 
 ### 6.3. ADO.NET (cả mô hình kết nối và phi kết nối)
 
@@ -200,12 +216,13 @@ dotnet ef dbcontext scaffold \
 - **LINQ to XML:** Xuất / nhập danh mục thuốc dạng XML – xem `QLPKEF/Samples/LinqToXmlExamples.cs`.
 - **LINQ to Entities:** Toàn bộ truy vấn trong `QLPKEF/Repositories/`.
 
-### 6.5. Entity Framework Core 6
+### 6.5. Entity Framework Core 8
 
-- **Code First:** Entity + DataAnnotations + Fluent API trong `QLPKDbContext.OnModelCreating`.
+- **Code First:** Entity + DataAnnotations + Fluent API trong `QLPKDbContext.OnModelCreating` (composite key, unique index, check constraint, default value, cấu hình `OnDelete`).
 - **Database First:** Có thể scaffold lại bằng `dotnet ef dbcontext scaffold`.
 - **DbContext / DbSet:** 14 `DbSet<T>` ứng với 14 bảng nghiệp vụ.
 - **Migrations:** Hỗ trợ `dotnet ef migrations add`.
+- **Gọi Stored Procedure qua EF:** `_db.Database.ExecuteSqlInterpolatedAsync($"EXEC sp_LapHoaDonThanhToan @maPKB={maPKB}, @maTaiKhoan={maTaiKhoan}")`.
 
 ### 6.6. Web API – RESTful JSON
 
@@ -247,12 +264,14 @@ xelatex BaoCao_QLPK.tex   # chạy 2 lần để cập nhật mục lục
 
 ## 8. Nhóm thực hiện
 
+> **Giảng viên hướng dẫn:** ThS. Phạm Hoàng An
+> **Trường:** Đại học Mở TP. Hồ Chí Minh – Khoa Công nghệ Thông tin
+
 | Họ và tên | MSSV | Vai trò |
 |---|---|---|
-| _Sinh viên 1_ | _MSSV_ | T-SQL + Thiết kế CSDL |
-| _Sinh viên 2_ | _MSSV_ | ADO.NET (DAL) + DTO |
-| _Sinh viên 3_ | _MSSV_ | EF Core + Web API |
-| _Sinh viên 4_ | _MSSV_ | WinForms (GUI) + Báo cáo PDF |
+| Châu Ngọc Sơn | 2351010184 | Phân tích & thiết kế CSDL, T-SQL (View / Function / Stored Procedure / Trigger / Transaction) |
+| Đỗ Phú Điền | 2351010048 | ADO.NET (DAL kết nối + phi kết nối), QLPKDTO, Entity Framework Core 8 (Code First + Database First) |
+| Huỳnh Nhật Thiên Long | 2351010113 | QLPKBUS + LINQ to Objects/XML, QLPKWebAPI (RESTful + JSON), WinForms (Guna UI) + xuất PDF + gửi mail, viết báo cáo LaTeX |
 
 ---
 
