@@ -245,7 +245,21 @@ namespace GUI_QLPK
 
         private void Xoa_Click(object sender, EventArgs e)
         {
-            th.MaThuoc = int.Parse(mathuoc.Text);
+            int maThuoc;
+
+            if (!int.TryParse(mathuoc.Text.Trim(), out maThuoc))
+            {
+                MessageBox.Show(
+                    "Vui lòng chọn thuốc cần xóa!",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+
+                return;
+            }
+
+            th.MaThuoc = maThuoc;
             th.TenThuoc = (tenthuoc.Text);
             foreach (donViDTO donvi in listdv)
             {

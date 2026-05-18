@@ -269,7 +269,20 @@ namespace GUI_QLPK
 
         private void btn_xoa_Click(object sender, EventArgs e)
         {
-            lh.MaLichHen = int.Parse(malichhen.Text);
+            int maLH;
+
+            if (!int.TryParse(malichhen.Text.Trim(), out maLH))
+            {
+                MessageBox.Show(
+                    "Vui lòng chọn lịch hẹn cần xóa!",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+
+                return;
+            }
+            lh.MaLichHen = maLH;
             bool kq = lhBus.xoa(lh);
             if (!kq)
             {

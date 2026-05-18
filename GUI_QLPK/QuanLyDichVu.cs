@@ -141,6 +141,17 @@ namespace GUI_QLPK
         }
         private void capnhatdv_Click(object sender, EventArgs e)
         {
+            if (temp_ma <= 0)
+            {
+                MessageBox.Show(
+                    "Vui lòng chọn dịch vụ!",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+
+                return;
+            }
             float tien;
             if (float.TryParse(txtTienDV.Text.Trim(), out tien) && tien <= 0)
             {
@@ -163,6 +174,17 @@ namespace GUI_QLPK
 
         private void xoadv_Click_1(object sender, EventArgs e)
         {
+            if (temp_ma <= 0)
+            {
+                MessageBox.Show(
+                    "Vui lòng chọn dịch vụ!",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+
+                return;
+            }
             dv.MaDichVu = temp_ma;
             bool kq = dvBus.xoa(dv);
             if (!kq)

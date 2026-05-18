@@ -177,6 +177,19 @@ namespace GUI_QLPM
 
         private void Sua_Click(object sender, EventArgs e)
         {
+
+            if (string.IsNullOrWhiteSpace(temp_ma))
+            {
+                MessageBox.Show(
+                    "Vui lòng chọn tài khoản cần cập nhật!",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+
+                return;
+            }
+
             tk.Username = username.Text;
             tk.Password = password.Text;
             tk.Name = hoten.Text;

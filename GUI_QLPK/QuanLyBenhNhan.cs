@@ -130,6 +130,17 @@ namespace GUI_QLPK
 
         private void Sua_Click(object sender, EventArgs e)
         {
+         
+            if (temp_ma <= 0)
+            {
+                MessageBox.Show(
+                    "Vui lòng chọn tài khoản cần cập nhật!",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
             bn.TenBN = hoten.Text;
             bn.DiachiBN = diachi.Text;
             bn.NgsinhBN = DateTime.Parse(ngaysinh.Text);
@@ -148,6 +159,17 @@ namespace GUI_QLPK
 
         private void xoa_Click(object sender, EventArgs e)
         {
+            if (temp_ma <= 0)
+            {
+                MessageBox.Show(
+                    "Vui lòng chọn bệnh nhân cần xóa!",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+
+                return;
+            }
             List<phieukhambenhDTO> pkb = pkbBUS.select();
             //có pkb thì ko xóa được
             foreach (phieukhambenhDTO phieukhambenh in pkb)
