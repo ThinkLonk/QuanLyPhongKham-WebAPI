@@ -171,7 +171,6 @@ dotnet ef dbcontext scaffold \
 | `thungan1` | `123` | Thu ngân |
 | `dieuduong1` | `123` | Điều dưỡng |
 
-> Mật khẩu hiện lưu plaintext, **dự kiến cập nhật hash BCrypt** trong giai đoạn 2.
 
 ---
 
