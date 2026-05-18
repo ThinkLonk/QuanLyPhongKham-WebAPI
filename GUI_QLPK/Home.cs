@@ -1,4 +1,4 @@
-﻿using iText.Layout.Element;
+using iText.Layout.Element;
 using QLPKBUS;
 using QLPKDAL;
 using QLPKDTO;
@@ -18,8 +18,8 @@ namespace GUI_QLPK
 {
     public partial class Home : Form
     {
-        BenhNhanBUS bnBus = new BenhNhanBUS();
-        lichHenBUS lichHenBUS = new lichHenBUS();
+        BenhNhanService bnBus = new BenhNhanService();
+        LichHenService lichHenBus = new LichHenService();
         PhieukhambenhBUS pkbBus = new PhieukhambenhBUS();
         ChiTietToaThuocBUS ctThuocBus = new ChiTietToaThuocBUS();
         public Home()
@@ -39,7 +39,7 @@ namespace GUI_QLPK
 
             // 2. Lấy ngày hiện tại và lịch hẹn trong ngày hôm nay
             DateTime homNay = DateTime.Today;
-            List<lichHenDTO> dsLichHenHomNay = lichHenBUS.selectByDate(homNay);
+            List<lichHenDTO> dsLichHenHomNay = lichHenBus.selectByDate(homNay);
             lb_lichhen.Text = dsLichHenHomNay.Count.ToString();
 
             List<ChiTietToaThuocDTO> danhSachToa = ctThuocBus.selectByDate(DateTime.Today);
@@ -54,9 +54,9 @@ namespace GUI_QLPK
         }
         public void load_data_lichhen()
         {
-            lichHenBUS = new lichHenBUS();
-            bnBus = new BenhNhanBUS();
-            List<lichHenDTO> listlh = lichHenBUS.select();
+            lichHenBus = new LichHenService();
+            bnBus = new BenhNhanService();
+            List<lichHenDTO> listlh = lichHenBus.select();
             List<BenhNhanDTO> listbn = bnBus.select();
             this.loadData_Vao_GridView(listlh, listbn);
         }
@@ -155,7 +155,7 @@ namespace GUI_QLPK
         }
         private void hienThiCanhBaoThuocTrongKhung()
         {
-            ThuocBUS thuocBus = new ThuocBUS();
+            ThuocService thuocBus = new ThuocService();
             List<thuocDTO> dsThuoc = thuocBus.select();
             List<thuocDTO> thuocSapHet = new List<thuocDTO>();
 

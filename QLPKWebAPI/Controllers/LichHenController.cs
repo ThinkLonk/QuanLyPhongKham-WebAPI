@@ -24,6 +24,9 @@ public class LichHenController : ControllerBase
                   {
                       l.MaLichHen,
                       l.NgayHen,
+                      l.MaTaiKhoan,
+                      l.MaBenhNhan,
+                      l.MaDieuDuong,
                       l.TrangThai,
                       TenBenhNhan = bn.TenBenhNhan,
                       TenBacSi    = bs != null ? bs.Name : null

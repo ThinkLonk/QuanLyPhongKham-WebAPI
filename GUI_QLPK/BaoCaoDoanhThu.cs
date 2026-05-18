@@ -1,4 +1,4 @@
-﻿using QLPKBUS;
+using QLPKBUS;
 using QLPKDAL;
 using QLPKDTO;
 using System;
@@ -29,7 +29,7 @@ namespace GUI_QLPK
 {
     public partial class BaoCaoDoanhThu : Form
     {
-        HoadonBUS hdBus = new HoadonBUS();
+        HoaDonService hdBus = new HoaDonService();
         public int stt;
         System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("en-US");
         public BaoCaoDoanhThu()
@@ -44,7 +44,7 @@ namespace GUI_QLPK
             stt = 1;
             string month= thang.Text.ToString();
             string year = nam.Text.ToString();
-            hdBus = new HoadonBUS();
+            hdBus = new HoaDonService();
             List<hoadonDTO> listHoadonMonth = hdBus.selectByMonth(month, year);
             this.loadData_Vao_GirdView(listHoadonMonth);
             Dictionary<string, float> dataByMonth = new Dictionary<string, float>();

@@ -17,8 +17,8 @@ namespace GUI_QLPK
     public partial class DSLaySoKham : Form
     {
         System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("en-US");
-        BenhNhanBUS bnBus = new BenhNhanBUS();
-        lichHenBUS lhBus = new lichHenBUS();
+        BenhNhanService bnBus = new BenhNhanService();
+        LichHenService lhBus = new LichHenService();
         taiKhoanBUS tkBus = new taiKhoanBUS();
         private int stt;
         loaiTaiKhoanBUS loaitkBUS = new loaiTaiKhoanBUS();
@@ -33,8 +33,8 @@ namespace GUI_QLPK
         private void load_data()
         {
             stt = 1;
-            bnBus = new BenhNhanBUS();
-            lhBus = new lichHenBUS();
+            bnBus = new BenhNhanService();
+            lhBus = new LichHenService();
             List<BenhNhanDTO> listBenhNhan = bnBus.select();
             List<lichHenDTO> listlh = lhBus.select();
             List<taiKhoanDTO> listTK = tkBus.select();

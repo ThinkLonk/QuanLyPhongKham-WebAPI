@@ -22,7 +22,7 @@ public class ThuocController : ControllerBase
             .Include(t => t.CachDung)
             .Select(t => new
             {
-                t.MaThuoc, t.TenThuoc, t.DonGia, t.SoLuong,
+                t.MaThuoc, t.TenThuoc, t.DonGia, t.SoLuong, t.MaDonVi, t.MaCachDung,
                 TenDonVi    = t.DonVi!.TenDonVi,
                 TenCachDung = t.CachDung!.TenCachDung
             }).ToListAsync());

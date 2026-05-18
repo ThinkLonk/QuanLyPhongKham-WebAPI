@@ -1,4 +1,4 @@
-﻿using iText.IO.Font;
+using iText.IO.Font;
 using iText.Kernel.Colors;
 using iText.Kernel.Font;
 using iText.Kernel.Pdf;
@@ -25,7 +25,7 @@ namespace GUI_QLPK
 {
     public partial class BaoCaoSuDungThuoc : Form
     {
-        ThuocBUS thBus = new ThuocBUS();
+        ThuocService thBus = new ThuocService();
         ChiTietToaThuocBUS ktBus = new ChiTietToaThuocBUS();
         donviBUS dvBus = new donviBUS();
         List<donViDTO> listDonVi;
@@ -44,7 +44,7 @@ namespace GUI_QLPK
             stt = 1;
             string month = thang.Text.ToString();
             string year = nam.Text.ToString();
-            thBus = new ThuocBUS();
+            thBus = new ThuocService();
             ktBus = new ChiTietToaThuocBUS();
             List<thuocDTO> listThuoc = thBus.baocaobymonth(month, year);
             List<ChiTietToaThuocDTO> listkethuoc = ktBus.baocaobymonth(month, year);

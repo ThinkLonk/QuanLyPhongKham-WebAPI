@@ -1,4 +1,4 @@
-﻿using QLPKBUS;
+using QLPKBUS;
 using QLPKDAL;
 using QLPKDTO;
 using System;
@@ -16,11 +16,11 @@ namespace GUI_QLPK
     public partial class DanhSachHoaDon : Form
     {
         System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("en-US");
-        BenhNhanBUS bnBus = new BenhNhanBUS();
+        BenhNhanService bnBus = new BenhNhanService();
         PhieukhambenhBUS pkbBus = new PhieukhambenhBUS();
         BenhBUS beBus = new BenhBUS();
         ChandoanBUS cdBus = new ChandoanBUS();
-        HoadonBUS hdBus = new HoadonBUS();
+        HoaDonService hdBus = new HoaDonService();
         taiKhoanBUS tkBus = new taiKhoanBUS();
         private int stt;
         public DanhSachHoaDon()
@@ -32,7 +32,7 @@ namespace GUI_QLPK
         private void load_data()
         {
             stt = 1;
-            bnBus = new BenhNhanBUS();
+            bnBus = new BenhNhanService();
             beBus = new BenhBUS();
             pkbBus = new PhieukhambenhBUS();
             cdBus = new ChandoanBUS();

@@ -25,6 +25,7 @@ public class HoaDonRepository
                       {
                           MaHoaDon          = h.MaHoaDon,
                           MaPKB             = h.MaPKB ?? 0,
+                          MaTaiKhoan        = h.MaTaiKhoan ?? 0,
                           TenBenhNhan       = bn.TenBenhNhan,
                           TenNhanVienThuNgan = tk.Name,
                           NgayLapHoaDon     = h.NgayLapHoaDon,
@@ -60,6 +61,7 @@ public class HoaDonDto
 {
     public int       MaHoaDon            { get; set; }
     public int       MaPKB               { get; set; }
+    public int       MaTaiKhoan          { get; set; }
     public string?   TenBenhNhan         { get; set; }
     public string?   TenNhanVienThuNgan  { get; set; }
     public DateTime? NgayLapHoaDon       { get; set; }

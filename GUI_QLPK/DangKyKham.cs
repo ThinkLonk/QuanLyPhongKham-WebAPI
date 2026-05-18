@@ -15,8 +15,8 @@ namespace GUI_QLPK
 {
     public partial class DangKyKham : Form
     {
-        lichHenBUS lhBus = new lichHenBUS();
-        BenhNhanBUS bnBus = new BenhNhanBUS();
+        LichHenService lhBus = new LichHenService();
+        BenhNhanService bnBus = new BenhNhanService();
 
         private int madd;
         private int stt;
@@ -58,7 +58,7 @@ namespace GUI_QLPK
         //load dữ liệu bệnh nhân
         public void load_combobox_mabn()
         {
-            bnBus = new BenhNhanBUS();
+            bnBus = new BenhNhanService();
             List<BenhNhanDTO> listBenhNhan = bnBus.select();
             this.loadData_Vao_comboboxbn(listBenhNhan);
         }

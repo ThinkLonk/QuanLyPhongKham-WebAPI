@@ -15,7 +15,7 @@ namespace GUI_QLPK
     public partial class QuanLyBenhNhan : Form
     {
         public DataTable db1 = new DataTable("BenhNhan");
-        BenhNhanBUS bnBus = new BenhNhanBUS();
+        BenhNhanService bnBus = new BenhNhanService();
         BenhNhanDTO bn = new BenhNhanDTO();
         PhieukhambenhBUS pkbBUS = new PhieukhambenhBUS();
         private int temp_ma; //lưu mabn

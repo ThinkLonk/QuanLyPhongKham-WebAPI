@@ -15,10 +15,10 @@ namespace GUI_QLPK
         public DataTable db1 = new DataTable();
         ToathuocBUS ttBus = new ToathuocBUS();
         ChiTietToaThuocBUS ktBus = new ChiTietToaThuocBUS();
-        ThuocBUS thBus = new ThuocBUS();
+        ThuocService thBus = new ThuocService();
         cachDungBUS cdBus = new cachDungBUS();
         donviBUS donVivBus = new donviBUS();
-        lichHenBUS lhBUS = new lichHenBUS();
+        LichHenService lhBUS = new LichHenService();
 
         List<cachdungDTO> listcd;
         List<donViDTO> listdv;

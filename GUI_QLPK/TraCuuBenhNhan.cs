@@ -17,7 +17,7 @@ namespace GUI_QLPK
     public partial class TraCuuBenhNhan : Form
     {
         //public DataTable db1 = new DataTable("BenhNhan");
-        BenhNhanBUS bnBus = new BenhNhanBUS();
+        BenhNhanService bnBus = new BenhNhanService();
         BenhNhanDTO bn = new BenhNhanDTO();
         PhieukhambenhBUS pkbBUS = new PhieukhambenhBUS();
         ChandoanBUS cdBUS = new ChandoanBUS();
@@ -36,7 +36,7 @@ namespace GUI_QLPK
         //}
         public void load_data()
         {
-            bnBus = new BenhNhanBUS();
+            bnBus = new BenhNhanService();
             List<BenhNhanDTO> listBenhNhan = bnBus.select();
             List<phieukhambenhDTO> listPhieuKham = pkbBUS.select();
             List<chandoanDTO> listChandoan = cdBUS.select();
@@ -128,7 +128,7 @@ namespace GUI_QLPK
 
         private void timkiem_Click(object sender, EventArgs e)
         {
-            bnBus = new BenhNhanBUS();
+            bnBus = new BenhNhanService();
             string sKeyword = nhaptukhoa.Text;
             List<phieukhambenhDTO> listPhieuKham = pkbBUS.select();
             List<chandoanDTO> listChuanDoan = cdBUS.select();

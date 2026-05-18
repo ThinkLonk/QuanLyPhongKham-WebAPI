@@ -19,31 +19,12 @@ namespace GUI_QLPK
             InitializeComponent();
             matkhau.UseSystemPasswordChar = true;
         }
-        taiKhoanBUS tkBUS = new taiKhoanBUS();
-        taiKhoanDTO tk = new taiKhoanDTO();
-        loaiTaiKhoanBUS loaitkBUS = new loaiTaiKhoanBUS();
-        loaiTaiKhoanDTO loaitk = new loaiTaiKhoanDTO();
-
-        Boolean check = false;
+        AuthService authService = new AuthService();
 
         private void dangnhap_Click(object sender, EventArgs e)
         {
-            check = false;
-            List<taiKhoanDTO> listTk = tkBUS.select();
-            List<loaiTaiKhoanDTO> listLoaiTk = loaitkBUS.select();
-            int TENTK = 0;
-            foreach(taiKhoanDTO tk in listTk)
-            {
-                if(tk.Username == username.Text)
-                {
-                    if(tk.Password == matkhau.Text)
-                    {
-                        check = true;
-                        TENTK = tk.MaTK; 
-                    }
-                }
-            }
-            if (check)
+            int TENTK;
+            if (authService.TryLogin(username.Text, matkhau.Text, out TENTK))
             {
                 this.Hide();
                 QLPMMain main = new QLPMMain(TENTK);

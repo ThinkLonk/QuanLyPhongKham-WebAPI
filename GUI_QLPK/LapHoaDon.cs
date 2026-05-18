@@ -26,15 +26,15 @@ namespace GUI_QLPK
 {
     public partial class LapHoaDon : Form
     {
-        HoadonBUS hdBus = new HoadonBUS();
-        ThuocBUS thBus = new ThuocBUS();
+        HoaDonService hdBus = new HoaDonService();
+        ThuocService thBus = new ThuocService();
         ChiTietToaThuocBUS ktBus = new ChiTietToaThuocBUS();
         DichvuBUS dvBus = new DichvuBUS();
         cachDungBUS cdBus = new cachDungBUS();
         donviBUS donviBus = new donviBUS();
         List<cachdungDTO> listcd;
         List<donViDTO> listdv;
-        BenhNhanBUS bnBus = new BenhNhanBUS();
+        BenhNhanService bnBus = new BenhNhanService();
         PhieukhambenhBUS pkbBus = new PhieukhambenhBUS();
         CultureInfo culture = new CultureInfo("en-US");
      
@@ -66,7 +66,7 @@ namespace GUI_QLPK
 
         public void load()
         {
-            hdBus = new HoadonBUS();
+            hdBus = new HoaDonService();
             stt = 1; // ← reset stt mỗi lần load
             ngaylap.Text = DateTime.Now.Date.ToString("dd/MM/yyyy"); // ← dùng Now thay UtcNow
             mahd.Text = "Tự động";
@@ -90,7 +90,7 @@ namespace GUI_QLPK
 
         public void load_TenBN()
         {
-            BenhNhanBUS bnBus = new BenhNhanBUS();
+            BenhNhanService bnBus = new BenhNhanService();
             List<BenhNhanDTO> listBenhnhan = bnBus.select();
             List<phieukhambenhDTO> listpkb = pkbBus.select();
             loadData_TenBN(listBenhnhan, listpkb);
@@ -215,7 +215,7 @@ namespace GUI_QLPK
                     hd.NgayTaiKham = null;
             }
 
-            hdBus = new HoadonBUS();
+            hdBus = new HoaDonService();
             bool kq = hdBus.them(hd);
 
             if (!kq)
@@ -268,7 +268,7 @@ namespace GUI_QLPK
         public void load_data(int maPKB)
         {
             stt = 1; // ← reset stt mỗi lần load_data
-            thBus = new ThuocBUS();
+            thBus = new ThuocService();
             ktBus = new ChiTietToaThuocBUS();
             List<thuocDTO> listThuoc = thBus.selectbypkb(maPKB);
             List<ChiTietToaThuocDTO> listkethuoc = ktBus.selectbypkb(maPKB);
@@ -353,7 +353,7 @@ namespace GUI_QLPK
 
             stt = 1; // ← reset stt
             tt = 0;
-            hdBus = new HoadonBUS();
+            hdBus = new HoaDonService();
 
             load_TenBN();
             load_data( Convert.ToInt32(mapkb.SelectedValue));

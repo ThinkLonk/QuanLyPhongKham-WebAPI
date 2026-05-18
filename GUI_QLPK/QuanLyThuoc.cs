@@ -19,7 +19,7 @@ namespace GUI_QLPK
     public partial class QuanLyThuoc : Form
     {
         public DataTable db1 = new DataTable("Thuoc");
-        ThuocBUS thBus = new ThuocBUS();
+        ThuocService thBus = new ThuocService();
         thuocDTO th = new thuocDTO();
         cachDungBUS cdBUS = new cachDungBUS();
         donviBUS donViBUS = new donviBUS();
@@ -194,7 +194,7 @@ namespace GUI_QLPK
                     th.MaCachDung = cd.MaCachDung;
                 }
             }
-            thBus = new ThuocBUS();
+            thBus = new ThuocService();
             bool kq = thBus.them(th);
             if (!kq)
                 System.Windows.Forms.MessageBox.Show("Thêm Thuốc thất bại. Vui lòng kiểm tra lại dữ liệu", "Result", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);

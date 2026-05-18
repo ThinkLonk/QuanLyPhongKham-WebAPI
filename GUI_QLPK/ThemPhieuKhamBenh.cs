@@ -16,11 +16,11 @@ namespace GUI_QLPK
     public partial class ThemPhieuKhamBenh : Form
     {
         public int maBS;
-        BenhNhanBUS bnBUS = new BenhNhanBUS();
+        BenhNhanService bnBUS = new BenhNhanService();
         BenhBUS beBus = new BenhBUS();
         ChandoanBUS cdBUS = new ChandoanBUS();
         PhieukhambenhBUS pkbBUS = new PhieukhambenhBUS();
-        lichHenBUS lhBUS = new lichHenBUS();
+        LichHenService lhBUS = new LichHenService();
         lichHenDAL lichHenDAL = new lichHenDAL();
 
         private int _maPKBVuaLap = -1;

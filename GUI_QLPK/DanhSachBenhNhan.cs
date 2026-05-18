@@ -15,7 +15,7 @@ namespace GUI_QLPK
 {
     public partial class DanhSachBenhNhan : Form
     {
-        BenhNhanBUS bnBus = new BenhNhanBUS();
+        BenhNhanService bnBus = new BenhNhanService();
         PhieukhambenhBUS pkbBus = new PhieukhambenhBUS();
         BenhBUS beBus = new BenhBUS();
         ChandoanBUS cdBus = new ChandoanBUS();
@@ -32,7 +32,7 @@ namespace GUI_QLPK
         public void load_data()
         {
             stt = 1;
-            bnBus = new BenhNhanBUS();
+            bnBus = new BenhNhanService();
             beBus = new BenhBUS();
             pkbBus = new PhieukhambenhBUS();
             cdBus = new ChandoanBUS();

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,7 +20,7 @@ namespace GUI_QLPK
     public partial class QuanLyNhacHen : Form
     {
         System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("en-US");
-        BenhNhanBUS bnBus = new BenhNhanBUS();
+        BenhNhanService bnBus = new BenhNhanService();
         PhieukhambenhBUS pkbBus = new PhieukhambenhBUS();
         private int stt;
        
@@ -47,7 +47,7 @@ namespace GUI_QLPK
         private void load_data()
         {
             stt = 1;
-            bnBus = new BenhNhanBUS();
+            bnBus = new BenhNhanService();
             pkbBus = new PhieukhambenhBUS();
             List<BenhNhanDTO> listBenhNhan = bnBus.select();
             List<phieukhambenhDTO> listPhieuKham = pkbBus.select();
