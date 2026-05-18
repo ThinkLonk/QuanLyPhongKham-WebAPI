@@ -1,7 +1,9 @@
+% !TEX program = xelatex
 % =============================================================================
 %  BÁO CÁO ĐỒ ÁN MÔN HỌC – LẬP TRÌNH CƠ SỞ DỮ LIỆU
 %  Đề tài: HỆ THỐNG QUẢN LÝ PHÒNG KHÁM (QLPK)
-%  Biên dịch:  xelatex BaoCao_QLPK.tex   (chạy 2 lần để cập nhật mục lục)
+%  Engine: xelatex (chạy 2 lần để cập nhật mục lục)
+%  Tương thích: Overleaf, Prism, TeXLive (Linux/Mac/Win), MikTeX
 % =============================================================================
 \documentclass[12pt,a4paper]{report}
 
@@ -9,15 +11,15 @@
 \usepackage{fontspec}
 \usepackage{polyglossia}
 \setdefaultlanguage{vietnamese}
-\setmainfont{DejaVu Serif}
-\setsansfont{DejaVu Sans}
-\setmonofont{DejaVu Sans Mono}[Scale=0.85]
+% Latin Modern luôn có sẵn trên TeXLive => an toàn cho Overleaf/Prism
+\setmainfont{Latin Modern Roman}
+\setsansfont{Latin Modern Sans}
+\setmonofont{Latin Modern Mono}[Scale=0.88]
 
 % --------- TRÌNH BÀY ---------------------------------------------------------
 \usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=3cm,right=2cm]{geometry}
 \usepackage{graphicx}
 \usepackage{xcolor}
-\usepackage{hyperref}
 \usepackage{titlesec}
 \usepackage{enumitem}
 \usepackage{tabularx}
@@ -32,29 +34,27 @@
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,positioning,shapes}
 \usepackage{float}
+\usepackage{hyperref}
 
 \onehalfspacing
 
-% Cấu hình hyperref
 \hypersetup{
     colorlinks=true,
     linkcolor=black,
     urlcolor=blue,
     citecolor=blue,
     pdftitle={Báo cáo đồ án Quản lý Phòng khám},
-    pdfauthor={Nhóm sinh viên},
+    pdfauthor={Nhóm QLPK - DH Mo TPHCM},
     pdfsubject={Lập trình cơ sở dữ liệu}
 }
 
-% Header / footer
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\textit{Đồ án môn học – Lập trình cơ sở dữ liệu}}
+\fancyhead[L]{\textit{Đồ án – Lập trình cơ sở dữ liệu}}
 \fancyhead[R]{\textit{Hệ thống QLPK}}
 \fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 
-% Định dạng tiêu đề
 \titleformat{\chapter}[hang]
   {\normalfont\Huge\bfseries\color{blue!60!black}}
   {\thechapter.}{0.5em}{}
@@ -65,7 +65,7 @@
   {\normalfont\large\bfseries\color{blue!40!black}}
   {\thesubsection}{0.5em}{}
 
-% Định dạng code SQL & C#
+% --------- CODE STYLES -------------------------------------------------------
 \definecolor{codebg}{RGB}{248,248,248}
 \definecolor{codekw}{RGB}{0,0,180}
 \definecolor{codestr}{RGB}{163,21,21}
@@ -79,8 +79,8 @@
     REFERENCES,PRIMARY,UNIQUE,CHECK,DEFAULT,NULL,NOT,AND,OR,IN,EXISTS,
     BIT,INT,FLOAT,DATE,DATETIME,NVARCHAR,VARCHAR,IDENTITY,TRANSACTION,
     COMMIT,ROLLBACK,TRY,CATCH,RAISERROR,SCOPE_IDENTITY,GETDATE,ISNULL,
-    AFTER,INSTEAD,OF,INSERT,DELETE,SUM,COUNT,MONTH,YEAR,CAST,LIKE,
-    STRING_AGG,SCOPE_IDENTITY,INSERTED,DELETED},
+    AFTER,INSTEAD,OF,SUM,COUNT,MONTH,YEAR,CAST,LIKE,STRING_AGG,
+    INSERTED,DELETED,EXEC},
   sensitive=false,
   morecomment=[l]{--},
   morecomment=[s]{/*}{*/},
@@ -107,27 +107,24 @@
   captionpos=b,
   breaklines=true,
   breakatwhitespace=true,
-  literate=
-    {á}{{\'a}}1 {à}{{\`a}}1 {ả}{{\h{a}}}1 {ã}{{\~a}}1 {ạ}{{\d{a}}}1
-    {â}{{\^a}}1 {ấ}{{\'{\^a}}}1 {ầ}{{\`{\^a}}}1 {ẩ}{{\h{\^a}}}1 {ẫ}{{\~{\^a}}}1 {ậ}{{\d{\^a}}}1
-    {ă}{{\u{a}}}1 {ắ}{{\'{\u{a}}}}1 {ằ}{{\`{\u{a}}}}1 {ẳ}{{\h{\u{a}}}}1 {ẵ}{{\~{\u{a}}}}1 {ặ}{{\d{\u{a}}}}1
-    {é}{{\'e}}1 {è}{{\`e}}1 {ẻ}{{\h{e}}}1 {ẽ}{{\~e}}1 {ẹ}{{\d{e}}}1
-    {ê}{{\^e}}1 {ế}{{\'{\^e}}}1 {ề}{{\`{\^e}}}1 {ể}{{\h{\^e}}}1 {ễ}{{\~{\^e}}}1 {ệ}{{\d{\^e}}}1
-    {í}{{\'i}}1 {ì}{{\`i}}1 {ỉ}{{\h{i}}}1 {ĩ}{{\~i}}1 {ị}{{\d{i}}}1
-    {ó}{{\'o}}1 {ò}{{\`o}}1 {ỏ}{{\h{o}}}1 {õ}{{\~o}}1 {ọ}{{\d{o}}}1
-    {ô}{{\^o}}1 {ố}{{\'{\^o}}}1 {ồ}{{\`{\^o}}}1 {ổ}{{\h{\^o}}}1 {ỗ}{{\~{\^o}}}1 {ộ}{{\d{\^o}}}1
-    {ơ}{{\o{o}}}1 {ớ}{{\'{\o{o}}}}1 {ờ}{{\`{\o{o}}}}1 {ở}{{\h{\o{o}}}}1 {ỡ}{{\~{\o{o}}}}1 {ợ}{{\d{\o{o}}}}1
-    {ú}{{\'u}}1 {ù}{{\`u}}1 {ủ}{{\h{u}}}1 {ũ}{{\~u}}1 {ụ}{{\d{u}}}1
-    {ư}{{\o{u}}}1 {ứ}{{\'{\o{u}}}}1 {ừ}{{\`{\o{u}}}}1 {ử}{{\h{\o{u}}}}1 {ữ}{{\~{\o{u}}}}1 {ự}{{\d{\o{u}}}}1
-    {ý}{{\'y}}1 {ỳ}{{\`y}}1 {ỷ}{{\h{y}}}1 {ỹ}{{\~y}}1 {ỵ}{{\d{y}}}1
-    {đ}{{\dj}}1 {Đ}{{\DJ}}1
 }
 
 \lstdefinestyle{csharp}{
   language=[Sharp]C,
   morekeywords={var,async,await,partial,using,namespace,public,private,protected,
     internal,class,static,void,int,string,bool,float,decimal,double,DateTime,
-    List,Dictionary,return,if,else,foreach,for,while,try,catch,finally,throw,new,this},
+    List,Dictionary,return,if,else,foreach,for,while,try,catch,finally,throw,new,this,
+    record,virtual,override,sealed,readonly,const,interface,enum,struct},
+}
+
+\lstdefinelanguage{json}{
+  string=[s]{"}{"},
+  stringstyle=\color{codestr},
+  comment=[l]{//},
+  commentstyle=\color{codecmt},
+  morekeywords={true,false,null},
+  keywordstyle=\color{codekw}\bfseries,
+  basicstyle=\ttfamily\small
 }
 
 % =============================================================================
@@ -136,17 +133,15 @@
 % ------------------- TRANG BÌA -----------------------------------------------
 \begin{titlepage}
 \centering
-\vspace*{0.5cm}
+\vspace*{0.4cm}
 {\large\textbf{TRƯỜNG ĐẠI HỌC MỞ TP. HỒ CHÍ MINH}\par}
 {\large\textbf{KHOA CÔNG NGHỆ THÔNG TIN}\par}
-\vspace{1cm}
-\includegraphics[width=0.25\textwidth]{logo.png}
-\vspace{0.5cm}
+\vspace{0.8cm}
 
 \rule{\linewidth}{0.5mm}\\[0.4cm]
 {\huge\bfseries BÁO CÁO ĐỒ ÁN MÔN HỌC\\[0.3cm]}
 {\Large\bfseries LẬP TRÌNH CƠ SỞ DỮ LIỆU\par}
-\rule{\linewidth}{0.5mm}\\[1cm]
+\rule{\linewidth}{0.5mm}\\[0.8cm]
 
 {\Huge\bfseries\color{blue!60!black} ĐỀ TÀI:\\[0.3cm]
 HỆ THỐNG QUẢN LÝ PHÒNG KHÁM\par}
@@ -154,14 +149,13 @@ HỆ THỐNG QUẢN LÝ PHÒNG KHÁM\par}
 \vfill
 
 \begin{flushleft}
+\renewcommand{\arraystretch}{1.4}
 \begin{tabular}{ll}
-\textbf{Giảng viên hướng dẫn:} & \dotfill \\[0.3cm]
-\textbf{Lớp:} & \dotfill \\[0.3cm]
-\textbf{Nhóm thực hiện:} & \dotfill \\[0.3cm]
-\textbf{Thành viên:} & 1. \dotfill \\[0.2cm]
- & 2. \dotfill \\[0.2cm]
- & 3. \dotfill \\[0.2cm]
- & 4. \dotfill \\[0.3cm]
+\textbf{Giảng viên hướng dẫn:} & ThS. Phạm Hoàng An \\
+\textbf{Nhóm thực hiện:}       & Nhóm QLPK \\
+\textbf{Thành viên:}           & 1.\ Châu Ngọc Sơn \hfill -- MSSV: 2351010184 \\
+                               & 2.\ Đỗ Phú Điền \hfill -- MSSV: 2351010048 \\
+                               & 3.\ Huỳnh Nhật Thiên Long \hfill -- MSSV: 2351010113 \\
 \end{tabular}
 \end{flushleft}
 
@@ -174,16 +168,17 @@ HỆ THỐNG QUẢN LÝ PHÒNG KHÁM\par}
 \chapter*{LỜI CẢM ƠN}
 \addcontentsline{toc}{chapter}{Lời cảm ơn}
 
-Trong suốt quá trình học tập và thực hiện đồ án môn \textit{Lập trình cơ sở dữ liệu}, nhóm chúng em đã nhận được rất nhiều sự hỗ trợ, hướng dẫn tận tình từ quý thầy cô và sự hợp tác hiệu quả giữa các thành viên trong nhóm. Nhóm xin gửi lời cảm ơn chân thành nhất đến giảng viên hướng dẫn đã cung cấp kiến thức nền tảng về T-SQL, ADO.NET, LINQ và Entity Framework, đồng thời định hướng kiến trúc đa lớp cho đồ án.
+Trong suốt quá trình học tập và thực hiện đồ án môn \textit{Lập trình cơ sở dữ liệu}, nhóm chúng em đã nhận được rất nhiều sự hỗ trợ và hướng dẫn tận tình từ \textbf{ThS. Phạm Hoàng An} -- giảng viên trực tiếp giảng dạy bộ môn. Thầy đã cung cấp kiến thức nền tảng về T-SQL, ADO.NET, LINQ, Entity Framework Core và ASP.NET Core Web API, đồng thời định hướng kiến trúc đa lớp cho đồ án.
 
-Do thời gian và kiến thức còn hạn chế, báo cáo không tránh khỏi những thiếu sót. Nhóm rất mong nhận được những góp ý quý báu của quý thầy cô để đồ án ngày càng hoàn thiện hơn.
+Nhóm cũng xin cảm ơn sự hợp tác chặt chẽ và tinh thần làm việc nghiêm túc giữa các thành viên, giúp đồ án hoàn thành đúng thời hạn với chất lượng tốt nhất trong khả năng.
+
+Do thời gian và kiến thức còn hạn chế, báo cáo không tránh khỏi những thiếu sót. Nhóm rất mong nhận được những góp ý quý báu của thầy để đồ án ngày càng hoàn thiện hơn.
 
 \vspace{1cm}
 \begin{flushright}
 \textit{Nhóm thực hiện}
 \end{flushright}
 
-% ------------------- MỤC LỤC -------------------------------------------------
 \tableofcontents
 \listoffigures
 \listoftables
@@ -193,7 +188,7 @@ Do thời gian và kiến thức còn hạn chế, báo cáo không tránh khỏ
 
 \section{Tên đề tài}
 
-\textbf{Hệ thống Quản lý Phòng khám (Quản Lý Phòng Khám -- QLPK)} là ứng dụng nghiệp vụ cho phép quản trị, lễ tân, bác sĩ, điều dưỡng và nhân viên thu ngân của một cơ sở khám chữa bệnh cấp nhỏ và vừa thực hiện toàn bộ các nghiệp vụ chuyên môn: tiếp nhận bệnh nhân, đặt và theo dõi lịch hẹn, khám bệnh, kê toa thuốc, lập hóa đơn thanh toán, lập báo cáo doanh thu và báo cáo sử dụng thuốc.
+\textbf{Hệ thống Quản lý Phòng khám (QLPK)} là ứng dụng nghiệp vụ cho phép quản trị, lễ tân, bác sĩ, điều dưỡng và nhân viên thu ngân của một cơ sở khám chữa bệnh cấp nhỏ và vừa thực hiện toàn bộ các nghiệp vụ chuyên môn: tiếp nhận bệnh nhân, đặt và theo dõi lịch hẹn, khám bệnh, kê toa thuốc, lập hóa đơn thanh toán, lập báo cáo doanh thu và báo cáo sử dụng thuốc.
 
 \section{Thông tin nhóm thực hiện}
 
@@ -201,40 +196,39 @@ Do thời gian và kiến thức còn hạn chế, báo cáo không tránh khỏ
 \centering
 \renewcommand{\arraystretch}{1.4}
 \caption{Danh sách thành viên và phân công nhiệm vụ}
-\begin{tabularx}{\textwidth}{|c|l|l|X|}
+\begin{tabularx}{\textwidth}{|c|l|c|X|}
 \hline
 \textbf{STT} & \textbf{Họ và tên} & \textbf{MSSV} & \textbf{Nhiệm vụ} \\
 \hline
-1 & \dotfill & \dotfill & Phân tích yêu cầu, thiết kế CSDL, viết T-SQL Scripts (View, Procedure, Function, Trigger). \\
+1 & Châu Ngọc Sơn & 2351010184 & Phân tích yêu cầu, thiết kế CSDL, viết toàn bộ T-SQL Scripts (15 bảng, 13 View, 2 Function, 25 Stored Procedure, 4 Trigger). Quản lý Transaction trên CSDL. \\
 \hline
-2 & \dotfill & \dotfill & Lập trình lớp DAL (ADO.NET), lớp DTO, quản lý kết nối CSDL. \\
+2 & Đỗ Phú Điền  & 2351010048 & Lập trình lớp DAL (ADO.NET kết nối + phi kết nối với DataSet/DataAdapter), lớp DTO. Lập trình project \texttt{QLPKEF} (Entity Framework Core 8 – Code First + Database First). \\
 \hline
-3 & \dotfill & \dotfill & Lập trình lớp BUS, áp dụng LINQ to Objects để xử lý nghiệp vụ. \\
-\hline
-4 & \dotfill & \dotfill & Lập trình giao diện Windows Forms (Guna UI), tích hợp báo cáo PDF và gửi mail nhắc lịch. \\
+3 & Huỳnh Nhật Thiên Long & 2351010113 & Lập trình lớp BUS, áp dụng LINQ to Objects và LINQ to XML. Xây dựng project \texttt{QLPKWebAPI} (ASP.NET Core Web API RESTful + JSON). Lập trình giao diện Windows Forms (Guna UI), tích hợp báo cáo PDF, gửi mail nhắc lịch. Viết báo cáo LaTeX. \\
 \hline
 \end{tabularx}
 \end{table}
 
 \section{Mục tiêu đồ án}
 
-Đồ án nhằm vận dụng tổng hợp các kiến thức đã học, cụ thể:
+Đồ án nhằm vận dụng tổng hợp các kiến thức đã học để giải quyết một bài toán nghiệp vụ thực tế, cụ thể:
 
 \begin{itemize}[leftmargin=*]
-\item Phân tích, thiết kế cơ sở dữ liệu quan hệ trên Microsoft SQL Server cho một bài toán nghiệp vụ thực tế.
-\item Thành thạo \textbf{T-SQL}: viết các View, Stored Procedure, User-defined Function, Trigger và quản lý Transaction để bảo đảm toàn vẹn dữ liệu.
-\item Xây dựng ứng dụng \textbf{.NET Framework 4.7.2} theo kiến trúc \textbf{3 lớp} (Presentation – Business – Data Access) kết hợp lớp đối tượng truyền dữ liệu (DTO).
-\item Sử dụng \textbf{ADO.NET} (SqlConnection, SqlCommand, SqlDataReader, Parameter) để truy xuất CSDL một cách an toàn.
-\item Áp dụng \textbf{LINQ to Objects} để xử lý các tập hợp dữ liệu trong tầng nghiệp vụ; tham khảo \textbf{LINQ to XML} cho việc xuất / nhập dữ liệu phụ trợ.
-\item Khảo sát các công nghệ mở rộng: \textbf{Entity Framework} (Database First) và \textbf{ASP.NET Core Web API} làm hướng phát triển trong tương lai.
+\item Phân tích, thiết kế cơ sở dữ liệu quan hệ trên \textbf{Microsoft SQL Server}.
+\item Thành thạo \textbf{T-SQL}: View, Stored Procedure, User-defined Function, Trigger và quản lý Transaction.
+\item Xây dựng ứng dụng theo \textbf{kiến trúc 3 lớp} (Presentation -- Business -- Data Access) kết hợp lớp đối tượng truyền dữ liệu (DTO).
+\item Sử dụng \textbf{ADO.NET} cả mô hình \emph{kết nối} (SqlConnection / SqlCommand / SqlDataReader) lẫn \emph{phi kết nối} (SqlDataAdapter / DataSet / DataTable).
+\item Áp dụng \textbf{LINQ to Objects} và \textbf{LINQ to XML} trong tầng nghiệp vụ.
+\item Triển khai \textbf{Entity Framework Core 8} theo cả mô hình \emph{Database First} và \emph{Code First} với \texttt{DbContext} và \texttt{DbSet}.
+\item Xây dựng \textbf{ASP.NET Core 8 Web API} chuẩn \textbf{RESTful}, định dạng phản hồi \textbf{JSON}, có Swagger.
 \end{itemize}
 
 \section{Đường link GitHub}
 
 \begin{tcolorbox}[colback=blue!5,colframe=blue!50!black,title=Mã nguồn dự án]
-\textbf{Repository:} \url{https://github.com/<tên-nhóm>/QuanLyPhongKham}\\
+\textbf{Repository (Public):} \url{https://github.com/<tên-nhóm>/QuanLyPhongKham}\\
 \textbf{Nhánh chính:} \texttt{main}\\
-\textbf{Hướng dẫn cài đặt:} xem tệp \texttt{README.md}.
+\textbf{Hướng dẫn cài đặt:} xem file \texttt{README.md} ở thư mục gốc của repo.
 \end{tcolorbox}
 
 % =============================================================================
@@ -242,18 +236,15 @@ Do thời gian và kiến thức còn hạn chế, báo cáo không tránh khỏ
 
 \section{Khảo sát nghiệp vụ}
 
-Phòng khám hoạt động theo quy trình: bệnh nhân được lễ tân tiếp nhận và đặt lịch hẹn → đến ngày hẹn, bác sĩ tạo \emph{Phiếu khám bệnh}, ghi triệu chứng và chẩn đoán → bác sĩ kê \emph{Toa thuốc} gồm nhiều \emph{Chi tiết đơn thuốc} (có số lượng và đơn vị) → nhân viên thu ngân lập \emph{Hóa đơn} căn cứ trên tiền thuốc (tính từ toa) và tiền khám (lấy từ \emph{Dịch vụ}). Hệ thống lưu lịch sử khám của bệnh nhân, sinh báo cáo doanh thu theo ngày/tháng, báo cáo sử dụng thuốc theo tháng.
+Phòng khám hoạt động theo quy trình: bệnh nhân được lễ tân tiếp nhận và đặt lịch hẹn $\to$ đến ngày hẹn, bác sĩ tạo \emph{Phiếu khám bệnh}, ghi triệu chứng và chẩn đoán $\to$ bác sĩ kê \emph{Toa thuốc} gồm nhiều \emph{Chi tiết đơn thuốc} (số lượng và đơn vị) $\to$ nhân viên thu ngân lập \emph{Hóa đơn} trên cơ sở tiền thuốc (tính từ toa) và tiền khám (lấy từ \emph{Dịch vụ}). Hệ thống lưu lịch sử khám của bệnh nhân, sinh báo cáo doanh thu theo ngày/tháng, báo cáo sử dụng thuốc theo tháng.
 
 \section{Sơ đồ thực thể mối quan hệ (ERD)}
 
 \begin{figure}[H]
 \centering
-% Đặt file ảnh ERD.png hoặc ERD.pdf cùng thư mục với báo cáo
-\fbox{\parbox[c][6cm][c]{0.9\textwidth}{\centering
-\textit{\textbf{[Chèn ảnh ERD tại đây]}}\\[0.3cm]
-File ảnh: \texttt{images/ERD.png}\\
-(Sử dụng \texttt{\textbackslash includegraphics[width=\textbackslash textwidth]\{images/ERD.png\}})}}
-\caption{Sơ đồ thực thể mối quan hệ (ERD) của hệ thống QLPK}
+% Đặt file erd.png ở thư mục gốc dự án
+\includegraphics[width=\textwidth,keepaspectratio]{../erd.png}
+\caption{Sơ đồ ERD của hệ thống QLPK}
 \label{fig:erd}
 \end{figure}
 
@@ -261,7 +252,7 @@ CSDL gồm \textbf{15 bảng} được phân nhóm như sau:
 
 \begin{itemize}[leftmargin=*]
 \item \textbf{Nhóm tài khoản \& phân quyền:} \texttt{Roles}, \texttt{TaiKhoan}, \texttt{AuditLog}.
-\item \textbf{Nhóm bệnh nhân \& khám chữa bệnh:} \texttt{BenhNhan}, \texttt{LichHen}, \texttt{PhieuKhamBenh}, \texttt{Benh}, \texttt{ChuanDoan}.
+\item \textbf{Nhóm bệnh nhân \& khám:} \texttt{BenhNhan}, \texttt{LichHen}, \texttt{PhieuKhamBenh}, \texttt{Benh}, \texttt{ChuanDoan}.
 \item \textbf{Nhóm thuốc \& toa:} \texttt{Thuoc}, \texttt{DonVi}, \texttt{CachDung}, \texttt{ToaThuoc}, \texttt{ChiTietDonThuoc}.
 \item \textbf{Nhóm dịch vụ \& hóa đơn:} \texttt{DichVu}, \texttt{HoaDon}.
 \end{itemize}
@@ -272,59 +263,53 @@ CSDL gồm \textbf{15 bảng} được phân nhóm như sau:
 \hline
 \textbf{Bảng} & \textbf{Khóa chính} & \textbf{Mô tả} \\
 \hline\endhead
-\texttt{TaiKhoan} & \texttt{maTaiKhoan} & Tài khoản người dùng (Lễ tân, Bác sĩ, Điều dưỡng, Thu ngân, Quản trị). Có ràng buộc \texttt{UNIQUE} trên \texttt{userName}. \\\hline
-\texttt{Roles} & \texttt{maRole} & Vai trò trong hệ thống. \\\hline
-\texttt{BenhNhan} & \texttt{maBenhNhan} & Hồ sơ bệnh nhân. Có cờ \texttt{isDeleted} cho \emph{soft-delete}, ràng buộc \texttt{UNIQUE} trên \texttt{CCCD}. \\\hline
-\texttt{LichHen} & \texttt{maLichHen} & Lịch hẹn khám. Liên kết tới bác sĩ, điều dưỡng, bệnh nhân; có trạng thái mặc định \emph{Chờ khám}. \\\hline
-\texttt{PhieuKhamBenh} & \texttt{maPKB} & Phiếu khám gồm ngày khám, triệu chứng, ngày tái khám, cờ đã gửi mail nhắc. \\\hline
-\texttt{Benh}, \texttt{ChuanDoan} & \texttt{maBenh} / khóa kép & Danh mục bệnh và chẩn đoán cụ thể trên phiếu khám. \\\hline
-\texttt{Thuoc} & \texttt{maThuoc} & Danh mục thuốc với đơn giá, đơn vị, cách dùng, số lượng tồn kho. \\\hline
-\texttt{DonVi}, \texttt{CachDung} & \texttt{maDonVi} / \texttt{maCachDung} & Danh mục đơn vị (viên, hộp, ống…) và cách dùng. \\\hline
+\texttt{TaiKhoan} & \texttt{maTaiKhoan} & Tài khoản người dùng. Ràng buộc \texttt{UNIQUE} trên \texttt{userName}. \\\hline
+\texttt{Roles} & \texttt{maRole} & Vai trò: Quản trị, Lễ tân, Bác sĩ, Điều dưỡng, Thu ngân. \\\hline
+\texttt{BenhNhan} & \texttt{maBenhNhan} & Hồ sơ bệnh nhân. Có cờ \texttt{isDeleted} cho \emph{soft-delete}, \texttt{UNIQUE} trên \texttt{CCCD}. \\\hline
+\texttt{LichHen} & \texttt{maLichHen} & Lịch hẹn khám. Trạng thái mặc định \emph{Chờ khám}. \\\hline
+\texttt{PhieuKhamBenh} & \texttt{maPKB} & Phiếu khám: ngày khám, triệu chứng, ngày tái khám, cờ đã gửi mail. \\\hline
+\texttt{Benh}, \texttt{ChuanDoan} & \texttt{maBenh} / khóa kép & Danh mục bệnh và chẩn đoán cụ thể. \\\hline
+\texttt{Thuoc} & \texttt{maThuoc} & Danh mục thuốc: đơn giá, đơn vị, cách dùng, tồn kho. \\\hline
+\texttt{DonVi}, \texttt{CachDung} & \texttt{maDonVi} / \texttt{maCachDung} & Danh mục đơn vị, cách dùng thuốc. \\\hline
 \texttt{ToaThuoc} & \texttt{maToaThuoc} & Toa thuốc gắn với phiếu khám. \\\hline
-\texttt{ChiTietDonThuoc} & (\texttt{maThuoc}, \texttt{maToaThuoc}) & Bảng kết nối nhiều–nhiều giữa toa và thuốc, có cột \texttt{soLuong}. \\\hline
-\texttt{DichVu} & \texttt{maDichVu} & Bảng giá các dịch vụ (Khám bệnh, Tiểu phẫu…). \\\hline
-\texttt{HoaDon} & \texttt{maHoaDon} & Hóa đơn thanh toán, gồm tiền thuốc, tiền khám, tổng tiền. \\\hline
+\texttt{ChiTietDonThuoc} & khóa kép & Bảng nối nhiều--nhiều giữa toa và thuốc, có \texttt{soLuong}. \\\hline
+\texttt{DichVu} & \texttt{maDichVu} & Bảng giá dịch vụ (Khám bệnh, Tiểu phẫu\ldots). \\\hline
+\texttt{HoaDon} & \texttt{maHoaDon} & Hóa đơn: tiền thuốc, tiền khám, tổng tiền. \\\hline
 \texttt{AuditLog} & \texttt{logID} & Nhật ký thao tác phục vụ kiểm toán. \\\hline
 \caption{Mô tả các bảng trong CSDL \texttt{QLPK}}
 \end{longtable}
 
 \subsection{Các ràng buộc dữ liệu}
 
-Ngoài khóa chính và khóa ngoại (17 quan hệ FK), CSDL cài đặt các \texttt{CHECK CONSTRAINT}:
-
 \begin{itemize}[leftmargin=*]
-\item \texttt{chk\_SoLuongKe}: số lượng thuốc kê trên mỗi đơn phải $> 0$.
-\item \texttt{chk\_SoLuongThuoc}: tồn kho thuốc phải $\geq 0$.
-\item \texttt{chk\_TienDichVu}: giá dịch vụ phải $\geq 0$.
+\item 17 ràng buộc khóa ngoại (\texttt{FOREIGN KEY}).
+\item 3 \texttt{CHECK CONSTRAINT}: \texttt{chk\_SoLuongKe} ($>0$), \texttt{chk\_SoLuongThuoc} ($\geq 0$), \texttt{chk\_TienDichVu} ($\geq 0$).
+\item Giá trị mặc định cho các cột thời gian (\texttt{GETDATE()}) và cờ trạng thái.
 \end{itemize}
-
-Đồng thời, các giá trị mặc định (DEFAULT) được khai báo cho các cột thời gian (\texttt{ngayLapHoaDon}, \texttt{ngayKham}, \texttt{ngayKeToa}) và cờ trạng thái (\texttt{isDeleted}, \texttt{DaGuiMail}, \texttt{trangThai}).
 
 % -----------------------------------------------------------------------------
 \section{Lập trình phía máy chủ (T-SQL Scripts)}
 
 \subsection{View truy vấn dữ liệu}
 
-Toàn bộ thao tác đọc của ứng dụng đều đi qua \textbf{View} nhằm tách biệt cấu trúc bảng vật lý khỏi tầng ứng dụng, đồng thời mã hóa sẵn các phép JOIN phức tạp. Hệ thống cài đặt \textbf{13 View} chính:
+Toàn bộ thao tác đọc của ứng dụng đều đi qua \textbf{13 View} nhằm tách biệt cấu trúc bảng vật lý khỏi tầng ứng dụng:
 
 \begin{longtable}{|l|p{8.5cm}|}
 \hline
 \textbf{View} & \textbf{Mục đích} \\\hline\endhead
-\texttt{v\_DanhSachBenhNhan} & Liệt kê bệnh nhân chưa bị xóa mềm (\texttt{isDeleted = 0}). \\\hline
-\texttt{v\_DanhSachTaiKhoan} & JOIN \texttt{TaiKhoan} với \texttt{Roles} để lấy tên vai trò. \\\hline
-\texttt{v\_DanhSachLichHen} & JOIN lịch hẹn với bệnh nhân, bác sĩ và điều dưỡng. \\\hline
+\texttt{v\_DanhSachBenhNhan} & Liệt kê bệnh nhân chưa bị xóa mềm. \\\hline
+\texttt{v\_DanhSachTaiKhoan} & JOIN \texttt{TaiKhoan} với \texttt{Roles}. \\\hline
+\texttt{v\_DanhSachLichHen} & JOIN lịch hẹn với bệnh nhân, bác sĩ, điều dưỡng. \\\hline
 \texttt{v\_DanhSachThuoc} & JOIN thuốc với đơn vị, cách dùng. \\\hline
 \texttt{v\_DanhSachDichVu}, \texttt{v\_DanhSachBenh}, \texttt{v\_DanhSachDonVi}, \texttt{v\_DanhSachCachDung}, \texttt{v\_DanhSachRoles}, \texttt{v\_DanhSachChuanDoan} & Liệt kê danh mục tham chiếu. \\\hline
-\texttt{v\_ChiTietPhieuKham} & Chi tiết phiếu khám kèm tên bệnh nhân, tên bác sĩ. \\\hline
-\texttt{v\_ChiTietDonThuoc} & Chi tiết các thuốc trong một toa, kèm ngày kê. \\\hline
-\texttt{v\_DanhSachHoaDon} & JOIN hóa đơn với phiếu khám, bệnh nhân, thu ngân để hiển thị tổng hợp. \\\hline
+\texttt{v\_ChiTietPhieuKham} & Chi tiết phiếu khám kèm tên bệnh nhân, bác sĩ. \\\hline
+\texttt{v\_ChiTietDonThuoc} & Chi tiết các thuốc trong một toa. \\\hline
+\texttt{v\_DanhSachHoaDon} & Hóa đơn kèm tên bệnh nhân, thu ngân. \\\hline
 \caption{Danh sách View trong CSDL}
 \end{longtable}
 
-Ví dụ \texttt{v\_DanhSachThuoc}:
-
-\begin{lstlisting}[language=TSQL,caption={View v\_DanhSachThuoc – chuẩn hóa truy vấn danh mục thuốc}]
-CREATE VIEW [dbo].[v_DanhSachThuoc] AS
+\begin{lstlisting}[language=TSQL,caption={View v\_DanhSachThuoc -- chuẩn hóa truy vấn danh mục thuốc}]
+CREATE VIEW dbo.v_DanhSachThuoc AS
 SELECT  t.maThuoc, t.tenThuoc, t.donGia, t.soLuong,
         t.maDonVi, t.maCachDung,
         dv.tenDonVi, cd.tenCachDung
@@ -335,9 +320,7 @@ JOIN    CachDung cd  ON t.maCachDung = cd.maCachDung;
 
 \subsection{User-defined Function}
 
-Hệ thống cài đặt 2 \textbf{Function} phục vụ tính toán nghiệp vụ:
-
-\paragraph{(1) Hàm vô hướng \texttt{f\_TinhTienThuoc}} tính tổng tiền thuốc của một Phiếu khám:
+\textbf{(1) Scalar Function} \texttt{f\_TinhTienThuoc} tính tổng tiền thuốc của một Phiếu khám:
 
 \begin{lstlisting}[language=TSQL,caption={Scalar Function tính tiền thuốc}]
 CREATE FUNCTION dbo.f_TinhTienThuoc(@maPKB INT)
@@ -354,7 +337,7 @@ BEGIN
 END;
 \end{lstlisting}
 
-\paragraph{(2) Table-Valued Function \texttt{f\_LichSuKhamBenh}} trả về toàn bộ lịch sử khám của một bệnh nhân, kèm danh sách thuốc đã kê và tổng chi phí:
+\textbf{(2) Table-Valued Function} \texttt{f\_LichSuKhamBenh} trả về lịch sử khám của một bệnh nhân:
 
 \begin{lstlisting}[language=TSQL,caption={Table-Valued Function tra cứu lịch sử khám}]
 CREATE FUNCTION dbo.f_LichSuKhamBenh(@maBenhNhan INT)
@@ -376,41 +359,26 @@ AS RETURN
 
 \subsection{Stored Procedure}
 
-Toàn bộ thao tác Insert/Update/Delete đều được đóng gói trong \textbf{Stored Procedure} để chống SQL Injection và tách rõ logic giữa tầng DAL và CSDL. Hệ thống cài đặt 25 procedure, chia theo các nhóm:
-
-\begin{itemize}[leftmargin=*]
-\item \textbf{Đăng nhập \& Tài khoản:} \texttt{sp\_KiemTraDangNhap}, \texttt{sp\_ThemTaiKhoan}, \texttt{sp\_SuaTaiKhoan}, \texttt{sp\_XoaTaiKhoan}.
-\item \textbf{Quản lý bệnh nhân:} \texttt{sp\_ThemBenhNhan}, \texttt{sp\_SuaBenhNhan}, \texttt{sp\_XoaBenhNhan} (soft-delete), \texttt{sp\_TimKiemBenhNhan}.
-\item \textbf{Quản lý bệnh:} \texttt{sp\_ThemBenh}, \texttt{sp\_SuaBenh}, \texttt{sp\_XoaBenh}.
-\item \textbf{Quản lý thuốc:} \texttt{sp\_ThemThuoc}, \texttt{sp\_SuaThuoc}, \texttt{sp\_XoaThuoc}.
-\item \textbf{Lịch hẹn:} \texttt{sp\_ThemLichHen}, \texttt{sp\_CapNhatTrangThaiLichHen}.
-\item \textbf{Phiếu khám \& toa thuốc (có Transaction):} \texttt{sp\_TaoPhieuKhamVaToaThuoc}, \texttt{sp\_ThemChuanDoan}, \texttt{sp\_KeThuocVaoDon}, \texttt{sp\_XoaThuocKhoiDon}.
-\item \textbf{Hóa đơn (có Transaction):} \texttt{sp\_LapHoaDonThanhToan}.
-\item \textbf{Dịch vụ:} \texttt{sp\_ThemDichVu}, \texttt{sp\_SuaDichVu}, \texttt{sp\_XoaDichVu}.
-\item \textbf{Báo cáo:} \texttt{sp\_BaoCaoSuDungThuoc}, \texttt{sp\_DemSoLanKeThuoc}.
-\item \textbf{Khác:} \texttt{sp\_CapNhatDaGuiMail}, \texttt{sp\_ThemToaThuoc}.
-\end{itemize}
+Toàn bộ thao tác Insert/Update/Delete đều đóng gói trong \textbf{25 Stored Procedure} để chống SQL Injection. Các nhóm chính: đăng nhập \& tài khoản, bệnh nhân, bệnh, thuốc, lịch hẹn, phiếu khám (có Transaction), hóa đơn (có Transaction), dịch vụ, báo cáo.
 
 \subsection{Quản lý Giao tác (Transaction)}
 
-Hai nghiệp vụ \emph{Tạo phiếu khám + toa thuốc} và \emph{Lập hóa đơn} là nghiệp vụ \textbf{đa câu lệnh INSERT/UPDATE} nên được bao trong \texttt{BEGIN TRANSACTION ... COMMIT/ROLLBACK} kèm khối \texttt{TRY-CATCH}:
+Hai nghiệp vụ \emph{Tạo phiếu khám + toa thuốc} và \emph{Lập hóa đơn} được bao trong \texttt{BEGIN TRANSACTION ... COMMIT/ROLLBACK} kèm \texttt{TRY-CATCH}:
 
-\begin{lstlisting}[language=TSQL,caption={Stored procedure sp\_LapHoaDonThanhToan – sử dụng Transaction}]
+\begin{lstlisting}[language=TSQL,caption={SP sp\_LapHoaDonThanhToan -- sử dụng Transaction}]
 CREATE PROCEDURE dbo.sp_LapHoaDonThanhToan
-    @maPKB INT,
-    @maTaiKhoan INT
+    @maPKB INT, @maTaiKhoan INT
 AS
 BEGIN
     SET NOCOUNT ON;
     BEGIN TRANSACTION;
     BEGIN TRY
         DECLARE @tienThuoc FLOAT = dbo.f_TinhTienThuoc(@maPKB);
-
         DECLARE @tienKham FLOAT;
         SELECT @tienKham = tienDichVu FROM DichVu WHERE tenDichVu = N'Khám bệnh';
         IF @tienKham IS NULL SET @tienKham = 50000;
 
-        DECLARE @tongTien   FLOAT = @tienThuoc + @tienKham;
+        DECLARE @tongTien FLOAT = @tienThuoc + @tienKham;
         DECLARE @ngayTaiKham DATE;
         SELECT @ngayTaiKham = ngayTaiKham FROM PhieuKhamBenh WHERE maPKB = @maPKB;
 
@@ -418,7 +386,6 @@ BEGIN
                            ngayTaiKham, maPKB, maTaiKhoan)
         VALUES (GETDATE(), @tienThuoc, @tienKham, @tongTien,
                 @ngayTaiKham, @maPKB, @maTaiKhoan);
-
         COMMIT TRANSACTION;
     END TRY
     BEGIN CATCH
@@ -429,133 +396,119 @@ BEGIN
 END;
 \end{lstlisting}
 
-Ý nghĩa: việc tính tiền thuốc và tạo hóa đơn được coi là một \emph{đơn vị nguyên tử} – hoặc thành công toàn bộ, hoặc khôi phục về trạng thái cũ. Nếu Trigger \texttt{trg\_CapNhatSoLuongThuocTrongKho} báo lỗi kho âm, transaction sẽ \texttt{ROLLBACK}, không sinh ra hóa đơn lỗi.
-
 \subsection{Trigger}
 
-Hệ thống cài đặt 4 \textbf{Trigger} để đảm bảo ràng buộc dữ liệu tự động:
+Hệ thống cài đặt 4 \textbf{Trigger}:
 
 \begin{enumerate}[leftmargin=*]
-\item \textbf{\texttt{trg\_CapNhatSoLuongThuocTrongKho}} – \texttt{AFTER INSERT} trên \texttt{ChiTietDonThuoc}: kiểm tra tồn kho và tự động trừ kho khi kê thuốc.
-
-\item \textbf{\texttt{trg\_HoanTraSoLuongThuoc}} – \texttt{AFTER DELETE} trên \texttt{ChiTietDonThuoc}: hoàn trả số lượng tồn kho khi xóa thuốc khỏi đơn.
-
-\item \textbf{\texttt{trg\_KiemTraNgayDatLich}} – \texttt{AFTER INSERT, UPDATE} trên \texttt{LichHen}: chặn việc đặt lịch trong quá khứ.
-
-\item \textbf{\texttt{trg\_ChanXoaTaiKhoan}} – \texttt{INSTEAD OF DELETE} trên \texttt{TaiKhoan}: không cho xóa tài khoản đã có lịch sử khám/hóa đơn.
+\item \texttt{trg\_CapNhatSoLuongThuocTrongKho} -- \texttt{AFTER INSERT}: kiểm tra tồn kho và tự động trừ kho khi kê thuốc.
+\item \texttt{trg\_HoanTraSoLuongThuoc} -- \texttt{AFTER DELETE}: hoàn trả tồn kho khi xóa thuốc khỏi đơn.
+\item \texttt{trg\_KiemTraNgayDatLich} -- \texttt{AFTER INSERT, UPDATE}: chặn đặt lịch trong quá khứ.
+\item \texttt{trg\_ChanXoaTaiKhoan} -- \texttt{INSTEAD OF DELETE}: không cho xóa tài khoản có lịch sử.
 \end{enumerate}
 
-\begin{lstlisting}[language=TSQL,caption={Trigger kiểm tra và cập nhật tồn kho thuốc}]
+\begin{lstlisting}[language=TSQL,caption={Trigger kiểm tra \& cập nhật tồn kho thuốc}]
 CREATE TRIGGER trg_CapNhatSoLuongThuocTrongKho
 ON ChiTietDonThuoc
 AFTER INSERT
 AS
 BEGIN
-    IF EXISTS (
-        SELECT 1 FROM inserted i
-        JOIN Thuoc t ON i.maThuoc = t.maThuoc
-        WHERE t.soLuong < i.soLuong)
+    IF EXISTS (SELECT 1 FROM inserted i
+               JOIN Thuoc t ON i.maThuoc = t.maThuoc
+               WHERE t.soLuong < i.soLuong)
     BEGIN
         RAISERROR(N'Không đủ số lượng thuốc trong kho!', 16, 1);
         ROLLBACK TRANSACTION;
         RETURN;
     END
-
-    UPDATE t
-    SET    t.soLuong = t.soLuong - i.soLuong
-    FROM   Thuoc t
-    JOIN   inserted i ON t.maThuoc = i.maThuoc;
+    UPDATE t SET t.soLuong = t.soLuong - i.soLuong
+    FROM Thuoc t JOIN inserted i ON t.maThuoc = i.maThuoc;
 END;
 \end{lstlisting}
 
 % =============================================================================
 \chapter{KIẾN TRÚC PHẦN MỀM}
 
-\section{Mô hình 3 lớp (3-layer Architecture)}
+\section{Mô hình 3 lớp + DTO}
 
-Ứng dụng được tổ chức thành \textbf{4 project} trong cùng một solution \texttt{QuanLyPhongKham.sln}:
+Ứng dụng được tổ chức thành \textbf{6 project} trong cùng solution \texttt{QuanLyPhongKham.sln}:
 
 \begin{itemize}[leftmargin=*]
-\item \textbf{\texttt{GUI\_QLPK}} (Presentation Layer) – Windows Forms, sử dụng thư viện UI hiện đại \emph{Guna.UI2.WinForms}.
-\item \textbf{\texttt{QLPKBUS}} (Business Logic Layer) – Trung gian giữa GUI và DAL, kiểm tra ràng buộc nghiệp vụ.
-\item \textbf{\texttt{QLPKDAL}} (Data Access Layer) – Tương tác trực tiếp với SQL Server qua ADO.NET.
-\item \textbf{\texttt{QLPKDTO}} (Data Transfer Object) – Chứa lớp đối tượng truyền dữ liệu giữa các lớp.
+\item \textbf{\texttt{GUI\_QLPK}} -- Presentation Layer (WinForms, Guna UI).
+\item \textbf{\texttt{QLPKBUS}} -- Business Logic Layer.
+\item \textbf{\texttt{QLPKDAL}} -- Data Access Layer (ADO.NET).
+\item \textbf{\texttt{QLPKDTO}} -- Data Transfer Object.
+\item \textbf{\texttt{QLPKEF}} -- Entity Framework Core 8 (Code First + Database First).
+\item \textbf{\texttt{QLPKWebAPI}} -- ASP.NET Core 8 Web API (RESTful + JSON).
 \end{itemize}
 
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[
     layer/.style={rectangle,draw=blue!60!black,thick,fill=blue!10,
-                  minimum width=11cm,minimum height=1.4cm,align=center,
-                  font=\bfseries\large},
+                  minimum width=10.5cm,minimum height=1.2cm,align=center,
+                  font=\bfseries},
     arrow/.style={-Stealth,thick,blue!60!black}
 ]
-\node[layer]                       (gui) at (0, 5.4) {GUI\_QLPK\\(Presentation Layer)};
-\node[layer]                       (bus) at (0, 3.0) {QLPKBUS\\(Business Logic Layer)};
-\node[layer]                       (dal) at (0, 0.6) {QLPKDAL\\(Data Access Layer)};
-\node[draw=red!60!black,thick,fill=red!10,minimum width=11cm,minimum height=1.2cm,align=center,
-      font=\bfseries] (db) at (0,-1.8) {SQL Server – CSDL QLPK\\(Views, Stored Procedures, Functions, Triggers)};
+\node[layer] (gui) at (0, 6.0) {GUI\_QLPK -- Presentation};
+\node[layer] (bus) at (0, 4.4) {QLPKBUS -- Business Logic};
+\node[layer] (dal) at (0, 2.8) {QLPKDAL -- ADO.NET};
+\node[layer,fill=orange!20,draw=orange!80!black] (ef) at (0, 1.2) {QLPKEF -- Entity Framework Core 8};
+\node[draw=red!60!black,thick,fill=red!10,minimum width=10.5cm,minimum height=1cm,
+      align=center,font=\bfseries] (db) at (0,-0.4) {SQL Server -- CSDL QLPK};
+
+\node[layer,fill=green!20,draw=green!60!black,minimum width=4cm] (api)
+     at (-6.5,1.2) {QLPKWebAPI\\(REST + JSON)};
 
 \draw[arrow] (gui) -- (bus);
 \draw[arrow] (bus) -- (dal);
 \draw[arrow] (dal) -- (db);
+\draw[arrow] (ef)  -- (db);
+\draw[arrow] (api) -- (ef);
 
-\node[draw=green!60!black,thick,fill=green!10,minimum width=2.5cm,minimum height=8cm,
-      align=center,font=\bfseries] (dto) at (7,1.8) {QLPKDTO\\(DTO)};
-\draw[arrow,dashed,green!60!black] (gui.east) -- (dto.north west);
-\draw[arrow,dashed,green!60!black] (bus.east) -- (dto.west);
-\draw[arrow,dashed,green!60!black] (dal.east) -- (dto.south west);
+\node[draw=purple!60!black,thick,fill=purple!10,minimum width=2cm,minimum height=7.5cm,
+      align=center,font=\bfseries] (dto) at (6.5,2.8) {QLPKDTO};
+\draw[arrow,dashed,purple!60!black] (gui.east) -- (dto.north west);
+\draw[arrow,dashed,purple!60!black] (bus.east) -- (dto.west);
+\draw[arrow,dashed,purple!60!black] (dal.east) -- (dto.south west);
 \end{tikzpicture}
-\caption{Mô hình 3 lớp + DTO của hệ thống QLPK}
+\caption{Kiến trúc tổng thể hệ thống QLPK -- 3 lớp + EF + Web API + DTO}
 \label{fig:3layer}
 \end{figure}
 
-\subsection{Presentation Layer – GUI\_QLPK}
+\subsection{Presentation Layer -- GUI\_QLPK}
 
-\begin{itemize}[leftmargin=*]
-\item Cung cấp các Form: \texttt{Login}, \texttt{QLPMMain}, \texttt{Home}, \texttt{DangKyKham}, \texttt{DSLaySoKham}, \texttt{QuanLyBenhNhan}, \texttt{ThemPhieuKhamBenh}, \texttt{KeToa}, \texttt{LapHoaDon}, \texttt{DanhSachHoaDon}, \texttt{BaoCaoDoanhThu}, \texttt{BaoCaoSuDungThuoc}, \texttt{QuanLyTaiKhoan}, \texttt{QuanLyThuoc}, \texttt{QuanLyDichVu}, \texttt{QuanLyLoaiBenh}, \texttt{QuanLyNhacHen}, \texttt{TraCuuBenhNhan}\ldots
-\item Sử dụng \textbf{Guna.UI2} để tạo giao diện hiện đại, sử dụng \textbf{iText7} để xuất hóa đơn PDF, \textbf{SMTP} để gửi mail nhắc tái khám.
-\item Tham chiếu trực tiếp \texttt{QLPKBUS} và \texttt{QLPKDTO}, \textbf{không trực tiếp gọi} đến \texttt{QLPKDAL}.
-\end{itemize}
+Cung cấp các Form: \texttt{Login}, \texttt{QLPMMain}, \texttt{Home}, \texttt{DangKyKham}, \texttt{DSLaySoKham}, \texttt{QuanLyBenhNhan}, \texttt{ThemPhieuKhamBenh}, \texttt{KeToa}, \texttt{LapHoaDon}, \texttt{DanhSachHoaDon}, \texttt{BaoCaoDoanhThu}, \texttt{BaoCaoSuDungThuoc}, \texttt{QuanLyTaiKhoan}, \texttt{QuanLyThuoc}, \texttt{QuanLyDichVu}, \texttt{QuanLyLoaiBenh}, \texttt{QuanLyNhacHen}, \texttt{TraCuuBenhNhan}. Sử dụng \textbf{Guna.UI2.WinForms} cho giao diện hiện đại, \textbf{iText7} xuất hóa đơn PDF, \textbf{SMTP} gửi mail nhắc tái khám.
 
-\subsection{Business Logic Layer – QLPKBUS}
+\subsection{Business Logic Layer -- QLPKBUS}
 
-\begin{itemize}[leftmargin=*]
-\item Mỗi entity có một class BUS tương ứng: \texttt{BenhNhanBUS}, \texttt{HoadonBUS}, \texttt{PhieukhambenhBUS}, \texttt{ThuocBUS}, \texttt{ToathuocBUS}, \texttt{lichHenBUS}, \texttt{taiKhoanBUS}, \texttt{DichvuBUS}, \texttt{BenhBUS}, \texttt{ChandoanBUS}, \texttt{cachDungBUS}, \texttt{donviBUS}\ldots
-\item Vai trò: kiểm tra ràng buộc, áp dụng LINQ to Objects để lọc / sắp xếp dữ liệu, đóng vai trò \textit{facade} cho lớp GUI.
-\end{itemize}
+Mỗi entity có một class BUS: \texttt{BenhNhanBUS}, \texttt{HoadonBUS}, \texttt{PhieukhambenhBUS}, \texttt{ThuocBUS}\ldots\ Vai trò: kiểm tra ràng buộc, áp dụng LINQ to Objects, đóng vai trò \textit{facade} cho lớp GUI.
 
-\begin{lstlisting}[style=csharp,caption={Lớp BUS đóng vai trò trung gian giữa GUI và DAL}]
+\begin{lstlisting}[style=csharp,caption={Lớp BUS trung gian giữa GUI và DAL}]
 namespace QLPKBUS
 {
     public class BenhNhanBUS
     {
         private BenhNhanDAL bnDAL;
         public BenhNhanBUS()  { bnDAL = new BenhNhanDAL(); }
-
         public bool   them (BenhNhanDTO bn) => bnDAL.Them(bn);
         public bool   sua  (BenhNhanDTO bn, int oldId) => bnDAL.Sua(bn, oldId);
         public bool   xoa  (BenhNhanDTO bn) => bnDAL.Xoa(bn);
-
         public List<BenhNhanDTO> select() => bnDAL.select();
         public List<BenhNhanDTO> selectByKeyWord(string kw) => bnDAL.SelectByKeyWord(kw);
     }
 }
 \end{lstlisting}
 
-\subsection{Data Access Layer – QLPKDAL}
+\subsection{Data Access Layer -- QLPKDAL}
 
-\begin{itemize}[leftmargin=*]
-\item Mỗi entity có một class DAL: \texttt{benhnhanDAL}, \texttt{HoadonDAL}, \texttt{PhieukhambenhDAL}, \texttt{ThuocDAL}, \texttt{ToathuocDAL}, \texttt{lichHenDAL}, \texttt{taiKhoanDAL}, \texttt{ChandoanDAL}, \texttt{DichvuDAL}, \texttt{BenhDAL}, \texttt{donViDAL}, \texttt{cachDungDAL}, \texttt{loaiTaiKhoanDAL}, \texttt{ChiTietToaThuocDAL}.
-\item Sử dụng \textbf{ADO.NET}: đối tượng \texttt{SqlConnection}, \texttt{SqlCommand}, \texttt{SqlDataReader}, \texttt{SqlParameter}; gọi \textbf{Stored Procedure} hoặc \textbf{View} đã định nghĩa trên SQL Server.
-\item Chuỗi kết nối lấy từ \texttt{App.config} thông qua \texttt{ConfigurationManager.AppSettings}.
-\end{itemize}
+14 class DAL (\texttt{benhnhanDAL}, \texttt{HoadonDAL}, \texttt{PhieukhambenhDAL}\ldots) sử dụng \textbf{ADO.NET} với \texttt{SqlConnection}, \texttt{SqlCommand}, \texttt{SqlDataReader}, \texttt{SqlParameter}; gọi Stored Procedure hoặc View. Chuỗi kết nối lấy từ \texttt{App.config}.
 
-\subsection{Đối tượng trao đổi dữ liệu (DTO) – QLPKDTO}
+\subsection{Đối tượng trao đổi dữ liệu (DTO) -- QLPKDTO}
 
-Project DTO chứa các lớp POCO không phụ thuộc thư viện ADO.NET / WinForms, dùng để truyền dữ liệu giữa GUI \(\leftrightarrow\) BUS \(\leftrightarrow\) DAL: \texttt{BenhNhanDTO}, \texttt{hoadonDTO}, \texttt{phieukhambenhDTO}, \texttt{toathuocDTO}, \texttt{ChiTietToaThuocDTO}, \texttt{thuocDTO}, \texttt{dichvuDTO}, \texttt{lichHenDTO}, \texttt{taiKhoanDTO}, \texttt{loaiTaiKhoanDTO}, \texttt{benhDTO}, \texttt{chandoanDTO}, \texttt{donViDTO}, \texttt{cachdungDTO}.
+Project DTO chứa các lớp POCO độc lập với ADO.NET/WinForms, được chia sẻ giữa các lớp:
 
-\begin{lstlisting}[style=csharp,caption={DTO – ví dụ với lớp BenhNhanDTO}]
+\begin{lstlisting}[style=csharp,caption={DTO -- BenhNhanDTO}]
 namespace QLPKDTO
 {
     public class BenhNhanDTO
@@ -574,11 +527,11 @@ namespace QLPKDTO
 % =============================================================================
 \chapter{THỰC THI KỸ THUẬT VÀ CÔNG NGHỆ}
 
-\section{Truy xuất dữ liệu}
+\section{ADO.NET}
 
-\subsection{ADO.NET}
+\subsection{Mô hình kết nối (Connected)}
 
-ADO.NET là công nghệ truy cập dữ liệu chủ đạo của ứng dụng. Mọi truy vấn dữ liệu được thực hiện qua bộ ba lớp \texttt{SqlConnection}, \texttt{SqlCommand}, \texttt{SqlDataReader} hoặc \texttt{SqlDataAdapter} với đặc tả \textbf{Parameterized Query} để phòng chống SQL Injection. Chuỗi kết nối được khai báo trong file \texttt{App.config}:
+Mọi thao tác đọc/ghi trong các Form chính sử dụng \texttt{SqlConnection}, \texttt{SqlCommand}, \texttt{SqlDataReader} với \textbf{Parameterized Query} chống SQL Injection:
 
 \begin{lstlisting}[caption={Cấu hình chuỗi kết nối trong App.config}]
 <appSettings>
@@ -587,9 +540,7 @@ ADO.NET là công nghệ truy cập dữ liệu chủ đạo của ứng dụng.
 </appSettings>
 \end{lstlisting}
 
-Ví dụ thao tác đọc danh sách bệnh nhân thông qua View và Stored Procedure tìm kiếm:
-
-\begin{lstlisting}[style=csharp,caption={DAL gọi View và Stored Procedure qua ADO.NET}]
+\begin{lstlisting}[style=csharp,caption={DAL gọi View qua ADO.NET (mô hình kết nối)}]
 public List<BenhNhanDTO> select()
 {
     var ds = new List<BenhNhanDTO>();
@@ -603,35 +554,48 @@ public List<BenhNhanDTO> select()
             while (rd.Read())
             {
                 ds.Add(new BenhNhanDTO {
-                    MaBN           = (int)rd["maBenhNhan"],
-                    TenBN          = rd["tenBenhNhan"].ToString(),
-                    GtBN           = rd["gioiTinh"].ToString(),
-                    NgsinhBN       = (DateTime)rd["ngaySinh"],
-                    DiachiBN       = rd["diaChi"].ToString(),
+                    MaBN     = (int)rd["maBenhNhan"],
+                    TenBN    = rd["tenBenhNhan"].ToString(),
+                    GtBN     = rd["gioiTinh"].ToString(),
+                    NgsinhBN = (DateTime)rd["ngaySinh"],
+                    DiachiBN = rd["diaChi"].ToString(),
                     CanCuocCongDan = rd["CCCD"].ToString(),
-                    Email          = rd["email"] == DBNull.Value ? "" : rd["email"].ToString()
+                    Email    = rd["email"] == DBNull.Value ? "" : rd["email"].ToString()
                 });
             }
         }
     }
     return ds;
 }
+\end{lstlisting}
 
-public List<BenhNhanDTO> SelectByKeyWord(string kw)
+\subsection{Mô hình phi kết nối (Disconnected)}
+
+Các Form báo cáo (\texttt{BaoCaoDoanhThu}, \texttt{BaoCaoSuDungThuoc}) sử dụng \texttt{SqlDataAdapter} + \texttt{DataSet} / \texttt{DataTable} để load toàn bộ kết quả về RAM, sau đó hiển thị trên \texttt{DataGridView} và xuất PDF. Đây là mô hình \emph{phi kết nối} -- connection được đóng ngay sau khi \texttt{Fill}:
+
+\begin{lstlisting}[style=csharp,caption={Mô hình phi kết nối -- SqlDataAdapter + DataSet}]
+public DataSet LayBaoCaoSuDungThuoc(int thang, int nam)
 {
+    var ds = new DataSet();
     using (var con = new SqlConnection(ConnectionString))
-    using (var cmd = new SqlCommand("sp_TimKiemBenhNhan", con) {
-            CommandType = CommandType.StoredProcedure })
+    using (var cmd = new SqlCommand("sp_BaoCaoSuDungThuoc", con))
     {
-        cmd.Parameters.AddWithValue("@tuKhoa", kw);   // chống SQL Injection
-        // ... ExecuteReader & ánh xạ DTO
+        cmd.CommandType = CommandType.StoredProcedure;
+        cmd.Parameters.AddWithValue("@month", thang);
+        cmd.Parameters.AddWithValue("@year",  nam);
+
+        using (var adapter = new SqlDataAdapter(cmd))
+        {
+            adapter.Fill(ds, "BaoCaoThuoc");  // Connection mở -> đọc -> đóng tự động
+        }
     }
+    return ds;  // Trả DataSet về để binding vào DataGridView
 }
 \end{lstlisting}
 
-Thao tác gọi \textbf{Scalar Function} \texttt{f\_TinhTienThuoc} từ C\#:
+\subsection{Gọi Function trên CSDL}
 
-\begin{lstlisting}[style=csharp,caption={Gọi User-defined Function từ ADO.NET}]
+\begin{lstlisting}[style=csharp,caption={Gọi Scalar Function f\_TinhTienThuoc qua ADO.NET}]
 public decimal tienthuoc(hoadonDTO hd, int maPKB)
 {
     using (var con = new SqlConnection(ConnectionString))
@@ -645,149 +609,389 @@ public decimal tienthuoc(hoadonDTO hd, int maPKB)
 }
 \end{lstlisting}
 
+% -----------------------------------------------------------------------------
+\section{LINQ}
+
 \subsection{LINQ to Objects}
 
-LINQ to Objects được áp dụng tại tầng BUS và GUI để xử lý các danh sách \texttt{List<DTO>} mà DAL trả về – ví dụ: lọc theo trạng thái, sắp xếp theo ngày, gom nhóm doanh thu theo ngày, đếm số bệnh nhân theo bác sĩ\ldots
+Áp dụng tại tầng BUS và GUI để xử lý các danh sách DTO -- lọc, sắp xếp, gom nhóm doanh thu theo ngày, đếm số bệnh nhân theo bác sĩ:
 
-\begin{lstlisting}[style=csharp,caption={Ví dụ áp dụng LINQ to Objects để gom nhóm hóa đơn theo ngày}]
+\begin{lstlisting}[style=csharp,caption={LINQ to Objects -- gom nhóm hóa đơn theo ngày}]
 var doanhThuTheoNgay = lsHoaDon
     .Where(h => h.NgayLapHoaDon.Month == thang && h.NgayLapHoaDon.Year == nam)
     .GroupBy(h => h.NgayLapHoaDon.Date)
     .Select(g => new {
-        Ngay      = g.Key,
-        TongTien  = g.Sum(x => x.TongTien),
-        SoHoaDon  = g.Count()
+        Ngay     = g.Key,
+        TongTien = g.Sum(x => x.TongTien),
+        SoHoaDon = g.Count()
     })
     .OrderBy(x => x.Ngay)
     .ToList();
 \end{lstlisting}
 
+Một ví dụ khác trong project \texttt{QLPKEF}:
+
+\begin{lstlisting}[style=csharp,caption={LINQ to Objects -- lọc thuốc tồn kho thấp}]
+public static IEnumerable<Thuoc> LocThuocSapHet(IEnumerable<Thuoc> nguon, int nguong = 10) =>
+    nguon.Where(t => (t.SoLuong ?? 0) <= nguong)
+         .OrderBy(t => t.SoLuong)
+         .ThenBy(t => t.TenThuoc);
+\end{lstlisting}
+
 \subsection{LINQ to XML}
 
-LINQ to XML được tham khảo phục vụ chức năng \textbf{nhập / xuất danh mục thuốc} dưới dạng XML, để trao đổi dữ liệu với phần mềm thứ ba:
+Đã triển khai chức năng \textbf{xuất / nhập danh mục thuốc dạng XML} (file \texttt{QLPKEF/Samples/LinqToXmlExamples.cs}) để trao đổi dữ liệu với phần mềm bảo hiểm y tế:
 
-\begin{lstlisting}[style=csharp,caption={Xuất danh sách thuốc ra XML bằng LINQ to XML}]
-var doc = new XDocument(
-    new XDeclaration("1.0","utf-8","yes"),
-    new XElement("DanhSachThuoc",
-        from t in lsThuoc
-        select new XElement("Thuoc",
-            new XAttribute("Ma", t.MaThuoc),
-            new XElement("Ten",     t.TenThuoc),
-            new XElement("DonGia",  t.DonGia),
-            new XElement("DonVi",   t.TenDonVi),
-            new XElement("CachDung",t.TenCachDung),
-            new XElement("SoLuong", t.SoLuong))));
-doc.Save("DanhMucThuoc.xml");
-\end{lstlisting}
-
-\subsection{Entity Framework (định hướng mở rộng)}
-
-Để chuẩn bị cho việc nâng cấp ứng dụng, nhóm đã khảo sát \textbf{Entity Framework} theo mô hình \emph{Database First}. Quy trình áp dụng:
-
-\begin{enumerate}[leftmargin=*]
-\item Thêm gói \texttt{EntityFramework} qua NuGet.
-\item Sử dụng \emph{ADO.NET Entity Data Model} sinh tự động \texttt{QLPKEntities} từ CSDL \texttt{QLPK}.
-\item Thay thế từng lớp DAL bằng truy vấn LINQ to Entities:
-\end{enumerate}
-
-\begin{lstlisting}[style=csharp,caption={Mẫu thay thế DAL bằng Entity Framework}]
-using (var db = new QLPKEntities())
+\begin{lstlisting}[style=csharp,caption={LINQ to XML -- xuất danh mục thuốc ra file XML}]
+public static async Task ExportDanhMucThuocAsync(QLPKDbContext db, string filePath)
 {
-    var ds = db.BenhNhans
-              .Where(b => !b.isDeleted)
-              .OrderBy(b => b.tenBenhNhan)
-              .Select(b => new BenhNhanDTO {
-                  MaBN  = b.maBenhNhan,
-                  TenBN = b.tenBenhNhan,
-                  // ...
-              }).ToList();
+    var thuocs = await db.Thuocs
+        .Include(t => t.DonVi)
+        .Include(t => t.CachDung)
+        .ToListAsync();
+
+    var xdoc = new XDocument(
+        new XDeclaration("1.0", "utf-8", "yes"),
+        new XComment("Danh mục thuốc xuất từ hệ thống QLPK"),
+        new XElement("DanhSachThuoc",
+            new XAttribute("ngayXuat", DateTime.Now.ToString("yyyy-MM-dd")),
+            from t in thuocs
+            select new XElement("Thuoc",
+                new XAttribute("ma", t.MaThuoc),
+                new XElement("Ten",      t.TenThuoc),
+                new XElement("DonGia",   t.DonGia),
+                new XElement("DonVi",    t.DonVi?.TenDonVi),
+                new XElement("CachDung", t.CachDung?.TenCachDung),
+                new XElement("SoLuong",  t.SoLuong ?? 0))));
+    xdoc.Save(filePath);
 }
 \end{lstlisting}
 
-\section{Xây dựng Web API (định hướng mở rộng)}
+% -----------------------------------------------------------------------------
+\section{Entity Framework Core 8}
 
-Bước tiếp theo của đồ án là tách lớp DAL/BUS thành dịch vụ \textbf{ASP.NET Core Web API} để có thể phục vụ thêm cho client di động/web. Bảng các endpoint dự kiến:
+Đồ án đã triển khai project riêng \texttt{QLPKEF} sử dụng \textbf{Entity Framework Core 8.0.10} trên nền \textbf{.NET 8}, hỗ trợ \textbf{cả Code First lẫn Database First}.
 
-\begin{table}[H]
-\centering
-\renewcommand{\arraystretch}{1.3}
-\caption{Bảng các endpoint REST dự kiến}
-\begin{tabularx}{\textwidth}{|l|l|X|}
-\hline
-\textbf{Method} & \textbf{Endpoint} & \textbf{Mô tả} \\\hline
-GET  & \texttt{/api/benhnhan} & Lấy danh sách bệnh nhân chưa bị xóa. \\\hline
-GET  & \texttt{/api/benhnhan/\{id\}} & Lấy bệnh nhân theo mã. \\\hline
-POST & \texttt{/api/benhnhan} & Thêm mới bệnh nhân. \\\hline
-PUT  & \texttt{/api/benhnhan/\{id\}} & Cập nhật. \\\hline
-DELETE & \texttt{/api/benhnhan/\{id\}} & Xóa mềm. \\\hline
-POST & \texttt{/api/phieukham} & Tạo phiếu khám + toa thuốc (gọi SP có transaction). \\\hline
-POST & \texttt{/api/hoadon/lap} & Lập hóa đơn thanh toán. \\\hline
-GET  & \texttt{/api/baocao/doanhthu?thang=\&nam=} & Báo cáo doanh thu. \\\hline
-\end{tabularx}
-\end{table}
+\subsection{DbContext + DbSet}
 
-Mẫu Controller cơ bản:
+\begin{lstlisting}[style=csharp,caption={QLPKDbContext -- 14 DbSet ứng với 14 bảng nghiệp vụ}]
+public class QLPKDbContext : DbContext
+{
+    public DbSet<TaiKhoan>          TaiKhoans          => Set<TaiKhoan>();
+    public DbSet<Role>              Roles              => Set<Role>();
+    public DbSet<BenhNhan>          BenhNhans          => Set<BenhNhan>();
+    public DbSet<LichHen>           LichHens           => Set<LichHen>();
+    public DbSet<PhieuKhamBenh>     PhieuKhamBenhs     => Set<PhieuKhamBenh>();
+    public DbSet<Benh>              Benhs              => Set<Benh>();
+    public DbSet<ChuanDoan>         ChuanDoans         => Set<ChuanDoan>();
+    public DbSet<Thuoc>             Thuocs             => Set<Thuoc>();
+    public DbSet<DonVi>             DonVis             => Set<DonVi>();
+    public DbSet<CachDung>          CachDungs          => Set<CachDung>();
+    public DbSet<ToaThuoc>          ToaThuocs          => Set<ToaThuoc>();
+    public DbSet<ChiTietDonThuoc>   ChiTietDonThuocs   => Set<ChiTietDonThuoc>();
+    public DbSet<HoaDon>            HoaDons            => Set<HoaDon>();
+    public DbSet<DichVu>            DichVus            => Set<DichVu>();
 
-\begin{lstlisting}[style=csharp,caption={Mẫu Controller ASP.NET Core trả JSON}]
+    public QLPKDbContext(DbContextOptions<QLPKDbContext> options) : base(options) { }
+}
+\end{lstlisting}
+
+\subsection{Code First -- DataAnnotations + Fluent API}
+
+Mỗi entity được cấu hình bằng DataAnnotations:
+
+\begin{lstlisting}[style=csharp,caption={Entity BenhNhan -- Code First DataAnnotations}]
+[Table("BenhNhan")]
+public class BenhNhan
+{
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int MaBenhNhan { get; set; }
+
+    [Required, MaxLength(50)] public string TenBenhNhan { get; set; } = null!;
+    public DateTime NgaySinh { get; set; }
+    [Required, MaxLength(50)] public string DiaChi { get; set; } = null!;
+    [Required, MaxLength(12)] public string CCCD   { get; set; } = null!;
+    [Required, MaxLength(50)] public string GioiTinh { get; set; } = null!;
+    [MaxLength(100)]          public string? Email { get; set; }
+    public bool IsDeleted { get; set; }
+}
+\end{lstlisting}
+
+Các ràng buộc phức tạp (composite key, unique index, check constraint, cascade) được khai báo qua Fluent API trong \texttt{OnModelCreating}:
+
+\begin{lstlisting}[style=csharp,caption={Fluent API trong OnModelCreating}]
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    // Composite key
+    modelBuilder.Entity<ChuanDoan>().HasKey(c => new { c.MaBenh, c.MaPKB });
+    modelBuilder.Entity<ChiTietDonThuoc>().HasKey(c => new { c.MaThuoc, c.MaToaThuoc });
+
+    // Unique constraints
+    modelBuilder.Entity<BenhNhan>().HasIndex(b => b.CCCD).IsUnique();
+    modelBuilder.Entity<TaiKhoan>().HasIndex(t => t.UserName).IsUnique();
+    modelBuilder.Entity<Thuoc>().HasIndex(t => t.TenThuoc).IsUnique();
+
+    // CHECK constraints (EF Core 7+ syntax)
+    modelBuilder.Entity<Thuoc>()
+        .ToTable(t => t.HasCheckConstraint("chk_SoLuongThuoc", "[soLuong] >= 0"));
+    modelBuilder.Entity<DichVu>()
+        .ToTable(t => t.HasCheckConstraint("chk_TienDichVu",  "[tienDichVu] >= 0"));
+    modelBuilder.Entity<ChiTietDonThuoc>()
+        .ToTable(t => t.HasCheckConstraint("chk_SoLuongKe",   "[soLuong] > 0"));
+
+    // Default values
+    modelBuilder.Entity<LichHen>().Property(l => l.TrangThai)
+        .HasDefaultValue("Chờ khám");
+    modelBuilder.Entity<PhieuKhamBenh>().Property(p => p.NgayKham)
+        .HasDefaultValueSql("(getdate())");
+
+    // Tránh cascade cycle
+    modelBuilder.Entity<PhieuKhamBenh>().HasOne(p => p.TaiKhoan).WithMany(t => t.PhieuKhams)
+        .HasForeignKey(p => p.MaTaiKhoan).OnDelete(DeleteBehavior.NoAction);
+}
+\end{lstlisting}
+
+Tạo CSDL từ entity (lệnh Code First migration):
+
+\begin{lstlisting}[caption={Lệnh Code First}]
+dotnet ef migrations add InitialCreate --project QLPKEF
+dotnet ef database update             --project QLPKEF
+\end{lstlisting}
+
+\subsection{Database First -- scaffold từ CSDL có sẵn}
+
+\begin{lstlisting}[caption={Sinh entity từ CSDL bằng Database First}]
+dotnet ef dbcontext scaffold ^
+    "Server=localhost;Database=QLPK;Trusted_Connection=True;TrustServerCertificate=True" ^
+    Microsoft.EntityFrameworkCore.SqlServer ^
+    --output-dir Models --context QLPKDbContext --force
+\end{lstlisting}
+
+\subsection{LINQ to Entities}
+
+Các Repository (\texttt{BenhNhanRepository}, \texttt{HoaDonRepository}) thao tác CSDL hoàn toàn qua LINQ:
+
+\begin{lstlisting}[style=csharp,caption={Repository -- LINQ to Entities trên DbContext}]
+public async Task<List<BenhNhan>> GetAllAsync() =>
+    await _db.BenhNhans.AsNoTracking()
+                       .Where(b => !b.IsDeleted)
+                       .OrderBy(b => b.TenBenhNhan)
+                       .ToListAsync();
+
+public async Task<List<DoanhThuTheoNgayDto>> DoanhThuTheoThangAsync(int thang, int nam) =>
+    await _db.HoaDons
+        .Where(h => h.NgayLapHoaDon!.Value.Month == thang
+                 && h.NgayLapHoaDon.Value.Year  == nam)
+        .GroupBy(h => h.NgayLapHoaDon!.Value.Date)
+        .Select(g => new DoanhThuTheoNgayDto {
+            Ngay     = g.Key,
+            SoHoaDon = g.Count(),
+            TongTien = g.Sum(x => x.TongTien ?? 0)
+        })
+        .OrderBy(x => x.Ngay)
+        .ToListAsync();
+
+// Gọi Stored Procedure đã có sẵn qua EF Core
+public async Task<int> LapHoaDonAsync(int maPKB, int maTaiKhoan) =>
+    await _db.Database.ExecuteSqlInterpolatedAsync(
+        $"EXEC sp_LapHoaDonThanhToan @maPKB={maPKB}, @maTaiKhoan={maTaiKhoan}");
+\end{lstlisting}
+
+% -----------------------------------------------------------------------------
+\section{ASP.NET Core 8 Web API}
+
+Đồ án đã triển khai project \texttt{QLPKWebAPI} sử dụng \textbf{ASP.NET Core 8}, tuân thủ chuẩn \textbf{RESTful}, phản hồi định dạng \textbf{JSON}, tích hợp \textbf{Swagger UI} cho tài liệu API.
+
+\subsection{Cấu hình DI và Middleware}
+
+\begin{lstlisting}[style=csharp,caption={Program.cs -- cấu hình ASP.NET Core 8 Web API}]
+var builder = WebApplication.CreateBuilder(args);
+
+// EF Core + SQL Server
+builder.Services.AddDbContext<QLPKDbContext>(opt =>
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+
+// DI cho repositories
+builder.Services.AddScoped<BenhNhanRepository>();
+builder.Services.AddScoped<HoaDonRepository>();
+
+// Hỗ trợ cả JSON và XML
+builder.Services.AddControllers()
+    .AddXmlSerializerFormatters();
+
+// Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new() {
+        Title       = "QLPK Web API",
+        Version     = "v1",
+        Description = "Web API quản lý phòng khám - EF Core + RESTful + JSON"
+    });
+});
+
+// CORS mở cho dev
+builder.Services.AddCors(o => o.AddPolicy("Open",
+    p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
+
+var app = builder.Build();
+if (app.Environment.IsDevelopment()) { app.UseSwagger(); app.UseSwaggerUI(); }
+app.UseCors("Open");
+app.MapControllers();
+app.Run();
+\end{lstlisting}
+
+\subsection{Controller chuẩn RESTful}
+
+\begin{lstlisting}[style=csharp,caption={BenhNhanController -- chuẩn REST CRUD}]
 [ApiController]
 [Route("api/[controller]")]
+[Produces("application/json")]
 public class BenhNhanController : ControllerBase
 {
-    private readonly BenhNhanBUS _bus = new BenhNhanBUS();
+    private readonly BenhNhanRepository _repo;
+    public BenhNhanController(BenhNhanRepository repo) => _repo = repo;
 
-    [HttpGet]
-    public ActionResult<IEnumerable<BenhNhanDTO>> Get() => _bus.select();
+    [HttpGet]                       // GET    /api/benhnhan
+    public async Task<ActionResult<IEnumerable<BenhNhan>>> GetAll()
+        => Ok(await _repo.GetAllAsync());
 
-    [HttpPost]
-    public IActionResult Post([FromBody] BenhNhanDTO dto)
-        => _bus.them(dto) ? Ok() : BadRequest();
+    [HttpGet("search")]             // GET    /api/benhnhan/search?keyword=
+    public async Task<ActionResult<IEnumerable<BenhNhan>>> Search([FromQuery] string keyword)
+        => Ok(await _repo.SearchAsync(keyword ?? string.Empty));
+
+    [HttpGet("{id:int}/lichsu")]    // GET    /api/benhnhan/{id}/lichsu
+    public async Task<ActionResult<IEnumerable<object>>> LichSu(int id)
+        => Ok(await _repo.GetLichSuKhamAsync(id));
+
+    [HttpPost]                      // POST   /api/benhnhan
+    public async Task<ActionResult<BenhNhan>> Create([FromBody] BenhNhan dto)
+    {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+        var created = await _repo.AddAsync(dto);
+        return CreatedAtAction(nameof(GetAll), new { id = created.MaBenhNhan }, created);
+    }
+
+    [HttpPut("{id:int}")]           // PUT    /api/benhnhan/{id}
+    public async Task<IActionResult> Update(int id, [FromBody] BenhNhan dto)
+    {
+        if (id != dto.MaBenhNhan) return BadRequest("Mã không trùng khớp");
+        var ok = await _repo.UpdateAsync(dto);
+        return ok ? NoContent() : NotFound();
+    }
+
+    [HttpDelete("{id:int}")]        // DELETE /api/benhnhan/{id}
+    public async Task<IActionResult> Delete(int id)
+        => (await _repo.SoftDeleteAsync(id)) ? NoContent() : NotFound();
 }
 \end{lstlisting}
 
-Định dạng phản hồi mặc định là \textbf{JSON}; có thể hỗ trợ \textbf{XML} bằng cách thêm
-\texttt{services.AddControllers().AddXmlSerializerFormatters();}.
+\subsection{Bảng các endpoint RESTful đã triển khai}
+
+\begin{longtable}{|l|l|p{8cm}|}
+\hline
+\textbf{Method} & \textbf{Endpoint} & \textbf{Mô tả} \\
+\hline\endhead
+POST   & \texttt{/api/auth/login}                & Đăng nhập (LINQ to Entities). \\\hline
+GET    & \texttt{/api/benhnhan}                  & Danh sách bệnh nhân chưa xóa. \\\hline
+GET    & \texttt{/api/benhnhan/search?keyword=}  & Tìm kiếm theo tên hoặc CCCD. \\\hline
+GET    & \texttt{/api/benhnhan/\{id\}/lichsu}    & Lịch sử khám (JOIN nhiều bảng). \\\hline
+POST   & \texttt{/api/benhnhan}                  & Thêm mới. \\\hline
+PUT    & \texttt{/api/benhnhan/\{id\}}           & Cập nhật. \\\hline
+DELETE & \texttt{/api/benhnhan/\{id\}}           & Xóa mềm. \\\hline
+GET    & \texttt{/api/thuoc}                     & Danh sách thuốc + đơn vị + cách dùng. \\\hline
+GET    & \texttt{/api/thuoc/saphet?nguong=10}    & Cảnh báo tồn kho thấp (LINQ to Objects). \\\hline
+GET    & \texttt{/api/thuoc/export-xml}          & Xuất XML (LINQ to XML). \\\hline
+POST   & \texttt{/api/thuoc}                     & Thêm thuốc. \\\hline
+GET    & \texttt{/api/lichhen}                   & Danh sách lịch hẹn. \\\hline
+POST   & \texttt{/api/lichhen}                   & Tạo lịch hẹn (validate ngày). \\\hline
+PUT    & \texttt{/api/lichhen/\{id\}/trangthai}  & Cập nhật trạng thái. \\\hline
+GET    & \texttt{/api/hoadon}                    & Toàn bộ hóa đơn. \\\hline
+GET    & \texttt{/api/hoadon/doanhthu?thang=\&nam=} & Báo cáo doanh thu theo tháng. \\\hline
+POST   & \texttt{/api/hoadon/lap}                & Lập hóa đơn (gọi SP có Transaction). \\\hline
+\caption{Danh sách 17 endpoint RESTful đã triển khai}
+\end{longtable}
+
+\subsection{Mẫu phản hồi JSON}
+
+\begin{lstlisting}[language=json,caption={Response mẫu của POST /api/auth/login}]
+{
+  "maTaiKhoan": 1,
+  "userName":   "admin",
+  "name":       "Quan tri vien",
+  "tenRole":    "Quan tri"
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=json,caption={Response mẫu của GET /api/hoadon/doanhthu?thang=5\&nam=2026}]
+[
+  { "ngay": "2026-05-02", "soHoaDon": 12, "tongTien": 4350000 },
+  { "ngay": "2026-05-03", "soHoaDon":  8, "tongTien": 2780000 },
+  { "ngay": "2026-05-04", "soHoaDon": 15, "tongTien": 5610000 }
+]
+\end{lstlisting}
+
+\subsection{Tiêu chuẩn RESTful}
+
+Web API tuân thủ các nguyên tắc REST:
+
+\begin{itemize}[leftmargin=*]
+\item \textbf{Resource-based URL:} \texttt{/api/benhnhan}, \texttt{/api/hoadon} -- không có verb trong URL.
+\item \textbf{HTTP Methods đúng ngữ nghĩa:} \texttt{GET} (đọc), \texttt{POST} (tạo), \texttt{PUT} (cập nhật), \texttt{DELETE} (xóa).
+\item \textbf{Status code chuẩn:} \texttt{200 OK}, \texttt{201 Created}, \texttt{204 No Content}, \texttt{400 Bad Request}, \texttt{401 Unauthorized}, \texttt{404 Not Found}.
+\item \textbf{Stateless:} mỗi request mang đủ thông tin, không lưu session.
+\item \textbf{Content-Type:} \texttt{application/json} (hỗ trợ thêm \texttt{application/xml} qua \texttt{AddXmlSerializerFormatters}).
+\end{itemize}
+
+\subsection{Swagger UI}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox[c][4cm][c]{0.9\textwidth}{\centering\textit{[Chèn ảnh: images/swagger.png]\\
+Swagger UI tại https://localhost:7000/swagger}}}
+\caption{Tài liệu API tự động bằng Swagger UI}
+\label{fig:swagger}
+\end{figure}
 
 % =============================================================================
 \chapter{KẾT QUẢ VÀ ĐÁNH GIÁ}
 
 \section{Demo ứng dụng}
 
-Phần này trình bày một số màn hình tiêu biểu của hệ thống QLPK. Mỗi hình ảnh đặt trong thư mục \texttt{images/} và được tham chiếu bằng \texttt{\textbackslash includegraphics}.
-
 \subsection{Đăng nhập}
 \begin{figure}[H]
 \centering
 \fbox{\parbox[c][4cm][c]{0.9\textwidth}{\centering\textit{[Chèn ảnh: images/login.png]}}}
-\caption{Màn hình đăng nhập – kiểm tra qua \texttt{sp\_KiemTraDangNhap}.}
+\caption{Đăng nhập -- kiểm tra qua \texttt{sp\_KiemTraDangNhap}.}
 \end{figure}
 
 \subsection{Quản lý bệnh nhân}
 \begin{figure}[H]
 \centering
 \fbox{\parbox[c][4cm][c]{0.9\textwidth}{\centering\textit{[Chèn ảnh: images/quanlybenhnhan.png]}}}
-\caption{Form quản lý bệnh nhân với chức năng thêm, sửa, xóa mềm và tìm kiếm.}
+\caption{Quản lý bệnh nhân -- thêm/sửa/xóa mềm/tìm kiếm.}
 \end{figure}
 
 \subsection{Tạo phiếu khám và kê toa thuốc}
 \begin{figure}[H]
 \centering
 \fbox{\parbox[c][4cm][c]{0.9\textwidth}{\centering\textit{[Chèn ảnh: images/ketoa.png]}}}
-\caption{Form kê toa thuốc – Trigger sẽ trừ kho tự động khi thêm chi tiết đơn.}
+\caption{Kê toa -- Trigger trừ kho tự động.}
 \end{figure}
 
 \subsection{Lập hóa đơn và in PDF}
 \begin{figure}[H]
 \centering
 \fbox{\parbox[c][4cm][c]{0.9\textwidth}{\centering\textit{[Chèn ảnh: images/hoadon.png]}}}
-\caption{Form lập hóa đơn – chạy SP có Transaction, xuất PDF qua iText7.}
+\caption{Lập hóa đơn -- SP có Transaction, xuất PDF iText7.}
 \end{figure}
 
-\subsection{Báo cáo doanh thu \& sử dụng thuốc}
+\subsection{Báo cáo doanh thu}
 \begin{figure}[H]
 \centering
 \fbox{\parbox[c][4cm][c]{0.9\textwidth}{\centering\textit{[Chèn ảnh: images/baocao\_doanhthu.png]}}}
-\caption{Báo cáo doanh thu theo tháng – sử dụng \texttt{sp\_BaoCaoSuDungThuoc} \& LINQ.}
+\caption{Báo cáo doanh thu tháng (DataSet + DataAdapter + LINQ).}
 \end{figure}
 
 \section{Đánh giá chuẩn đầu ra}
@@ -801,14 +1005,15 @@ Phần này trình bày một số màn hình tiêu biểu của hệ thống QL
 \textbf{Kỹ năng} & \textbf{Minh chứng trong đồ án} & \textbf{Mức đạt} \\
 \hline
 T-SQL nâng cao & 13 View, 25 Stored Procedure, 2 Function, 4 Trigger, 2 SP có Transaction. & Tốt \\\hline
-Thiết kế CSDL & 15 bảng chuẩn 3NF, 17 ràng buộc khóa ngoại, 3 ràng buộc CHECK, soft-delete. & Tốt \\\hline
-ADO.NET & 14 lớp DAL, dùng Parameter, sử dụng View + SP cho mọi thao tác. & Tốt \\\hline
+Thiết kế CSDL & 15 bảng chuẩn 3NF, 17 FK, 3 CHECK, soft-delete. & Tốt \\\hline
 Kiến trúc 3 lớp + DTO & 4 project độc lập, tách biệt rõ trách nhiệm. & Tốt \\\hline
-LINQ to Objects & Lọc, sắp xếp, gom nhóm dữ liệu báo cáo trong BUS/GUI. & Khá \\\hline
-LINQ to XML & Cài đặt mẫu xuất danh mục thuốc, sẵn sàng tích hợp. & Khá \\\hline
-Entity Framework & Khảo sát mô hình Database First, đã có kế hoạch chuyển đổi. & Trung bình \\\hline
-ASP.NET Core Web API & Thiết kế danh sách endpoint, sẵn sàng cho giai đoạn 2. & Trung bình \\\hline
-Kỹ năng làm việc nhóm & Phân chia rõ ràng, sử dụng Git để cộng tác. & Tốt \\\hline
+ADO.NET (kết nối) & 14 lớp DAL với \texttt{SqlConnection}/\texttt{SqlCommand}/\texttt{SqlDataReader}. & Tốt \\\hline
+ADO.NET (phi kết nối) & \texttt{SqlDataAdapter} + \texttt{DataSet} cho các form báo cáo. & Tốt \\\hline
+LINQ to Objects & Lọc, sắp xếp, gom nhóm dữ liệu trong BUS/GUI. & Tốt \\\hline
+LINQ to XML & Xuất/nhập danh mục thuốc XML trong \texttt{LinqToXmlExamples}. & Tốt \\\hline
+Entity Framework Core 8 & Code First (DataAnnotations + Fluent API) + Database First (scaffold), 14 \texttt{DbSet}, 2 Repository LINQ to Entities. & Tốt \\\hline
+Web API + RESTful + JSON & 5 Controllers, 17 endpoints REST, Swagger UI, hỗ trợ JSON \& XML. & Tốt \\\hline
+Kỹ năng làm việc nhóm & Phân chia rõ ràng, sử dụng Git/GitHub để cộng tác. & Tốt \\\hline
 \end{tabularx}
 \end{table}
 
@@ -816,18 +1021,20 @@ Kỹ năng làm việc nhóm & Phân chia rõ ràng, sử dụng Git để cộn
 
 \subsection{Khó khăn}
 \begin{itemize}[leftmargin=*]
-\item Việc đồng bộ giữa nhiều thành viên trên cùng CSDL ban đầu gặp trục trặc; nhóm đã khắc phục bằng cách tạo script \texttt{script.sql} làm chuẩn và đẩy lên GitHub.
-\item Một số nghiệp vụ liên quan đến nhiều bảng (kê thuốc – trừ kho, lập hóa đơn – tính tiền) yêu cầu Transaction và Trigger phức tạp, dễ gây lỗi nếu thiếu \texttt{ROLLBACK} trong khối \texttt{CATCH}.
-\item Mật khẩu hiện đang lưu plaintext trong bảng \texttt{TaiKhoan}; cần băm (hash) trong giai đoạn nâng cấp bảo mật.
+\item Đồng bộ schema CSDL giữa các thành viên ban đầu gặp trục trặc; nhóm khắc phục bằng cách tạo \texttt{script.sql} làm chuẩn và đẩy lên Git.
+\item Nghiệp vụ kê thuốc -- trừ kho và lập hóa đơn yêu cầu Transaction và Trigger phức tạp, dễ gây lỗi nếu thiếu \texttt{ROLLBACK} trong \texttt{CATCH}.
+\item Cú pháp \texttt{HasCheckConstraint} thay đổi giữa EF Core 6 và EF Core 7+, gây lỗi build khi nâng cấp; nhóm khắc phục bằng cách thống nhất dùng EF Core 8 + cú pháp \texttt{ToTable(t => t.HasCheckConstraint(...))}.
+\item Mật khẩu hiện đang lưu plaintext trong bảng \texttt{TaiKhoan}; cần băm BCrypt trong giai đoạn nâng cấp bảo mật.
 \end{itemize}
 
 \subsection{Hướng phát triển}
 \begin{itemize}[leftmargin=*]
-\item Thay thế lớp DAL hiện tại bằng \textbf{Entity Framework Core} để giảm boilerplate.
-\item Tách phần dịch vụ thành \textbf{ASP.NET Core Web API} kèm xác thực \emph{JWT} và bổ sung client web bằng React.
-\item Bổ sung mã hóa mật khẩu (BCrypt) và áp dụng nguyên tắc Bảo mật theo tầng (Auth Filter, Role-based Access).
-\item Tích hợp thêm \emph{thanh toán điện tử} (VNPay/MoMo) và \emph{nhắc lịch} qua Zalo/SMS thay cho email.
-\item Mở rộng \texttt{AuditLog} với Trigger \texttt{AFTER INSERT/UPDATE/DELETE} để ghi lại mọi thao tác quan trọng.
+\item Bổ sung xác thực \emph{JWT Bearer Token} cho Web API và phân quyền theo Role.
+\item Thay thế WinForms client bằng giao diện web (React/Blazor) gọi Web API qua HTTPS.
+\item Tích hợp thanh toán điện tử (VNPay/MoMo) và nhắc lịch qua Zalo/SMS.
+\item Áp dụng mã hóa mật khẩu (BCrypt) và HTTPS bắt buộc.
+\item Mở rộng \texttt{AuditLog} với Trigger ghi mọi thao tác Insert/Update/Delete quan trọng.
+\item Triển khai container hóa bằng Docker + CI/CD trên GitHub Actions.
 \end{itemize}
 
 % =============================================================================
@@ -837,16 +1044,16 @@ Kỹ năng làm việc nhóm & Phân chia rõ ràng, sử dụng Git để cộn
 \begin{enumerate}[leftmargin=*]
 \item Microsoft Learn -- \textit{Transact-SQL reference}. \url{https://learn.microsoft.com/en-us/sql/t-sql/}
 \item Microsoft Learn -- \textit{ADO.NET overview}. \url{https://learn.microsoft.com/en-us/dotnet/framework/data/adonet/}
-\item Microsoft Learn -- \textit{LINQ (Language-Integrated Query)}. \url{https://learn.microsoft.com/en-us/dotnet/csharp/linq/}
+\item Microsoft Learn -- \textit{LINQ}. \url{https://learn.microsoft.com/en-us/dotnet/csharp/linq/}
 \item Microsoft Learn -- \textit{LINQ to XML}. \url{https://learn.microsoft.com/en-us/dotnet/standard/linq/linq-xml-overview}
-\item Microsoft Learn -- \textit{Entity Framework Database First}. \url{https://learn.microsoft.com/en-us/ef/ef6/modeling/designer/workflows/database-first}
-\item Microsoft Learn -- \textit{Create web APIs with ASP.NET Core}. \url{https://learn.microsoft.com/en-us/aspnet/core/web-api/}
-\item Microsoft Learn -- \textit{SQL Server Triggers}. \url{https://learn.microsoft.com/en-us/sql/relational-databases/triggers/dml-triggers}
-\item Microsoft Learn -- \textit{Stored Procedures (Database Engine)}. \url{https://learn.microsoft.com/en-us/sql/relational-databases/stored-procedures/stored-procedures-database-engine}
-\item Syncfusion -- \textit{Free .NET eBooks}. \url{https://www.syncfusion.com/ebooks}
-\item iText7 -- \textit{Knowledge base}. \url{https://kb.itextpdf.com}
+\item Microsoft Learn -- \textit{EF Core}. \url{https://learn.microsoft.com/en-us/ef/core/}
+\item Microsoft Learn -- \textit{Web APIs with ASP.NET Core}. \url{https://learn.microsoft.com/en-us/aspnet/core/web-api/}
+\item Microsoft Learn -- \textit{DML Triggers}. \url{https://learn.microsoft.com/en-us/sql/relational-databases/triggers/dml-triggers}
+\item Microsoft Learn -- \textit{Stored Procedures}. \url{https://learn.microsoft.com/en-us/sql/relational-databases/stored-procedures/stored-procedures-database-engine}
+\item Swashbuckle.AspNetCore -- \textit{Swagger for ASP.NET Core}. \url{https://github.com/domaindrivendev/Swashbuckle.AspNetCore}
 \item Guna.UI2 -- \textit{Documentation}. \url{https://docs.gunaui.com/}
-\item Giáo trình \textit{Lập trình cơ sở dữ liệu} -- Khoa CNTT, Trường ĐH Mở TP.HCM, 2025.
+\item iText 7 -- \textit{Knowledge base}. \url{https://kb.itextpdf.com/}
+\item Giáo trình \textit{Lập trình cơ sở dữ liệu} -- Khoa CNTT, Trường ĐH Mở TP.HCM.
 \end{enumerate}
 
 \end{document}
