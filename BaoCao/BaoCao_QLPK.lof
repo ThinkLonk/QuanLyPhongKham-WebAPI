@@ -1,0 +1,13 @@
+\selectlanguage *{vietnamese}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Sơ đồ thực thể mối quan hệ (ERD) của hệ thống QLPK\relax }}{8}{figure.caption.6}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Mô hình 3 lớp + DTO của hệ thống QLPK\relax }}{15}{figure.caption.7}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Màn hình đăng nhập – kiểm tra qua \texttt {sp\_KiemTraDangNhap}.\relax }}{23}{figure.caption.9}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Form quản lý bệnh nhân với chức năng thêm, sửa, xóa mềm và tìm kiếm.\relax }}{23}{figure.caption.10}%
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Form kê toa thuốc – Trigger sẽ trừ kho tự động khi thêm chi tiết đơn.\relax }}{24}{figure.caption.11}%
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Form lập hóa đơn – chạy SP có Transaction, xuất PDF qua iText7.\relax }}{24}{figure.caption.12}%
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Báo cáo doanh thu theo tháng – sử dụng \texttt {sp\_BaoCaoSuDungThuoc} \& LINQ.\relax }}{24}{figure.caption.13}%
